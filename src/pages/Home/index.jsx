@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors } from '../../constants';
+import { COLORS } from '../../constants';
 import CustomButton from '../../components/Button';
 import { CustomInput, CustomSearchInput } from '../../components/Input';
 const index = () => {
@@ -8,13 +8,13 @@ const index = () => {
   return (
     <div style={{ height: '10000px' }}>
       <CustomButton
-        text={'asad'}
-        color={colors.white}
-        backgroundColor={colors.orange}
+        text={'안녕'}
+        color={COLORS.NAVY}
+        backgroundColor={COLORS.WHITE}
         width={100}
         height={50}
         fontSize={20}
-        borderColor={colors.orange}
+        borderColor={COLORS.NAVY}
         onClick={handleClick}
       />
       <CustomInput
@@ -25,7 +25,7 @@ const index = () => {
         fontSize={26}
       />
       <CustomSearchInput
-        type={'text'}
+        type={'password'}
         text={'레시피 / 태그 / 크리에이터 검색'}
         width={760}
         height={60}

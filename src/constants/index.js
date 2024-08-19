@@ -1,9 +1,9 @@
-export const colors = {
-  navy: '#012140',
-  yellow: '#FFEA75',
-  green: '#79DEB4',
-  orange: '#FF785B',
-  skyblue: '#E7FAFE',
-  tag: '#D9D9D9',
-  white: '#FFFFFF',
+export const COLORS = {
+  NAVY: '#012140',
+  YELLOW: '#FFEA75',
+  GREEN: '#79DEB4',
+  ORANGE: '#FF785B',
+  SKYBLUE: '#E7FAFE',
+  TAG: '#D9D9D9',
+  WHITE: '#FFFFFF',
 };

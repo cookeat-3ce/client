@@ -11,12 +11,12 @@ import AlarmIcon from '../../assets/icons/alarm.png';
 import ExampleProfile from '../../assets/images/example_profile.jpg';
 import CustomTextButton from '../Button/Text';
 import CustomImageButton from '../Button/Image';
-import { colors } from '../../constants';
+import { COLORS } from '../../constants';
 const CustomHeader = ({ isLogined }) => {
   // 예시
   const handleClick = () => console.log(1);
-  isLogined = false;
-  // isLogined = true;
+  // isLogined = false;
+  isLogined = true;
 
   return (
     <Header>
@@ -45,13 +45,13 @@ const CustomHeader = ({ isLogined }) => {
               <CustomTextButton
                 text={'로그인'}
                 fontSize={26}
-                color={colors.navy}
+                color={COLORS.NAVY}
                 onClick={handleClick}
               />
               <CustomTextButton
                 text={'회원가입'}
                 fontSize={26}
-                color={colors.navy}
+                color={COLORS.NAVY}
                 onClick={handleClick}
               />
             </>

@@ -35,8 +35,8 @@ const CustomSideBar = ({ isLogined }) => {
   ];
 
   // 예시
-  // isLogined = false;
-  isLogined = true;
+  isLogined = false;
+  // isLogined = true;
 
   useEffect(() => {
     const filtered = list.filter((item) => {

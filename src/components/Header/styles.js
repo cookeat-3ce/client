@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from '../../constants';
+import { COLORS } from '../../constants';
 
 // 예시
 const logo = require('../../assets/icons/search.png');
@@ -19,7 +19,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   max-width: 100vw;
-  background-color: ${colors.yellow};
+  background-color: ${COLORS.YELLOW};
   border-radius: 0px 0 20px 20px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
   position: relative;

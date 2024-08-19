@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { colors } from '../../constants';
+import { COLORS } from '../../constants';
 
 export const CustomInputContainer = styled.input`
   padding-left: 21px;
 
   &:focus {
-    border: 1px solid ${colors.yellow} !important;
+    border: 1px solid ${COLORS.YELLOW} !important;
     outline: none;
   }
 `;
@@ -16,7 +16,7 @@ export const CustomSearchInputContainer = styled.input`
   transition: border-color 0.3s;
 
   &:focus {
-    border: 1px solid ${colors.yellow} !important;
+    border: 1px solid ${COLORS.YELLOW} !important;
     outline: none;
   }
 `;

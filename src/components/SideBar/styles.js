@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import styled from 'styled-components';
-import { colors } from '../../constants';
+import { COLORS } from '../../constants';
 export const SideBar = styled.div`
   position: sticky;
   top: 0;
@@ -10,7 +10,7 @@ export const SideBar = styled.div`
   height: 900px;
   border-radius: 0 20px 20px 0;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-  background: ${colors.white};
+  background: ${COLORS.WHITE};
   font-family: 'Happiness-Sans-Bold';
   font-size: 20px;
 `;
@@ -36,7 +36,7 @@ const StyledButtonContainer = styled.div.withConfig({
   margin-top: ${(props) => (props.isTopSpecial ? '20px' : '0')};
   margin-bottom: ${(props) => (props.isBottomSpecial ? '0' : '10px')};
   background-color: ${(props) =>
-    props.isActive ? colors.skyblue : 'transparent'};
+    props.isActive ? COLORS.SKYBLUE : 'transparent'};
   position: relative;
   border-radius: 100px;
 
