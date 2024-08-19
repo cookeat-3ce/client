@@ -44,16 +44,14 @@ const CustomHeader = ({ isLogined }) => {
             <>
               <CustomTextButton
                 text={'로그인'}
-                fontSize={'26px'}
+                fontSize={26}
                 color={colors.navy}
-                fontWeight={'700'}
                 onClick={handleClick}
               />
               <CustomTextButton
                 text={'회원가입'}
-                fontSize={'26px'}
+                fontSize={26}
                 color={colors.navy}
-                fontWeight={'700'}
                 onClick={handleClick}
               />
             </>

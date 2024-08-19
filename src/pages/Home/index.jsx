@@ -15,7 +15,6 @@ const index = () => {
         height={50}
         fontSize={20}
         borderColor={colors.orange}
-        fontFamily={'Happiness-Sans-Bold'}
         onClick={handleClick}
       />
       <CustomInput
@@ -24,7 +23,6 @@ const index = () => {
         width={442}
         height={71}
         fontSize={26}
-        fontFamily={'Happiness-Sans-Regular'}
       />
       <CustomSearchInput
         type={'text'}
@@ -32,7 +30,6 @@ const index = () => {
         width={760}
         height={60}
         fontSize={20}
-        fontFamily={'Happiness-Sans-Regular'}
       />
     </div>
   );

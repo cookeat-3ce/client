@@ -12,6 +12,7 @@ export const SideBar = styled.div`
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
   background: ${colors.white};
   font-family: 'Happiness-Sans-Bold';
+  font-size: 20px;
 `;
 
 export const Container = styled.div`

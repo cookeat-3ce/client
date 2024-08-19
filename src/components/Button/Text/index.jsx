@@ -1,11 +1,11 @@
 import React from 'react';
 
-const CustomTextButton = ({ text, fontWeight, onClick, color, fontSize }) => {
+const CustomTextButton = ({ text, onClick, color, fontSize }) => {
   const styles = {
-    fontWeight: fontWeight,
     color: color,
     fontSize: fontSize,
     cursor: 'pointer',
+    fontFamily: 'Happiness-Sans-Bold',
     backgroundColor: 'transparent',
     textAlign: 'center',
   };

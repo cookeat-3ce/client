@@ -3,21 +3,14 @@ import { CustomInputContainer, CustomSearchInputContainer } from './styles';
 import { colors } from '../../constants';
 import SearchInput from '../../assets/icons/searchInput.png';
 
-export const CustomInput = ({
-  text,
-  fontSize,
-  fontFamily,
-  width,
-  height,
-  type,
-}) => {
+export const CustomInput = ({ text, fontSize, width, height, type }) => {
   return (
     <CustomInputContainer
       type={type}
       placeholder={text}
       style={{
         fontSize,
-        fontFamily,
+        fontFamily: 'Happiness-Sans-Regular',
         width,
         height,
         borderRadius: 20,
@@ -27,22 +20,14 @@ export const CustomInput = ({
   );
 };
 
-export const CustomSearchInput = ({
-  text,
-  fontSize,
-  fontFamily,
-  width,
-  height,
-  type,
-  placeholderColor = colors.placeholder,
-}) => {
+export const CustomSearchInput = ({ text, fontSize, width, height, type }) => {
   return (
     <CustomSearchInputContainer
       type={type}
       placeholder={text}
       style={{
         fontSize,
-        fontFamily,
+        fontFamily: 'Happiness-Sans-Regular',
         width,
         height,
         borderRadius: 100,

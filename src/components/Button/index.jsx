@@ -19,7 +19,7 @@ const CustomButton = ({
     backgroundColor: backgroundColor,
     border: `1px solid ${borderColor}`,
     fontSize: fontSize,
-    fontFamily: fontFamily,
+    fontFamily: 'Happiness-Sans-Bold',
     borderRadius: '100px',
   };
 
