@@ -1,7 +1,7 @@
 import React from 'react';
 
-const CustomTextButton = ({ text, onClick, color, fontSize }) => {
-  const styles = {
+const CustomTextButton = ({ text, onClick, color, fontSize, style }) => {
+  const defaultStyles = {
     color: color,
     fontSize: fontSize,
     cursor: 'pointer',
@@ -10,10 +10,12 @@ const CustomTextButton = ({ text, onClick, color, fontSize }) => {
     textAlign: 'center',
   };
 
+  const combinedStyles = { ...defaultStyles, ...style };
+
   return (
-    <span onClick={onClick} style={styles}>
+    <div onClick={onClick} style={combinedStyles}>
       {text}
-    </span>
+    </div>
   );
 };
 

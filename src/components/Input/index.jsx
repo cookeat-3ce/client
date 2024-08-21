@@ -3,7 +3,14 @@ import { CustomInputContainer, CustomSearchInputContainer } from './styles';
 import { COLORS } from '../../constants';
 import SearchInput from '../../assets/icons/searchInput.png';
 
-export const CustomInput = ({ text, fontSize, width, height, type }) => {
+export const CustomInput = ({
+  text,
+  fontSize,
+  width,
+  height,
+  type,
+  onChange,
+}) => {
   return (
     <CustomInputContainer
       type={type}
@@ -13,14 +20,22 @@ export const CustomInput = ({ text, fontSize, width, height, type }) => {
         fontFamily: 'Happiness-Sans-Regular',
         width,
         height,
-        borderRadius: 20,
+        borderRadius: 15,
         border: `1px solid ${COLORS.TAG}`,
       }}
+      onChange={onChange}
     />
   );
 };
 
-export const CustomSearchInput = ({ text, fontSize, width, height, type }) => {
+export const CustomSearchInput = ({
+  text,
+  fontSize,
+  width,
+  height,
+  type,
+  onChange,
+}) => {
   return (
     <CustomSearchInputContainer
       type={type}
@@ -37,6 +52,7 @@ export const CustomSearchInput = ({ text, fontSize, width, height, type }) => {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: '1.5vw center',
       }}
+      onChange={onChange}
     />
   );
 };

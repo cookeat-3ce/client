@@ -26,13 +26,7 @@ const CustomSideBar = () => {
   const location = useLocation().pathname;
   const [filteredList, setFilteredList] = useState([]);
   const logout = useLogout();
-
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
-
   const accessToken = getCookie('accessToken');
-
   const list = [
     { icon: SskCook, label: '슥쿡 둘러보기', path: '/' },
     { icon: Search, label: '슥쿡 검색', path: '/' },
