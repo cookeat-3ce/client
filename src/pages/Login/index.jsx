@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   LoginWrapper,
@@ -21,6 +21,8 @@ import { useSetRecoilState } from 'recoil';
 import { memberState } from '../../store';
 import { getCookie } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
+import { debounce } from 'lodash';
+
 const Login = () => {
   const navigate = useNavigate();
   const accessToken = getCookie('accessToken');
@@ -69,6 +71,13 @@ const Login = () => {
     },
   });
 
+  const debouncedLogin = useCallback(
+    debounce((data) => {
+      mutation.mutate(data);
+    }, 300),
+    [],
+  );
+
   return (
     <Container>
       <LoginWrapper>
@@ -110,7 +119,7 @@ const Login = () => {
             borderColor={COLORS.ORANGE}
             onClick={(e) => {
               e.preventDefault();
-              mutation.mutate(loginData);
+              debouncedLogin(loginData);
             }}
           ></CustomButton>
         </ButtonContainer>
