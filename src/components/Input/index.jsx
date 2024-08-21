@@ -33,9 +33,9 @@ export const CustomSearchInput = ({ text, fontSize, width, height, type }) => {
         borderRadius: 100,
         border: `1px solid ${COLORS.TAG}`,
         backgroundImage: `url(${SearchInput})`,
-        backgroundSize: '30px 30px',
+        backgroundSize: '1.5vw 1.5vw',
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: '21px center',
+        backgroundPosition: '1.5vw center',
       }}
     />
   );

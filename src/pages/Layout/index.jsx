@@ -4,13 +4,13 @@ import CustomHeader from '../../components/Header';
 import CustomSideBar from '../../components/SideBar';
 import { Container, ContentContainer, CustomContents } from './styles';
 import { useScrollUp } from '../../hooks';
-const CommonLayout = ({ isLogined, children }) => {
+const CommonLayout = ({ children }) => {
   useScrollUp();
   return (
     <Container>
-      <CustomHeader isLogined={isLogined} />
+      <CustomHeader />
       <ContentContainer>
-        <CustomSideBar isLogined={isLogined} />
+        <CustomSideBar />
         <CustomContents>{children}</CustomContents>
       </ContentContainer>
     </Container>

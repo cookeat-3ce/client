@@ -13,8 +13,8 @@ export const Header = styled.div`
 `;
 export const Container = styled.div`
   display: flex;
-  width: 1300px;
-  height: 100px;
+  width: 90vw;
+  height: 9vh;
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
@@ -32,8 +32,8 @@ export const CenterWrapper = styled.div`
 `;
 
 export const LogoContainer = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 2vh;
+  height: 2vh;
   background-image: url(${logo});
   background-size: cover;
   background-position: center;
@@ -44,6 +44,6 @@ export const ButtonContainer = styled.div`
   display: flex;
   position: absolute;
   align-items: center;
-  gap: 30px;
-  right: 40px;
+  gap: 2vw;
+  right: 2vw;
 `;

@@ -9,18 +9,29 @@ import Storage from '../../assets/icons/storage.png';
 import MyInfo from '../../assets/icons/myinfo.png';
 import Refrigerator from '../../assets/icons/refrigerator.png';
 import './styles';
-import { SideBar, Container, ButtonContainer, ButtonWrapper } from './styles';
+import {
+  SideBar,
+  Container,
+  ButtonContainer,
+  ButtonWrapper,
+  LogoutContainer,
+} from './styles';
 import { useLocation } from 'react-router-dom';
-import { useCustomNavigate } from '../../hooks';
+import { getCookie, useCustomNavigate, useLogout } from '../../hooks';
+import CustomTextButton from '../Button/Text';
+import { COLORS } from '../../constants';
 
-const CustomSideBar = ({ isLogined }) => {
+const CustomSideBar = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const location = useLocation().pathname;
   const [filteredList, setFilteredList] = useState([]);
+  const logout = useLogout();
 
   useEffect(() => {
     console.log(location);
   }, [location]);
+
+  const accessToken = getCookie('accessToken');
 
   const list = [
     { icon: SskCook, label: '슥쿡 둘러보기', path: '/' },
@@ -35,12 +46,12 @@ const CustomSideBar = ({ isLogined }) => {
   ];
 
   // 예시
-  isLogined = false;
+  // isLogined = false;
   // isLogined = true;
 
   useEffect(() => {
     const filtered = list.filter((item) => {
-      if (isLogined) {
+      if (accessToken) {
         return true;
       }
       return [
@@ -55,7 +66,7 @@ const CustomSideBar = ({ isLogined }) => {
     });
 
     setFilteredList(filtered);
-  }, [isLogined]);
+  }, [accessToken]);
 
   return (
     <SideBar>
@@ -76,15 +87,27 @@ const CustomSideBar = ({ isLogined }) => {
                 <img
                   src={item.icon}
                   alt={item.label}
-                  width={'30px'}
-                  height={'30px'}
+                  style={{
+                    width: '2vw',
+                    height: '2vw',
+                  }}
                 />
-                <span>{item.label}</span>
+                <span style={{ fontSize: '1vw' }}>{item.label}</span>
               </ButtonWrapper>
             </ButtonContainer>
           );
         })}
       </Container>
+      <LogoutContainer>
+        {accessToken ? (
+          <CustomTextButton
+            text={'로그아웃'}
+            color={COLORS.NAVY}
+            onClick={logout}
+            fontSize={'1vw'}
+          />
+        ) : null}
+      </LogoutContainer>
     </SideBar>
   );
 };

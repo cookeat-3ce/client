@@ -3,14 +3,16 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import CommonLayout from './pages/Layout';
 import Home from './pages/Home';
 import Live from './pages/Live';
+import { getCookie } from './hooks';
 function App() {
+  console.log(getCookie('accessToken'));
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={'/'}
           element={
-            <CommonLayout>
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
               <Home />
             </CommonLayout>
           }
@@ -18,7 +20,7 @@ function App() {
         <Route
           path={'/live'}
           element={
-            <CommonLayout>
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
               <Live />
             </CommonLayout>
           }

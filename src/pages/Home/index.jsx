@@ -6,30 +6,30 @@ const index = () => {
   // 예시
   const handleClick = () => console.log(1);
   return (
-    <div style={{ height: '10000px' }}>
+    <div>
       <CustomButton
         text={'안녕'}
         color={COLORS.NAVY}
         backgroundColor={COLORS.WHITE}
-        width={100}
-        height={50}
-        fontSize={20}
+        width={'6vw'}
+        height={'4vh'}
+        fontSize={'1vw'}
         borderColor={COLORS.NAVY}
         onClick={handleClick}
       />
       <CustomInput
         type={'text'}
         text={'아이디 입력'}
-        width={442}
-        height={71}
-        fontSize={26}
+        width={'30vw'}
+        height={'6vh'}
+        fontSize={'1vw'}
       />
       <CustomSearchInput
         type={'password'}
         text={'레시피 / 태그 / 크리에이터 검색'}
-        width={760}
-        height={60}
-        fontSize={20}
+        width={'52vw'}
+        height={'5vh'}
+        fontSize={'1vw'}
       />
     </div>
   );

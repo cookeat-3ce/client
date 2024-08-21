@@ -5,21 +5,23 @@ export const SideBar = styled.div`
   position: sticky;
   top: 0;
   left: 0;
-  margin-top: 24px;
-  width: 230px;
-  height: 900px;
+  margin-top: 2vh;
+  width: 15vw;
+  height: 87vh;
   border-radius: 0 20px 20px 0;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
   background: ${COLORS.WHITE};
   font-family: 'Happiness-Sans-Bold';
-  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 51px;
-  padding-right: 50px;
+  padding-top: 4vh;
+  padding-right: 3vw;
 `;
 
 const StyledButtonContainer = styled.div.withConfig({
@@ -29,12 +31,12 @@ const StyledButtonContainer = styled.div.withConfig({
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 5px;
-  margin-right: 6px;
-  width: 219px;
-  height: 50px;
-  margin-top: ${(props) => (props.isTopSpecial ? '20px' : '0')};
-  margin-bottom: ${(props) => (props.isBottomSpecial ? '0' : '10px')};
+  margin-left: 1vh;
+  margin-right: 1vh;
+  width: 14vw;
+  height: 7vh;
+  margin-top: ${(props) => (props.isTopSpecial ? '2vh' : '0')};
+  margin-bottom: ${(props) => (props.isBottomSpecial ? '0' : '1vh')};
   background-color: ${(props) =>
     props.isActive ? COLORS.SKYBLUE : 'transparent'};
   position: relative;
@@ -46,21 +48,21 @@ const StyledButtonContainer = styled.div.withConfig({
     content: '';
     display: ${(props) => (props.isBottomSpecial ? 'block' : 'none')};
     position: absolute;
-    bottom: ${(props) => (props.isBottomSpecial ? '-10px' : 'auto')};
+    bottom: ${(props) => (props.isBottomSpecial ? '-1vh' : 'auto')};
     left: 0;
-    width: 200px;
-    height: 2px;
+    width: 12vw;
+    height: 0.2vh;
     background-color: rgba(1, 33, 64, 0.5);
-    margin-left: 10px;
-    margin-right: -9px;
+    margin-left: 1vw;
+    margin-right: -1vw;
   }
 `;
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  margin-left: 18px;
+  margin-left: 1vw;
   align-items: center;
-  gap: 8px;
+  gap: 1vw;
   justify-content: center;
 `;
 export const ButtonContainer = forwardRef(
@@ -73,3 +75,9 @@ export const ButtonContainer = forwardRef(
     />
   ),
 );
+
+export const LogoutContainer = styled.div`
+  display: flex;
+  margin-left: 1vw;
+  margin-bottom: 1vw;
+`;
