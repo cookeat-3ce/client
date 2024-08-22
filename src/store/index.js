@@ -7,6 +7,7 @@ export const memberState = atom({
   key: 'memberState',
 
   default: {
+    username: '',
     nickname: '',
     profileImage: '',
   },

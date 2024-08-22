@@ -56,9 +56,10 @@ const Login = () => {
       return response;
     },
     onSuccess: (response) => {
-      const { nickname, profileImage } = response.data;
+      const { username, nickname, profileImage } = response.data;
       const accessToken = response.headers.get('auth');
       const updatedMemberData = {
+        username,
         nickname,
         profileImage,
       };
