@@ -8,9 +8,9 @@ const CustomButton = ({
   height,
   backgroundColor,
   fontSize,
-  fontFamily,
   onClick,
   borderColor,
+  disabled,
 }) => {
   const style = {
     color: color,
@@ -24,7 +24,7 @@ const CustomButton = ({
   };
 
   return (
-    <Container style={style} onClick={onClick}>
+    <Container style={style} onClick={onClick} disabled={disabled}>
       {text}
     </Container>
   );

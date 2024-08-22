@@ -1,5 +1,10 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useResetRecoilState } from 'recoil';
+import { memberState } from '../store';
+import { useMutation } from '@tanstack/react-query';
+import { memberAPI } from '../apis/member';
+import { debounce } from 'lodash';
 
 // url 이동
 export const useCustomNavigate = () => {
@@ -70,11 +75,27 @@ export const deleteAllCookies = () => {
 // 로그아웃
 export const useLogout = () => {
   const { handleChangeUrl } = useCustomNavigate();
+  const resetMemberState = useResetRecoilState(memberState);
+  const mutation = useMutation({
+    mutationFn: async () => {
+      await memberAPI.logoutAPI();
+    },
+    onSuccess: () => {
+      resetMemberState();
+      deleteAllCookies();
+      handleChangeUrl('/');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-  const logout = () => {
-    deleteAllCookies();
-    handleChangeUrl('/');
-  };
+  const debouncedLogout = useCallback(
+    debounce(() => {
+      mutation.mutate();
+    }, 300),
+    [],
+  );
 
-  return logout;
+  return debouncedLogout;
 };

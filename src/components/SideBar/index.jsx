@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Event from '../../assets/icons/event.png';
 import SskCook from '../../assets/icons/sskcook.png';
 import Live from '../../assets/icons/live.png';
@@ -17,15 +17,19 @@ import {
   LogoutContainer,
 } from './styles';
 import { useLocation } from 'react-router-dom';
-import { getCookie, useCustomNavigate, useLogout } from '../../hooks';
+import { getCookie, useCustomNavigate, deleteAllCookies } from '../../hooks';
 import CustomTextButton from '../Button/Text';
 import { COLORS } from '../../constants';
+import { useResetRecoilState } from 'recoil';
+import { useMutation } from '@tanstack/react-query';
+import { memberAPI } from '../../apis/member';
+import { memberState } from '../../store';
+import { debounce } from 'lodash';
 
 const CustomSideBar = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const location = useLocation().pathname;
   const [filteredList, setFilteredList] = useState([]);
-  const logout = useLogout();
   const accessToken = getCookie('accessToken');
   const list = [
     { icon: SskCook, label: '슥쿡 둘러보기', path: '/' },
@@ -38,6 +42,7 @@ const CustomSideBar = () => {
     { icon: MyInfo, label: '내 정보', path: '/' },
     { icon: Refrigerator, label: '냉장고 파헤치기', path: '/' },
   ];
+  const resetMemberState = useResetRecoilState(memberState);
 
   // 예시
   // isLogined = false;
@@ -61,6 +66,27 @@ const CustomSideBar = () => {
 
     setFilteredList(filtered);
   }, [accessToken]);
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      await memberAPI.logoutAPI();
+    },
+    onSuccess: () => {
+      resetMemberState();
+      deleteAllCookies();
+      handleChangeUrl('/');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const debouncedLogout = useCallback(
+    debounce(() => {
+      mutation.mutate();
+    }, 300),
+    [],
+  );
 
   return (
     <SideBar>
@@ -97,7 +123,7 @@ const CustomSideBar = () => {
           <CustomTextButton
             text={'로그아웃'}
             color={COLORS.NAVY}
-            onClick={logout}
+            onClick={debouncedLogout}
             fontSize={'1vw'}
           />
         ) : null}
