@@ -10,6 +10,7 @@ export const Header = styled.div`
   left: 0;
   right: 0;
   font-family: 'Happiness-Sans-Bold';
+  z-index: 100;
 `;
 export const Container = styled.div`
   display: flex;

@@ -1,0 +1,39 @@
+.swiper {
+  width: 70vw;
+  height: 40vh;
+  display: flex;
+  justify-content: center;
+  margin-top: 5vh;
+}
+
+.swiper-slide.longcook {
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 20vw;
+  height: 100%;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffea75;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.mySwiper:hover .swiper-button-next,
+.mySwiper:hover .swiper-button-prev {
+  opacity: 1;
+  visibility: visible;
+}
+
+.swiper-button-prev.disabled,
+.swiper-button-next.disabled {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}

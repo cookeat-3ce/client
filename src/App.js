@@ -105,9 +105,9 @@ function App() {
                 <Admin />
               </>
             ) : (
-              <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <ome isLogined={!!getCookie('accessToken')}>
                 <Home />
-              </CommonLayout>
+              </ome>
             )
           }
         />

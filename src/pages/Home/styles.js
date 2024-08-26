@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Carousel } from 'antd';
+import { Carousel, Skeleton } from 'antd';
 import { COLORS } from '../../constants';
 
 export const StyledCarousel = styled(Carousel).attrs({
@@ -69,4 +69,11 @@ export const CarouselItem = ({ imgUrl, linkedUrl }) => {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const StyledSkeleton = styled(Skeleton.Button)`
+  width: 75vw !important;
+  margin: 0 auto !important;
+  height: 50vh !important;
+  border-radius: 40px !important;
 `;

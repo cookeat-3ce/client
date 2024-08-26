@@ -15,6 +15,7 @@ export const SideBar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 111;
 `;
 
 export const Container = styled.div`
