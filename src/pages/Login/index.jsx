@@ -57,15 +57,40 @@ const Login = () => {
     },
     onSuccess: (response) => {
       const { username, nickname, profileImage } = response.data;
-      const accessToken = response.headers.get('auth');
+      const accessToken = response.headers['auth'];
+
+      setCookie(accessToken);
+      const token = accessToken.split(' ')[1];
+
+      const parts = token.split('.');
+      const payload = parts[1];
+
+      function base64Decode(str) {
+        return decodeURIComponent(
+          atob(str)
+            .split('')
+            .map(function (c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join(''),
+        );
+      }
+
+      const decodedPayload = base64Decode(payload);
+
+      const payloadJson = JSON.parse(decodedPayload);
+      const authValue = payloadJson.auth;
+
       const updatedMemberData = {
         username,
         nickname,
         profileImage,
+        authValue,
       };
       setMemberState(updatedMemberData);
-      setCookie(accessToken);
-      handleChangeUrl('/');
+      authValue === 'ROLE_ADMIN'
+        ? (window.location.href = '/admin')
+        : (window.location.href = '/');
     },
     onError: (error) => {
       setShowError(true);

@@ -26,6 +26,7 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import CustomButton from '../../components/Button';
 import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../../apis/member';
+import imageCompression from 'browser-image-compression';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -77,22 +78,6 @@ const SignUp = () => {
     </button>
   );
 
-  const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-  };
-
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
@@ -124,7 +109,34 @@ const SignUp = () => {
   }, [accessToken, navigate]);
 
   const beforeUpload = () => false;
+  const getBase64 = async (file) => {
+    try {
+      const options = {
+        maxSizeMB: 0.1,
+        maxWidthOrHeight: 101,
+        useWebWorker: true,
+      };
 
+      const compressedFile = await imageCompression(file, options);
+
+      const reader = new FileReader();
+      return new Promise((resolve, reject) => {
+        reader.readAsDataURL(compressedFile);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+  };
   useEffect(() => {
     const updateProfileImage = async () => {
       if (fileList.length > 0) {
@@ -156,6 +168,7 @@ const SignUp = () => {
     profileImage: profileImage,
   };
 
+  console.log(signUpData);
   const mutation = useMutation({
     mutationFn: async (data) => {
       await memberAPI.signUpAPI(data);

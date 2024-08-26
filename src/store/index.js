@@ -10,6 +10,8 @@ export const memberState = atom({
     username: '',
     nickname: '',
     profileImage: '',
+    role: '',
+    audio: false,
   },
 
   effects_UNSTABLE: [persistAtom],

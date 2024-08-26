@@ -100,10 +100,12 @@ export const StyledUpload = styled(Upload)`
     .ant-upload-list-item,
   .ant-upload-wrapper.ant-upload-picture-card-wrapper
     .ant-upload-list.ant-upload-list-picture-card
-    .ant-upload-list-item-container {
-    height: 34vh;
-    margin: 0;
-    width: 34vh;
+    .ant-upload-list-item-container,
+  .ant-upload-list-item-container,
+  .ant-upload-list-item.ant-upload-list-item-undefined {
+    height: 34vh !important;
+    margin: 0 !important;
+    width: 34vh !important;
   }
 `;
 

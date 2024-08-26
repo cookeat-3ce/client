@@ -1,14 +1,41 @@
+import { useEffect } from 'react';
 import './styles/reset.css';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  useNavigate,
+} from 'react-router-dom';
 import CommonLayout from './pages/Layout';
 import Error from './pages/Error';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Live from './pages/Live';
+import Admin from './pages/Admin';
 import { getCookie } from './hooks';
+import { memberState } from './store';
+import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
+
+// Component that handles redirecting admins
+const AdminRedirector = ({ role }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (role === 'ROLE_ADMIN' && getCookie('accessToken')) {
+      navigate('/admin');
+    }
+  }, [role, navigate]);
+
+  return null;
+};
+
 function App() {
+  const persist = useRecoilValue(memberState);
+  const role = persist.authValue;
+
   return (
     <BrowserRouter>
       <Routes>
@@ -31,7 +58,7 @@ function App() {
               </AuthLayout>
             )
           }
-        ></Route>
+        />
         <Route
           path={'/signup'}
           element={
@@ -43,16 +70,24 @@ function App() {
               </AuthLayout>
             )
           }
-        ></Route>
+        />
 
         <Route
-          path={'/'}
+          path="/"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <Home />
-            </CommonLayout>
+            role === 'ROLE_ADMIN' && getCookie('accessToken') ? (
+              <>
+                <AdminRedirector role={role} />
+                <Admin />
+              </>
+            ) : (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <Home />
+              </CommonLayout>
+            )
           }
-        ></Route>
+        />
+
         <Route
           path={'/live'}
           element={
@@ -60,7 +95,22 @@ function App() {
               <Live />
             </CommonLayout>
           }
-        ></Route>
+        />
+        <Route
+          path={'/admin'}
+          element={
+            getCookie('accessToken') && role === 'ROLE_ADMIN' ? (
+              <>
+                <AdminRedirector role={role} />
+                <Admin />
+              </>
+            ) : (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <Home />
+              </CommonLayout>
+            )
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
