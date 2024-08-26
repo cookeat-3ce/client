@@ -1,38 +1,39 @@
-import React from 'react';
-import { COLORS } from '../../constants';
-import CustomButton from '../../components/Button';
-import { CustomInput, CustomSearchInput } from '../../components/Input';
-const index = () => {
-  // 예시
-  const handleClick = () => console.log(1);
+import React, { useState, useEffect } from 'react';
+import { Container, StyledCarousel, CarouselItem } from './styles';
+import image1 from '../../assets/images/example_carousel1.jpg';
+import image2 from '../../assets/images/example_carousel2.jpg';
+import Recipe from '../../components/Recipe';
+const Index = () => {
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  useEffect(() => {
+    const img1 = new Image();
+    const img2 = new Image();
+    img1.src = image1;
+    img2.src = image2;
+
+    img1.onload = img2.onload = () => setImagesLoaded(true);
+  }, []);
+
+  if (!imagesLoaded) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div>
-      <CustomButton
-        text={'안녕'}
-        color={COLORS.NAVY}
-        backgroundColor={COLORS.WHITE}
-        width={'6vw'}
-        height={'4vh'}
-        fontSize={'1vw'}
-        borderColor={COLORS.NAVY}
-        onClick={handleClick}
-      />
-      <CustomInput
-        type={'text'}
-        text={'아이디 입력'}
-        width={'30vw'}
-        height={'6vh'}
-        fontSize={'1vw'}
-      />
-      <CustomSearchInput
-        type={'password'}
-        text={'레시피 / 태그 / 크리에이터 검색'}
-        width={'52vw'}
-        height={'5vh'}
-        fontSize={'1vw'}
-      />
-    </div>
+    <Container>
+      <StyledCarousel arrows infinite autoplay>
+        <CarouselItem
+          imgUrl={image1}
+          linkedUrl="https://www.thehandsome.com/ko/DP/planshopDetail/20477"
+        />
+        <CarouselItem
+          imgUrl={image2}
+          linkedUrl="https://www.thehandsome.com/ko/DP/planshopDetail/20561"
+        />
+      </StyledCarousel>
+      <Recipe />
+    </Container>
   );
 };
 
-export default index;
+export default Index;
