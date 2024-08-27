@@ -168,7 +168,6 @@ const SignUp = () => {
     profileImage: profileImage,
   };
 
-  console.log(signUpData);
   const mutation = useMutation({
     mutationFn: async (data) => {
       await memberAPI.signUpAPI(data);
@@ -189,6 +188,7 @@ const SignUp = () => {
     }, 300),
     [],
   );
+
   return (
     <Container>
       <SignUpWrapper>
@@ -198,9 +198,9 @@ const SignUp = () => {
             <InputUsernameContainer>
               <CustomInput
                 type={'text'}
-                width={'20vw'}
+                width={'18vw'}
                 height={'6vh'}
-                fontSize={'1vw'}
+                fontSize={'.8vw'}
                 text={'아이디 입력'}
                 onChange={handleUsernameChange}
               />
@@ -214,9 +214,9 @@ const SignUp = () => {
               <InputPasswordContainer hasError={true}>
                 <CustomInput
                   type={'password'}
-                  width={'20vw'}
+                  width={'18vw'}
                   height={'6vh'}
-                  fontSize={'1vw'}
+                  fontSize={'.8vw'}
                   text={'비밀번호 입력'}
                   onChange={handlePasswordChange}
                 />
@@ -225,9 +225,9 @@ const SignUp = () => {
               <InputPasswordContainer hasError={false}>
                 <CustomInput
                   type={'password'}
-                  width={'20vw'}
+                  width={'18vw'}
                   height={'6vh'}
-                  fontSize={'1vw'}
+                  fontSize={'.8vw'}
                   text={'비밀번호 입력'}
                   onChange={handlePasswordChange}
                 />
@@ -236,9 +236,9 @@ const SignUp = () => {
             <InputCheckPasswordContainer>
               <CustomInput
                 type={'password'}
-                width={'20vw'}
+                width={'18vw'}
                 height={'6vh'}
-                fontSize={'1vw'}
+                fontSize={'.8vw'}
                 text={'비밀번호 확인'}
                 onChange={handleCheckPasswordChange}
               />
@@ -252,9 +252,9 @@ const SignUp = () => {
               <InputNicknameContainer hasError={true}>
                 <CustomInput
                   type={'text'}
-                  width={'20vw'}
+                  width={'18vw'}
                   height={'6vh'}
-                  fontSize={'1vw'}
+                  fontSize={'.8vw'}
                   text={'닉네임 입력'}
                   onChange={handleNicknameChange}
                 />
@@ -263,9 +263,9 @@ const SignUp = () => {
               <InputNicknameContainer hasError={false}>
                 <CustomInput
                   type={'text'}
-                  width={'20vw'}
+                  width={'18vw'}
                   height={'6vh'}
-                  fontSize={'1vw'}
+                  fontSize={'.8vw'}
                   text={'닉네임 입력'}
                   onChange={handleNicknameChange}
                 />
@@ -275,7 +275,7 @@ const SignUp = () => {
           <UploadContainer>
             <CustomText
               fontFamily={'Happiness-Sans-Bold'}
-              fontSize={'1.1vw'}
+              fontSize={'1vw'}
               color={COLORS.BLACK}
               text={'프로필 업로드'}
             ></CustomText>
@@ -305,19 +305,23 @@ const SignUp = () => {
           <CustomButton
             text={'이전'}
             color={COLORS.WHITE}
-            width={'7vw'}
-            height={'8vh'}
-            fontSize={'1.1vw'}
-            backgroundColor={COLORS.NAVY}
-            borderColor={COLORS.NAVY}
+            width={'5vw'}
+            height={'5vh'}
+            fontSize={'.8vw'}
+            borderRadius={'100px'}
+            fontFamily={'Happiness-Sans-Bold'}
+            backgroundColor="#ADADAD"
+            borderColor="#ADADAD"
             onClick={handleBack}
           ></CustomButton>
           <CustomButton
             text={'회원가입'}
             color={COLORS.WHITE}
-            width={'10vw'}
-            height={'8vh'}
-            fontSize={'1.1vw'}
+            width={'9vw'}
+            height={'5vh'}
+            fontSize={'1vw'}
+            borderRadius={'100px'}
+            fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.ORANGE}
             borderColor={COLORS.ORANGE}
             onClick={(e) => {

@@ -4,11 +4,11 @@ import { Upload } from 'antd';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80vw;
-  height: 75vh;
-  background-color: rgba(255, 234, 117, 0.6);
-  border-radius: 40px;
-  border: 1px solid ${COLORS.TAG};
+  width: 60vw;
+  height: 70vh;
+  background-color: ${COLORS.WHITE};
+  border-radius: 10px;
+  border: 2px solid ${COLORS.STROKE};
 `;
 
 export const SignUpWrapper = styled.div`
@@ -24,14 +24,14 @@ export const SignUpTextContainer = styled.div`
   align-items: center;
   justify-content: center;
   font-family: 'Happiness-Sans-Bold';
-  font-size: 1.5vw;
+  font-size: 1.3vw;
 `;
 
 export const Inner = styled.div`
-  margin-top: 5vh;
+  margin-top: 1vh;
   display: flex;
   align-items: center;
-  width: 68vw;
+  width: 50vw;
 `;
 
 export const InputContainer = styled.div`
@@ -44,8 +44,8 @@ export const InputContainer = styled.div`
 export const ErrorSignUpTextContainer = styled.div`
   margin-left: 1vw;
   margin-top: 1.5vh;
-  font-family: 'Happiness-Sans-Regular';
-  font-size: 1vw;
+  font-family: 'Happiness-Sans-Bold';
+  font-size: 0.8vw;
   color: ${COLORS.ORANGE};
 `;
 
@@ -69,6 +69,8 @@ export const UploadContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  margin-top: 5vh;
+  gap: 3vh;
 `;
 
 export const StyledUpload = styled(Upload)`
@@ -77,8 +79,8 @@ export const StyledUpload = styled(Upload)`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 34vh;
-    height: 34vh;
+    width: 30vh;
+    height: 30vh;
     text-align: center;
     background-color: ${COLORS.WHITE};
   }
@@ -103,9 +105,9 @@ export const StyledUpload = styled(Upload)`
     .ant-upload-list-item-container,
   .ant-upload-list-item-container,
   .ant-upload-list-item.ant-upload-list-item-undefined {
-    height: 34vh !important;
+    height: 30vh !important;
     margin: 0 !important;
-    width: 34vh !important;
+    width: 30vh !important;
   }
 `;
 
