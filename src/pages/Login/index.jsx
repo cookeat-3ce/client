@@ -52,8 +52,12 @@ const Login = () => {
 
   const mutation = useMutation({
     mutationFn: async (data) => {
-      const response = await memberAPI.loginAPI(data);
-      return response;
+      try {
+        const response = await memberAPI.loginAPI(data);
+        return response;
+      } catch (error) {
+        throw new Error('Error during login');
+      }
     },
     onSuccess: (response) => {
       const { username, nickname, profileImage } = response.data;
@@ -64,21 +68,11 @@ const Login = () => {
 
       const parts = token.split('.');
       const payload = parts[1];
+      const decodedPayload = atob(payload);
+      const payloadJson = JSON.parse(
+        decodeURIComponent(escape(decodedPayload)),
+      );
 
-      function base64Decode(str) {
-        return decodeURIComponent(
-          atob(str)
-            .split('')
-            .map(function (c) {
-              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            })
-            .join(''),
-        );
-      }
-
-      const decodedPayload = base64Decode(payload);
-
-      const payloadJson = JSON.parse(decodedPayload);
       const authValue = payloadJson.auth;
 
       const updatedMemberData = {
@@ -88,15 +82,14 @@ const Login = () => {
         authValue,
       };
       setMemberState(updatedMemberData);
-      authValue === 'ROLE_ADMIN'
-        ? (window.location.href = '/admin')
-        : (window.location.href = '/');
+
+      authValue === 'ROLE_ADMIN' ? navigate('/admin') : navigate('/');
     },
     onError: (error) => {
       setShowError(true);
+      console.error(error);
     },
   });
-
   const debouncedLogin = useCallback(
     debounce((data) => {
       mutation.mutate(data);
@@ -116,9 +109,9 @@ const Login = () => {
         <InputUsernameContainer>
           <CustomInput
             type={'text'}
-            width={'20vw'}
+            width={'18vw'}
             height={'6vh'}
-            fontSize={'1vw'}
+            fontSize={'.8vw'}
             text={'아이디 입력'}
             onChange={handleUsernameChange}
           />
@@ -126,9 +119,9 @@ const Login = () => {
         <InputPasswordContainer>
           <CustomInput
             type={'password'}
-            width={'20vw'}
+            width={'18vw'}
             height={'6vh'}
-            fontSize={'1vw'}
+            fontSize={'.8vw'}
             text={'비밀번호 입력'}
             onChange={handlePasswordChange}
           />
@@ -139,10 +132,12 @@ const Login = () => {
             text={'로그인'}
             color={COLORS.WHITE}
             backgroundColor={COLORS.ORANGE}
-            fontSize={'1.1vw'}
-            width={'20vw'}
-            height={'6vh'}
-            borderColor={COLORS.ORANGE}
+            fontSize={'1vw'}
+            width={'18vw'}
+            height={'7vh'}
+            borderRadius={'100px'}
+            borderColor={COLORS.TAG}
+            fontFamily={'Happiness-Sans-Bold'}
             onClick={(e) => {
               e.preventDefault();
               debouncedLogin(loginData);
@@ -151,8 +146,8 @@ const Login = () => {
         </ButtonContainer>
         <SignUpTextContainer>
           <CustomText
-            fontSize={'1vw'}
-            color={COLORS.NAVY}
+            fontSize={'.8vw'}
+            color={COLORS.BLACK}
             fontFamily={'Happiness-Sans-Regular'}
             text={'아직 회원이 아니신가요?'}
           ></CustomText>
@@ -160,7 +155,7 @@ const Login = () => {
             <CustomTextButton
               text={'회원가입하기'}
               color={COLORS.ORANGE}
-              fontSize={'1vw'}
+              fontSize={'.8vw'}
               onClick={() => {
                 handleChangeUrl('/signup');
               }}

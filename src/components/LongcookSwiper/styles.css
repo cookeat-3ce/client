@@ -3,11 +3,12 @@
   height: 30vh;
   display: flex;
   justify-content: center;
-  margin-top: 5vh;
+  margin-top: 3vh;
+  padding: 2vh;
 }
 
 .swiper-slide.longcook {
-  background-color: white;
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;

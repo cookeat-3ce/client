@@ -4,11 +4,11 @@ import { COLORS } from '../../constants';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30vw;
+  width: 25vw;
   height: 75vh;
-  background-color: rgba(255, 234, 117, 0.6);
-  border-radius: 40px;
-  border: 1px solid ${COLORS.TAG};
+  background-color: ${COLORS.WHITE};
+  border-radius: 10px;
+  border: 2px solid ${COLORS.TAG};
 `;
 
 export const LoginWrapper = styled.div`
@@ -29,15 +29,16 @@ export const LoginTextContainer = styled.div`
 
 export const ErrorLoginTextContainer = styled.div`
   margin: 0 auto;
-  margin-top: 3vh;
   font-family: 'Happiness-Sans-Regular';
   font-size: 1vw;
+  margin-top: 5vh;
   color: ${COLORS.ORANGE};
 `;
 
 export const InputUsernameContainer = styled.div`
-  margin-top: 3vh;
+  margin-top: 5vh;
 `;
+
 export const InputPasswordContainer = styled.div`
   margin-top: 4vh;
 `;
@@ -54,5 +55,5 @@ export const SignUpTextContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.5vw;
-  margin-top: 1vw;
+  margin-top: 2.5vw;
 `;

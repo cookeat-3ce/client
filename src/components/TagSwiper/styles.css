@@ -3,7 +3,8 @@
   height: 15vh;
   display: flex;
   justify-content: center;
-  margin-top: 5vh;
+  margin-top: vh;
+  padding: 2vh;
 }
 
 .swiper-slide.tag {

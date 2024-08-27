@@ -20,8 +20,8 @@ export const CustomInput = ({
         fontFamily: 'Happiness-Sans-Regular',
         width,
         height,
-        borderRadius: 15,
-        border: `1px solid ${COLORS.TAG}`,
+        borderRadius: 10,
+        border: `1px solid rgba(206, 206, 206, 0.5)`,
       }}
       onChange={onChange}
     />
@@ -46,7 +46,7 @@ export const CustomSearchInput = ({
         width,
         height,
         borderRadius: 100,
-        border: `1px solid ${COLORS.TAG}`,
+        border: `1px solid rgba(206, 206, 206, 0.5)`,
         backgroundImage: `url(${SearchInput})`,
         backgroundSize: '1.5vw 1.5vw',
         backgroundRepeat: 'no-repeat',

@@ -3,12 +3,12 @@
   height: 40vh;
   display: flex;
   justify-content: center;
-  padding: 1vh;
-  margin-top: 5vh;
+  margin-top: 3vh;
+  padding: 2vh;
 }
 
 .swiper-slide.sskcook {
-  background-color: white;
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;

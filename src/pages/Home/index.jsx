@@ -6,7 +6,11 @@ import {
   Container,
   StyledCarousel,
   CarouselItem,
-  StyledSkeleton,
+  StyledCarouselSkeleton,
+  StyledTitleSkeleton,
+  StyledSskcookSkeleton,
+  StyledLongcookSkeleton,
+  StyledTagSkeleton,
 } from './styles';
 import image1 from '../../assets/images/example_carousel1.jpg';
 import image2 from '../../assets/images/example_carousel2.jpg';
@@ -15,6 +19,7 @@ import SskcookSwiper from '../../components/SskcookSwiper';
 import LongcookSwiper from '../../components/LongcookSwiper';
 import TagSwiper from '../../components/TagSwiper';
 import { TAG_VALUES } from '../../constants';
+import { getCookie } from '../../hooks';
 const Index = () => {
   const today = new Date();
   const year = today.getFullYear();
@@ -39,16 +44,6 @@ const Index = () => {
     queryFn: () => sskcookAPI.monthlyLikesSskcookListAPI(formattedDate),
     staleTime: Infinity,
   });
-
-  const isLoading =
-    recentSskcooksQuery.isLoading ||
-    recentLongcooksQuery.isLoading ||
-    monthlyLikesSskcooksQuery.isLoading;
-
-  const isError =
-    recentSskcooksQuery.isError ||
-    recentLongcooksQuery.isError ||
-    monthlyLikesSskcooksQuery.isError;
 
   const recentSskcooks = recentSskcooksQuery.data?.data?.data;
   const recentLongcooks = recentLongcooksQuery.data?.data?.data;
@@ -86,13 +81,83 @@ const Index = () => {
     };
   }, []);
 
-  if (isLoading) return <StyledSkeleton />;
-  if (isError) return <div>Error loading data</div>;
-
   return (
     <Container>
       {!imagesLoaded ? (
-        <StyledSkeleton />
+        <div>
+          <StyledCarouselSkeleton />
+          <div style={{ marginTop: '5vh' }}>
+            <StyledTitleSkeleton />
+          </div>
+          <div style={{ marginTop: '4vh' }}>
+            <div style={{ display: 'flex', gap: '50px', marginLeft: '4vh' }}>
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+            </div>
+          </div>
+          <div style={{ marginTop: '5vh' }}>
+            <StyledTitleSkeleton />
+          </div>
+          <div style={{ marginTop: '4vh' }}>
+            <div style={{ display: 'flex', gap: '50px', marginLeft: '4vh' }}>
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+            </div>
+          </div>
+          <div style={{ marginTop: '5vh' }}>
+            <StyledTitleSkeleton />
+          </div>
+          <div style={{ marginTop: '4vh' }}>
+            <div style={{ display: 'flex', gap: '60px', marginLeft: '4vh' }}>
+              <StyledTagSkeleton />
+              <StyledTagSkeleton />
+              <StyledTagSkeleton />
+              <StyledTagSkeleton />
+              <StyledTagSkeleton />
+              <StyledTagSkeleton />
+              <StyledTagSkeleton />
+            </div>
+          </div>
+          <div style={{ marginTop: '5vh' }}>
+            <StyledTitleSkeleton />
+          </div>
+          <div style={{ marginTop: '4vh' }}>
+            <div style={{ display: 'flex', gap: '50px', marginLeft: '4vh' }}>
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+              <StyledSskcookSkeleton />
+            </div>
+          </div>
+          <div style={{ marginTop: '5vh' }}>
+            <StyledTitleSkeleton />
+          </div>
+          <div style={{ marginTop: '4vh' }}>
+            <div style={{ display: 'flex', gap: '30px', marginLeft: '4vh' }}>
+              <StyledLongcookSkeleton />
+              <StyledLongcookSkeleton />
+              <StyledLongcookSkeleton />
+              <StyledLongcookSkeleton />
+              <StyledLongcookSkeleton />
+              <StyledLongcookSkeleton />
+              <StyledLongcookSkeleton />
+            </div>
+          </div>
+        </div>
       ) : (
         <>
           <StyledCarousel arrows infinite autoplay>
@@ -123,7 +188,14 @@ const Index = () => {
               thirdText={'>'}
             />
           )}
-          {monthlyLikesSskcooks ? (
+          {!getCookie('accessToken') ? (
+            <SskcookSwiper
+              firstText={'냉장고를 털어보자'}
+              secondText={'더보기'}
+              thirdText={'>'}
+              isLogined={'refri'}
+            />
+          ) : monthlyLikesSskcooks ? (
             <SskcookSwiper
               firstText={'냉장고를 털어보자'}
               secondText={'더보기'}

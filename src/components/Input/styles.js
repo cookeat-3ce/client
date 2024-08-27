@@ -5,7 +5,7 @@ export const CustomInputContainer = styled.input`
   padding-left: 21px;
 
   &:focus {
-    border: 1px solid ${COLORS.YELLOW} !important;
+    border: 1px solid ${COLORS.DARKGRAPEFRUIT} !important;
     outline: none;
   }
 `;
@@ -16,7 +16,7 @@ export const CustomSearchInputContainer = styled.input`
   transition: border-color 0.3s;
 
   &:focus {
-    border: 1px solid ${COLORS.YELLOW} !important;
+    border: 1px solid ${COLORS.DARKGRAPEFRUIT} !important;
     outline: none;
   }
 `;

@@ -58,7 +58,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
         <Swiper
           ref={swiperRef}
           slidesPerView={'auto'}
-          spaceBetween={30}
+          spaceBetween={60}
           pagination={false}
           navigation={true}
           modules={[Pagination, Navigation]}
@@ -86,7 +86,6 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
                   (e.currentTarget.style.transform = 'scale(1)')
                 }
               >
-                {console.log(slide)}
                 <CustomText
                   text={'#'}
                   fontFamily={'Happiness-Sans-Bold'}

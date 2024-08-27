@@ -19,3 +19,19 @@ export const SwiperContainer = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const LoginContainer = styled.div`
+  height: 40vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const LoginWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3vh;
+`;

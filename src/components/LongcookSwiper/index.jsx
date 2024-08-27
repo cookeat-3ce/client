@@ -11,7 +11,6 @@ import { Pagination, Navigation } from 'swiper';
 import Card from '../Card';
 const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
   const swiperRef = useRef(null);
-  console.log(arr);
   return (
     <Container>
       <TextContainer>
@@ -65,7 +64,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
           >
             {arr.map((slide, index) => (
               <SwiperSlide key={index} className={'longcook'}>
-                <Card url={slide.longcookUrl} isSskcook={false} />
+                <Card url={slide.longcookUrl} />
               </SwiperSlide>
             ))}
           </Swiper>

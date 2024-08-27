@@ -48,9 +48,29 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const StyledSkeleton = styled(Skeleton.Button)`
+export const StyledCarouselSkeleton = styled(Skeleton.Button)`
   width: 75vw !important;
   margin: 0 auto !important;
   height: 50vh !important;
   border-radius: 40px !important;
+`;
+
+export const StyledTitleSkeleton = styled(Skeleton.Button)`
+  width: 75vw !important;
+  height: 1.05vw !important;
+`;
+
+export const StyledSskcookSkeleton = styled(Skeleton.Button)`
+  width: 10vw !important;
+  height: 40vh !important;
+`;
+
+export const StyledLongcookSkeleton = styled(Skeleton.Button)`
+  width: 20vw !important;
+  height: 30vh !important;
+`;
+
+export const StyledTagSkeleton = styled(Skeleton.Button)`
+  width: 13vw !important;
+  height: 15vh !important;
 `;

@@ -1,5 +1,11 @@
 import React, { useRef } from 'react';
-import { Container, TextContainer, SwiperContainer } from './styles';
+import {
+  Container,
+  TextContainer,
+  SwiperContainer,
+  LoginContainer,
+  LoginWrapper,
+} from './styles';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -9,10 +15,12 @@ import CustomTextButton from '../Button/Text';
 import { COLORS } from '../../constants';
 import { Pagination, Navigation } from 'swiper';
 import Card from '../Card';
+import CustomButton from '../Button';
+import { useCustomNavigate } from '../../hooks';
 
-const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
+const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
   const swiperRef = useRef(null);
-
+  const { handleChangeUrl } = useCustomNavigate();
   return (
     <Container>
       <TextContainer>
@@ -54,7 +62,30 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
         </div>
       </TextContainer>
       <SwiperContainer>
-        {arr && arr.length > 0 ? (
+        {isLogined === 'refri' ? (
+          <LoginContainer>
+            <LoginWrapper>
+              <CustomText
+                text={'로그인이 필요한 서비스예요!'}
+                fontSize={'1.3vw'}
+                fontFamily={'Happiness-Sans-Regular'}
+                color={COLORS.BLACK}
+              />
+              <CustomButton
+                text={'로그인 하러 가기'}
+                fontSize={'1vw'}
+                width={'12vw'}
+                height={'5vh'}
+                color={COLORS.WHITE}
+                borderRadius={'20px'}
+                fontFamily={'Happiness-Sans-Regular'}
+                backgroundColor={COLORS.DARKGRAPEFRUIT}
+                borderColor={COLORS.DARKGRAPEFRUIT}
+                onClick={() => handleChangeUrl('/login')}
+              />
+            </LoginWrapper>
+          </LoginContainer>
+        ) : arr && arr.length > 0 ? (
           <Swiper
             ref={swiperRef}
             slidesPerView={'auto'}
@@ -66,27 +97,33 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
           >
             {arr.map((slide, index) => (
               <SwiperSlide key={index} className={'sskcook'}>
-                <Card url={slide.sskcookUrl} isSskcook={true} />
+                <Card url={slide.sskcookUrl} />
               </SwiperSlide>
             ))}
           </Swiper>
         ) : (
-          <div
-            style={{
-              height: '40vh',
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <CustomText
-              text={'표시할 데이터가 없습니다.'}
-              fontSize={'1vw'}
-              fontFamily={'Happiness-Sans-Bold'}
-              color={COLORS.ORANGE}
-            />
-          </div>
+          <LoginContainer>
+            <LoginWrapper>
+              <CustomText
+                text={'내 냉장고에 아무것도 없어요!'}
+                fontSize={'1.3vw'}
+                fontFamily={'Happiness-Sans-Regular'}
+                color={COLORS.BLACK}
+              />
+              <CustomButton
+                text={'재료 등록하러 가기'}
+                fontSize={'1vw'}
+                width={'12vw'}
+                height={'5vh'}
+                color={COLORS.WHITE}
+                borderRadius={'20px'}
+                fontFamily={'Happiness-Sans-Regular'}
+                backgroundColor={COLORS.DARKGRAPEFRUIT}
+                borderColor={COLORS.DARKGRAPEFRUIT}
+                onClick={() => handleChangeUrl('/login')}
+              />
+            </LoginWrapper>
+          </LoginContainer>
         )}
       </SwiperContainer>
     </Container>

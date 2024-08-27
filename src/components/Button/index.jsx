@@ -11,6 +11,8 @@ const CustomButton = ({
   onClick,
   borderColor,
   disabled,
+  fontFamily,
+  borderRadius,
 }) => {
   const style = {
     color: color,
@@ -19,8 +21,8 @@ const CustomButton = ({
     backgroundColor: backgroundColor,
     border: `1px solid ${borderColor}`,
     fontSize: fontSize,
-    fontFamily: 'Happiness-Sans-Bold',
-    borderRadius: '100px',
+    fontFamily: fontFamily,
+    borderRadius: borderRadius,
   };
 
   return (
