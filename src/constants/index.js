@@ -9,20 +9,20 @@ export const COLORS = {
   GRAY: '#585858',
   BLACK: '#000000',
   GRAPEFRUIT: 'rgba(255, 89, 53, 0.4)',
-  KOREAN_FOOD: '#C93A40',
-  JAPANESE_FOOD: '#2E3A59',
-  WESTERN_FOOD: '#4A7A8C',
-  CHINESE_FOOD: '#D9434E',
-  HEALTH: '#7BB661',
-  EASY: '#A2A3A5',
-  SWEET_AND_SALTY: '#F5C04E',
-  ACRID: '#E84A27',
-  VEGAN: '#609F60',
-  LATE_NIGHT_SNACK: '#373B41',
-  BRUNCH: '#E2C58D',
-  SNACK: '#F6A532',
-  RUDIMENTS: '#7FBCD2',
-  LIGHT: '#F2D0A9',
+  한식: '#C93A40',
+  일식: '#2E3A59',
+  양식: '#4A7A8C',
+  중식: '#D9434E',
+  건강: '#7BB661',
+  간편: '#A2A3A5',
+  단짠: '#F5C04E',
+  매운: '#E84A27',
+  비건: '#609F60',
+  야식: '#373B41',
+  브런치: '#E2C58D',
+  간식: '#F6A532',
+  초보: '#7FBCD2',
+  가벼운: '#F2D0A9',
 };
 
 export const TAGS = {
@@ -41,3 +41,7 @@ export const TAGS = {
   RUDIMENTS: '초보',
   LIGHT: '가벼운',
 };
+export const TAG_VALUES = Object.values(TAGS);
+export const TAG_COLOR_MAPPING = Object.fromEntries(
+  Object.entries(TAGS).map(([key, tagValue]) => [tagValue, COLORS[tagValue]]),
+);

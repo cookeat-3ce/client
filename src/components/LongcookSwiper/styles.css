@@ -1,13 +1,13 @@
-.swiper {
+.swiper.longcook {
   width: 70vw;
-  height: 40vh;
+  height: 30vh;
   display: flex;
   justify-content: center;
   margin-top: 5vh;
 }
 
 .swiper-slide.longcook {
-  background-color: black;
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +18,7 @@
   transition: transform 0.3s ease;
 }
 
-.swiper-slide.longcook:hover {
+.swiper-slide:hover {
   transform: scale(1.05);
 }
 
@@ -32,8 +32,8 @@
     visibility 0.3s ease;
 }
 
-.mySwiper:hover .swiper-button-next,
-.mySwiper:hover .swiper-button-prev {
+.longcook:hover .swiper-button-next,
+.longcook:hover .swiper-button-prev {
   opacity: 1;
   visibility: visible;
 }

@@ -9,7 +9,7 @@ import CustomTextButton from '../Button/Text';
 import { COLORS } from '../../constants';
 import { Pagination, Navigation } from 'swiper';
 import Card from '../Card';
-const CustomSwiper = ({ firstText, secondText, arr }) => {
+const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
   const swiperRef = useRef(null);
   console.log(arr);
   return (
@@ -18,32 +18,75 @@ const CustomSwiper = ({ firstText, secondText, arr }) => {
         <CustomText
           fontFamily={'Happiness-Sans-Bold'}
           fontSize={'1.05vw'}
-          color={COLORS.NAVY}
+          color={COLORS.BLACK}
           text={firstText}
         />
-        <CustomTextButton
-          text={secondText}
-          onClick={() => console.log(1)}
-          color={COLORS.NAVY}
-          fontSize={'1.05VW'}
+        <div
+          style={{
+            flex: 1,
+            height: '0.2vh',
+            margin: '0 1vw',
+            backgroundColor: `${COLORS.GRAPEFRUIT}`,
+          }}
         />
+        <div
+          style={{
+            display: 'flex',
+            cursor: 'pointer',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CustomText
+            text={secondText}
+            fontFamily={'Happiness-Sans-Bold'}
+            color={COLORS.BLACK}
+            fontSize={'.8vw'}
+          />
+          <CustomTextButton
+            text={thirdText}
+            color={COLORS.GRAPEFRUIT}
+            fontFamily={'Happiness-Sans-Bold'}
+            fontSize={'.8vw'}
+            style={{ marginLeft: '.5vw' }}
+          />
+        </div>
       </TextContainer>
       <SwiperContainer>
-        <Swiper
-          ref={swiperRef}
-          slidesPerView={'auto'}
-          spaceBetween={30}
-          pagination={false}
-          navigation={true}
-          modules={[Pagination, Navigation]}
-          className="mySwiper"
-        >
-          {arr.map((slide, index) => (
-            <SwiperSlide key={index} className={'longcook'}>
-              <Card url={slide.longcookUrl} isSskcook={false} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {arr && arr.length > 0 ? (
+          <Swiper
+            ref={swiperRef}
+            slidesPerView={'auto'}
+            spaceBetween={30}
+            pagination={false}
+            navigation={true}
+            modules={[Pagination, Navigation]}
+            className="longcook"
+          >
+            {arr.map((slide, index) => (
+              <SwiperSlide key={index} className={'longcook'}>
+                <Card url={slide.longcookUrl} isSskcook={false} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <div
+            style={{
+              height: '30vh',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <CustomText
+              text={'표시할 데이터가 없습니다.'}
+              fontSize={'1vw'}
+              fontFamily={'Happiness-Sans-Bold'}
+              color={COLORS.ORANGE}
+            />
+          </div>
+        )}
       </SwiperContainer>
     </Container>
   );

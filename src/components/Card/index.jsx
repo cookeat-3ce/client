@@ -40,17 +40,19 @@ const VideoPlayer = ({ url, isSskcook }) => {
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
-      <ReactPlayer
-        style={{ cursor: 'pointer' }}
-        ref={playerRef}
-        url={url}
-        width="100%"
-        height="100%"
-        playing={play}
-        muted={true}
-        controls={false}
-        onReady={handleCanPlay}
-      />
+      {
+        <ReactPlayer
+          style={{ cursor: 'pointer' }}
+          ref={playerRef}
+          url={url}
+          width="100%"
+          height="100%"
+          playing={play}
+          muted={true}
+          controls={false}
+          onReady={handleCanPlay}
+        />
+      }
     </Container>
   );
 };

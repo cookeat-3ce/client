@@ -7,15 +7,11 @@ export const Container = styled.div`
 `;
 
 export const StyledSskcookSkeleton = styled(Skeleton.Button)`
-  position: relative;
-  z-index: 1;
   width: 10vw !important;
   height: 40vh !important;
 `;
 
 export const StyledLongcookSkeleton = styled(Skeleton.Button)`
-  position: relative;
-  z-index: 1;
   width: 20vw !important;
-  height: 40vh !important;
+  height: 30vh !important;
 `;
