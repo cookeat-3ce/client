@@ -5,11 +5,13 @@ export const SideBar = styled.div`
   position: sticky;
   top: 0;
   left: 0;
-  margin-top: 2vh;
-  width: 15vw;
-  height: 87vh;
-  border-radius: 0 20px 20px 0;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 4vh;
+  margin-left: 2vh;
+  margin-bottom: 2vh;
+  width: 14vw;
+  height: 100vh;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(162, 162, 162, 0.2);
   background: ${COLORS.WHITE};
   font-family: 'Happiness-Sans-Bold';
   display: flex;
@@ -32,16 +34,15 @@ const StyledButtonContainer = styled.div.withConfig({
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 1vh;
-  margin-right: 1vh;
-  width: 14vw;
-  height: 7vh;
-  margin-top: ${(props) => (props.isTopSpecial ? '2vh' : '0')};
-  margin-bottom: ${(props) => (props.isBottomSpecial ? '0' : '1vh')};
+  width: 12vw;
+  margin-left: 2vh;
+  height: 5.5vh;
+  margin-top: ${(props) => (props.isTopSpecial ? '5vh' : '0')};
+  margin-bottom: ${(props) => (props.isBottomSpecial ? '0' : '2.5vh')};
   background-color: ${(props) =>
-    props.isActive ? COLORS.SKYBLUE : 'transparent'};
+    props.isActive ? COLORS.GRAPEFRUIT : 'transparent'};
   position: relative;
-  border-radius: 100px;
+  border-radius: 10px;
 
   &::after {
     cursor: default;
@@ -49,19 +50,18 @@ const StyledButtonContainer = styled.div.withConfig({
     content: '';
     display: ${(props) => (props.isBottomSpecial ? 'block' : 'none')};
     position: absolute;
-    bottom: ${(props) => (props.isBottomSpecial ? '-1vh' : 'auto')};
+    bottom: ${(props) => (props.isBottomSpecial ? '-2.5vh' : 'auto')};
     left: 0;
     width: 12vw;
     height: 0.2vh;
     background-color: rgba(1, 33, 64, 0.5);
-    margin-left: 1vw;
     margin-right: -1vw;
   }
 `;
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  margin-left: 1vw;
+  margin-left: 1vh;
   align-items: center;
   gap: 1vw;
   justify-content: center;

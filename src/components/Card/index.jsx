@@ -1,10 +1,15 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player/lazy';
-import { Container } from './styles';
+import {
+  Container,
+  StyledSskcookSkeleton,
+  StyledLongcookSkeleton,
+} from './styles';
 
-const VideoPlayer = ({ url, width, height }) => {
+const VideoPlayer = ({ url, isSskcook }) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
+  const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
 
   const handleMouseEnter = () => {
@@ -25,10 +30,12 @@ const VideoPlayer = ({ url, width, height }) => {
     setPlay(false);
   };
 
+  const handleCanPlay = () => {
+    setLoading(true);
+  };
+
   return (
     <Container
-      width={width}
-      height={height}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
@@ -40,7 +47,9 @@ const VideoPlayer = ({ url, width, height }) => {
         width="100%"
         height="100%"
         playing={play}
+        muted={true}
         controls={false}
+        onReady={handleCanPlay}
       />
     </Container>
   );

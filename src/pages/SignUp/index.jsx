@@ -276,7 +276,7 @@ const SignUp = () => {
             <CustomText
               fontFamily={'Happiness-Sans-Bold'}
               fontSize={'1.1vw'}
-              color={COLORS.NAVY}
+              color={COLORS.BLACK}
               text={'프로필 업로드'}
             ></CustomText>
             <StyledUpload

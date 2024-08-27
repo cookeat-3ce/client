@@ -33,16 +33,14 @@ const CustomSwiper = ({ firstText, secondText, arr }) => {
           ref={swiperRef}
           slidesPerView={'auto'}
           spaceBetween={50}
-          pagination={{
-            clickable: true,
-          }}
+          pagination={false}
           navigation={true}
           modules={[Pagination, Navigation]}
           className="mySwiper"
         >
           {arr.map((slide, index) => (
             <SwiperSlide key={index} className={'sskcook'}>
-              <Card url={slide.sskcookUrl} width="10vw" height="40vh" />
+              <Card url={slide.sskcookUrl} isSskcook={true} />
             </SwiperSlide>
           ))}
         </Swiper>

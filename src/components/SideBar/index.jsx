@@ -108,11 +108,11 @@ const CustomSideBar = () => {
                   src={item.icon}
                   alt={item.label}
                   style={{
-                    width: '2vw',
-                    height: '2vw',
+                    width: '1.5vw',
+                    height: '1.5vw',
                   }}
                 />
-                <span style={{ fontSize: '1vw' }}>{item.label}</span>
+                <span style={{ fontSize: '.9vw' }}>{item.label}</span>
               </ButtonWrapper>
             </ButtonContainer>
           );
@@ -122,9 +122,13 @@ const CustomSideBar = () => {
         {accessToken ? (
           <CustomTextButton
             text={'로그아웃'}
-            color={COLORS.NAVY}
+            color={COLORS.GRAY}
             onClick={debouncedLogout}
             fontSize={'1vw'}
+            style={{
+              textDecoration: 'underline',
+              color: '#585858',
+            }}
           />
         ) : null}
       </LogoutContainer>

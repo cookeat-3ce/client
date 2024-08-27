@@ -34,14 +34,14 @@ const CustomHeader = () => {
             <>
               <CustomImageButton
                 src={AlarmIcon}
-                width="4vh"
-                height="4vh"
+                width="3vh"
+                height="3vh"
                 onClick={handleClick}
               />
               <CustomImageButton
                 src={persist.profileImage}
-                width="7vh"
-                height="7vh"
+                width="5vh"
+                height="5vh"
                 onClick={handleClick}
               />
             </>
@@ -49,14 +49,14 @@ const CustomHeader = () => {
             <>
               <CustomTextButton
                 fontSize={'1.1vw'}
-                color={COLORS.NAVY}
+                color={COLORS.BLACK}
                 onClick={() => handleChangeUrl('/login')}
                 style={{ display: 'none' }}
               />
               <CustomTextButton
                 text={'회원가입'}
                 fontSize={'1.1vw'}
-                color={COLORS.NAVY}
+                color={COLORS.BLACK}
                 onClick={() => handleChangeUrl('/signup')}
               />
             </>
@@ -64,13 +64,13 @@ const CustomHeader = () => {
             <>
               <CustomTextButton
                 fontSize={'1.1vw'}
-                color={COLORS.NAVY}
+                color={COLORS.BLACK}
                 style={{ display: 'none' }}
               />
               <CustomTextButton
                 text={'로그인'}
                 fontSize={'1.1vw'}
-                color={COLORS.NAVY}
+                color={COLORS.BLACK}
                 onClick={() => handleChangeUrl('/login')}
               />
             </>
@@ -79,13 +79,13 @@ const CustomHeader = () => {
               <CustomTextButton
                 text={'로그인'}
                 fontSize={'1.1vw'}
-                color={COLORS.NAVY}
+                color={COLORS.BLACK}
                 onClick={() => handleChangeUrl('/login')}
               />
               <CustomTextButton
                 text={'회원가입'}
                 fontSize={'1.1vw'}
-                color={COLORS.NAVY}
+                color={COLORS.BLACK}
                 onClick={() => handleChangeUrl('/signup')}
               />
             </>

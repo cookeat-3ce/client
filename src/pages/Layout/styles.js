@@ -10,6 +10,6 @@ export const ContentContainer = styled.div`
 `;
 
 export const CustomContents = styled.div`
-  margin-top: 4vh;
+  margin-top: 5vh;
   margin-left: 5vw;
 `;

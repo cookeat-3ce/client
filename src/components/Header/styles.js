@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants';
 
 // 예시
-const logo = require('../../assets/icons/search.png');
+const logo = require('../../assets/icons/example_logo.png');
 
 export const Header = styled.div`
   position: sticky;
@@ -14,15 +14,14 @@ export const Header = styled.div`
 `;
 export const Container = styled.div`
   display: flex;
-  width: 90vw;
-  height: 9vh;
+  width: 100vw;
+  height: 10vh;
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
   max-width: 100vw;
-  background-color: ${COLORS.YELLOW};
-  border-radius: 0px 0 20px 20px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  background-color: ${COLORS.WHITE};
+  box-shadow: 0px 2px 10px rgba(162, 162, 162, 0.2);
   position: relative;
 `;
 
@@ -33,10 +32,10 @@ export const CenterWrapper = styled.div`
 `;
 
 export const LogoContainer = styled.div`
-  width: 2vh;
-  height: 2vh;
+  width: 10vw;
+  height: 10vh;
   background-image: url(${logo});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 `;

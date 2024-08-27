@@ -10,35 +10,12 @@ export const StyledCarousel = styled(Carousel).attrs({
   max-height: 50vh;
   overflow: hidden;
   cursor: pointer;
-  border-radius: 40px;
   box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);
 
   .slick-prev,
   .slick-next {
     z-index: 1;
-    width: 5vh;
-    height: 5vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    color: ${COLORS.YELLOW};
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-  }
-
-  .slick-next::after {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(135deg);
-  }
-
-  .slick-prev::after {
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%) rotate(-45deg);
+    color: ${COLORS.GRAPEFRUIT};
   }
 `;
 
