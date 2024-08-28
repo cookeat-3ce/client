@@ -88,7 +88,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
                   (e.currentTarget.style.transform = 'scale(1)')
                 }
                 onClick={() => {
-                  handleChangeUrl(`/sskccok?tag=${slide}`);
+                  handleChangeUrl(`/sskcook?tag=${slide}`);
                 }}
               >
                 <CustomText

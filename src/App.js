@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Live from './pages/Live';
 import Admin from './pages/Admin';
+import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
 import { getCookie } from './hooks';
 import { memberState } from './store';
@@ -98,7 +99,7 @@ function App() {
           }
         />
         <Route
-          path="/sskccok/"
+          path="/sskcook/"
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <Tag />
@@ -107,7 +108,14 @@ function App() {
         />
         {/* 위에건 쿼리 파라미터 라우팅 */}
         {/* ex) http://localhost:3000/sskccok?tag=한식&page=1*/}
-
+        <Route
+          path="/sskcook/:sskcookId"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <SskcookDetails />
+            </CommonLayout>
+          }
+        />
         <Route
           path={'/admin'}
           element={

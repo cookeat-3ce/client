@@ -43,7 +43,7 @@ const CustomSideBar = () => {
     { icon: Refrigerator, label: '냉장고 파헤치기', path: '/' },
   ];
   const resetMemberState = useResetRecoilState(memberState);
-  const isSskcookLocation = window.location.href.includes('/sskccok');
+  const isSskcookLocation = window.location.href.includes('/sskcook');
 
   // 예시
   // isLogined = false;

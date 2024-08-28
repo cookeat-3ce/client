@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player/lazy';
 import { Container } from './styles';
+import { useCustomNavigate } from '../../hooks';
 
-const VideoPlayer = ({ url }) => {
+const VideoPlayer = ({ url, sskcookId, color }) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
   const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
+  const { handleChangeUrl } = useCustomNavigate();
 
   const handleMouseEnter = () => {
     setHover(true);
@@ -23,7 +25,7 @@ const VideoPlayer = ({ url }) => {
   };
 
   const handleClick = () => {
-    setPlay(false);
+    handleChangeUrl(`/sskcook/${sskcookId}`);
   };
 
   return (
@@ -31,6 +33,7 @@ const VideoPlayer = ({ url }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
+      style={{ backgroundColor: `${color}` }}
     >
       {
         <ReactPlayer

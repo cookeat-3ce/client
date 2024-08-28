@@ -16,15 +16,15 @@ export const sskcookAPI = {
       },
     });
   },
-  tagSskcookListAPI: (tag, page) => {
+  tagSskcookListAPI: (tag, pageParam) => {
     return instance.get('/sskcook', {
       params: {
         tag: tag,
-        page: page,
+        page: pageParam,
       },
     });
   },
-  sskcookDetailsAPI: (data) => {
-    return instance.get(`/sskcook/${data}`);
+  sskcookDetailsAPI: (sskcookId) => {
+    return instance.get(`/sskcook/${sskcookId}`);
   },
 };
