@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import Event from '../../assets/icons/event.png';
-import SskCook from '../../assets/icons/sskcook.png';
-import Live from '../../assets/icons/live.png';
-import LongCook from '../../assets/icons/longcook.png';
-import Subscribe from '../../assets/icons/subscribe.png';
-import Search from '../../assets/icons/search.png';
-import Storage from '../../assets/icons/storage.png';
-import MyInfo from '../../assets/icons/myinfo.png';
-import Refrigerator from '../../assets/icons/refrigerator.png';
+import Event from '../../assets/icons/event.svg';
+import SskCook from '../../assets/icons/sskcook.svg';
+import Live from '../../assets/icons/live.svg';
+import LongCook from '../../assets/icons/longcook.svg';
+import Subscribe from '../../assets/icons/subscribe.svg';
+import Search from '../../assets/icons/search.svg';
+import Storage from '../../assets/icons/storage.svg';
+import MyInfo from '../../assets/icons/myinfo.svg';
+import Refrigerator from '../../assets/icons/refrigerator.svg';
 import './styles';
 import {
   SideBar,
@@ -127,7 +127,7 @@ const CustomSideBar = () => {
             text={'로그아웃'}
             color={COLORS.GRAY}
             onClick={debouncedLogout}
-            fontSize={'1vw'}
+            fontSize={'0.8vw'}
             style={{
               textDecoration: 'underline',
               color: '#585858',
