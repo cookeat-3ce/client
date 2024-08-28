@@ -12,12 +12,16 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
-const SskcookRecent = () => {
+import { memberState } from '../../store';
+import { useRecoilState } from 'recoil';
+const Stored = () => {
+  const [member] = useRecoilState(memberState);
+  const username = member.username;
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ['SskcookRecent'],
+    queryKey: ['Stored'],
     queryFn: ({ pageParam = 1 }) =>
       instance
-        .get(`/sskcook?sort=latest&page=${pageParam}`)
+        .get(`/member/sskcook/${username}?page=${pageParam}`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
@@ -26,7 +30,7 @@ const SskcookRecent = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const allData = data?.pages.flatMap((page) => page.data) || [];
-
+  // console.log(data.pages[0].total);
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -46,12 +50,12 @@ const SskcookRecent = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetching]);
-
+  // console.log(data.pages[0].total);
   return (
     <Container>
       <TextContainer>
         <CustomText
-          text={'최신순'}
+          text={'저장한 슥쿡 목록'}
           fontFamily={'Happiness-Sans-Bold'}
           fontSize={'1.3vw'}
           color={COLORS.BLACK}
@@ -71,7 +75,7 @@ const SskcookRecent = () => {
           >
             <CustomText
               fontFamily={'Happiness-Sans-Bold'}
-              text={'최근 슥쿡이 없어요!'}
+              text={'저장된 슥쿡이 없어요!'}
               fontSize={'1.5vw'}
               color={COLORS.DARKGRAPEFRUIT}
             />
@@ -121,4 +125,4 @@ const SskcookRecent = () => {
   );
 };
 
-export default SskcookRecent;
+export default Stored;

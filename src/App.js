@@ -20,6 +20,7 @@ import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
+import Stored from './pages/Stored';
 import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
@@ -111,6 +112,20 @@ function App() {
         <Route path="/sskcook" element={<Sskcook />} />
         {/* 위에건 쿼리 파라미터 라우팅 */}
         {/* ex) http://localhost:3000/sskccok?tag=한식&page=1*/}
+        <Route
+          path="/stored"
+          element={
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <Stored />
+              </CommonLayout>
+            ) : (
+              <AuthLayout>
+                <Login />
+              </AuthLayout>
+            )
+          }
+        />
         <Route
           path="/sskcook/:sskcookId"
           element={

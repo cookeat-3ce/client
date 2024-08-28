@@ -65,17 +65,51 @@ const SskcookMonthly = () => {
         />
       </TextContainer>
       <SkeletonContainer>
-        {allData.map((item) => (
-          <CardContainer key={item.sskcookId}>
-            <CardWrapper>
-              <Card
-                url={item.sskcookUrl}
-                sskcookId={item.sskcookId}
-                color={COLORS.BLACK}
-              />
-            </CardWrapper>
-          </CardContainer>
-        ))}
+        {data && data.pages[0].total === 0 ? (
+          <div
+            style={{
+              height: '50vh',
+              margin: '0 auto',
+              textAlign: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CustomText
+              fontFamily={'Happiness-Sans-Bold'}
+              text={'이번 달 인기 있는 슥쿡이 없어요!'}
+              fontSize={'1.5vw'}
+              color={COLORS.DARKGRAPEFRUIT}
+            />
+          </div>
+        ) : data === undefined ? (
+          <>
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+          </>
+        ) : (
+          allData.map((item) => (
+            <CardContainer key={item.sskcookId}>
+              <CardWrapper>
+                <Card
+                  url={item.sskcookUrl}
+                  sskcookId={item.sskcookId}
+                  color={COLORS.BLACK}
+                />
+              </CardWrapper>
+            </CardContainer>
+          ))
+        )}
+
         {isLoading && (
           <>
             <StyledSskcookSkeleton />
