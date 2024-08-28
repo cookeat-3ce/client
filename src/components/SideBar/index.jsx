@@ -33,7 +33,7 @@ const CustomSideBar = () => {
   const accessToken = getCookie('accessToken');
   const list = [
     { icon: SskCook, label: '슥쿡 둘러보기', path: '/' },
-    { icon: Search, label: '슥쿡 검색', path: '/' },
+    { icon: Search, label: '슥쿡 검색', path: '/search' },
     { icon: Live, label: '실시간 클래스', path: '/live' },
     { icon: LongCook, label: '스-윽쿡', path: '/' },
     { icon: Subscribe, label: '구독', path: '/' },
