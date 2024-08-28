@@ -1,30 +1,26 @@
 @font-face {
-  font-family: 'Happiness-Sans';
+  font-family: 'Happiness-Sans-Bold';
   font-display: swap;
   font-weight: 700;
   src:
-    local('Happiness-Sans-Bold'),
     url('./fonts/Happiness-Sans-Bold.woff2') format('woff2'),
-    url('./fonts//Happiness-Sans-Bold.woff') format('woff');
+    url('./fonts/Happiness-Sans-Bold.woff') format('woff');
 }
 
 @font-face {
-  font-family: 'Happiness-Sans';
+  font-family: 'Happiness-Sans-Regular';
   font-display: swap;
-  font-weight: 500;
+  font-weight: 400;
   src:
-    local('Happiness-Sans-Regular'),
-    url('./fonts//Happiness-Sans-Regular.woff2') format('woff2')
-      url('./fonts/Happiness-Sans-Regular.woff') format('woff');
+    url('./fonts/Happiness-Sans-Regular.woff2') format('woff2'),
+    url('./fonts/Happiness-Sans-Regular.woff') format('woff');
 }
 
 *,
 html {
-  font-family: 'Happiness-Sans', sans-serif;
-  color: #012140;
+  color: #000000;
 }
 body {
-  font-family: 'Happiness-Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;

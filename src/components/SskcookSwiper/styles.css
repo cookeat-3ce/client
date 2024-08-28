@@ -1,0 +1,46 @@
+.swiper {
+  width: 70vw;
+  height: 40vh;
+  display: flex;
+  justify-content: center;
+  margin-top: 3vh;
+  padding: 2vh;
+}
+
+.swiper-slide.sskcook {
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 10vw;
+  height: 100%;
+
+  transition: transform 0.3s ease;
+}
+
+.swiper-slide.sskcook:hover {
+  transform: scale(1.05);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: rgba(255, 89, 53, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.mySwiper:hover .swiper-button-next,
+.mySwiper:hover .swiper-button-prev {
+  opacity: 1;
+  visibility: visible;
+}
+
+.swiper-button-prev.disabled,
+.swiper-button-next.disabled {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
