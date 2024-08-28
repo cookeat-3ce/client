@@ -27,7 +27,12 @@ const CustomHeader = () => {
     <Header>
       <Container>
         <CenterWrapper>
-          <LogoContainer />
+          <LogoContainer
+            onClick={() => {
+              handleChangeUrl('/');
+            }}
+            style={{ cursor: 'pointer' }}
+          />
         </CenterWrapper>
         <ButtonContainer>
           {accessToken ? (

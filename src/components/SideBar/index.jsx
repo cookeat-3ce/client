@@ -43,6 +43,7 @@ const CustomSideBar = () => {
     { icon: Refrigerator, label: '냉장고 파헤치기', path: '/' },
   ];
   const resetMemberState = useResetRecoilState(memberState);
+  const isSskcookLocation = window.location.href.includes('/sskccok');
 
   // 예시
   // isLogined = false;
@@ -95,13 +96,15 @@ const CustomSideBar = () => {
           const isBottomSpecial = [3, 6, 8].includes(index);
           const isTopSpecial = [4, 7].includes(index);
           const isActive = location === item.path;
+          const isSskcookLookActive =
+            item.label === '슥쿡 둘러보기' && isSskcookLocation;
           return (
             <ButtonContainer
               key={item.path}
               isBottomSpecial={isBottomSpecial}
               isTopSpecial={isTopSpecial}
               onClick={() => handleChangeUrl(item.path)}
-              isActive={isActive}
+              isActive={isActive || isSskcookLookActive}
             >
               <ButtonWrapper>
                 <img

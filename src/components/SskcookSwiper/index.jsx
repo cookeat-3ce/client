@@ -16,7 +16,7 @@ import { COLORS } from '../../constants';
 import { Pagination, Navigation } from 'swiper';
 import Card from '../Card';
 import CustomButton from '../Button';
-import { useCustomNavigate } from '../../hooks';
+import { getCookie, useCustomNavigate } from '../../hooks';
 
 const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
   const swiperRef = useRef(null);
@@ -62,7 +62,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
         </div>
       </TextContainer>
       <SwiperContainer>
-        {isLogined === 'refri' ? (
+        {isLogined === 'refri' && !getCookie('accessToken') ? (
           <LoginContainer>
             <LoginWrapper>
               <CustomText
@@ -101,7 +101,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
               </SwiperSlide>
             ))}
           </Swiper>
-        ) : (
+        ) : isLogined === 'refri' && (arr.length === 0 || !arr) ? (
           <LoginContainer>
             <LoginWrapper>
               <CustomText
@@ -124,6 +124,23 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
               />
             </LoginWrapper>
           </LoginContainer>
+        ) : (
+          <div
+            style={{
+              height: '30vh',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <CustomText
+              text={'표시할 데이터가 없습니다.'}
+              fontSize={'1vw'}
+              fontFamily={'Happiness-Sans-Bold'}
+              color={COLORS.ORANGE}
+            />
+          </div>
         )}
       </SwiperContainer>
     </Container>

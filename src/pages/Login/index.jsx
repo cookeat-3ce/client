@@ -56,7 +56,7 @@ const Login = () => {
         const response = await memberAPI.loginAPI(data);
         return response;
       } catch (error) {
-        throw new Error('Error during login');
+        throw new Error('Error');
       }
     },
     onSuccess: (response) => {

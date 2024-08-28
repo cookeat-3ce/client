@@ -8,11 +8,13 @@ import CustomText from '../Text';
 import CustomTextButton from '../Button/Text';
 import { COLORS, TAG_COLOR_MAPPING } from '../../constants';
 import { Pagination, Navigation } from 'swiper';
+import { useCustomNavigate } from '../../hooks';
 const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
   const swiperRef = useRef(null);
   const getTagColor = (tag) => {
     return TAG_COLOR_MAPPING[tag];
   };
+  const { handleChangeUrl } = useCustomNavigate();
 
   return (
     <Container>
@@ -85,6 +87,9 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.transform = 'scale(1)')
                 }
+                onClick={() => {
+                  handleChangeUrl(`/sskccok?tag=${slide}`);
+                }}
               >
                 <CustomText
                   text={'#'}

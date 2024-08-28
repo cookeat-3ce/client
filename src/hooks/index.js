@@ -5,6 +5,7 @@ import { memberState } from '../store';
 import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../apis/member';
 import { debounce } from 'lodash';
+import { InfiniteQueryObserverResult } from '@tanstack/react-query';
 
 // url 이동
 export const useCustomNavigate = () => {
@@ -98,4 +99,48 @@ export const useLogout = () => {
   );
 
   return debouncedLogout;
+};
+
+// intersection api
+
+/**
+ *
+ * @param {Object} props
+ * @param {number} [props.threshold=0.1]
+ * @param {boolean} props.hasNextPage
+ * @param {Function} props.fetchNextPage
+ * @returns {Object}
+ */
+export const useIntersectionObserver = ({
+  threshold = 0.1,
+  hasNextPage,
+  fetchNextPage,
+}) => {
+  const [target, setTarget] = useState(null);
+
+  const observerCallback = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (!target) return;
+
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold,
+    });
+
+    observer.observe(target);
+
+    return () => {
+      if (target) {
+        observer.unobserve(target);
+      }
+    };
+  }, [target, threshold, hasNextPage, fetchNextPage]);
+
+  return { setTarget };
 };
