@@ -18,9 +18,21 @@ import Card from '../Card';
 import CustomButton from '../Button';
 import { getCookie, useCustomNavigate } from '../../hooks';
 
-const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
+const CustomSwiper = ({
+  firstText,
+  secondText,
+  thirdText,
+  arr,
+  isLogined,
+  now,
+}) => {
   const swiperRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedDate = `${year}-${formattedMonth}`;
   return (
     <Container>
       <TextContainer>
@@ -45,6 +57,14 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
+          onClick={() => {
+            if (now === 'month') {
+              window.location.href = `/sskcook?date=${formattedDate}`;
+            } else if (now === 'recent') {
+              window.location.href = `/sskcook?sort=latest`;
+            }
+            // 내 냉장고 조회 추가할 예정
+          }}
         >
           <CustomText
             text={secondText}
@@ -62,7 +82,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
         </div>
       </TextContainer>
       <SwiperContainer>
-        {isLogined === 'refri' && !getCookie('accessToken') ? (
+        {isLogined === 'fridge' && !getCookie('accessToken') ? (
           <LoginContainer>
             <LoginWrapper>
               <CustomText
@@ -101,7 +121,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr, isLogined }) => {
               </SwiperSlide>
             ))}
           </Swiper>
-        ) : isLogined === 'refri' && (arr.length === 0 || !arr) ? (
+        ) : isLogined === 'fridge' && (arr.length === 0 || !arr) ? (
           <LoginContainer>
             <LoginWrapper>
               <CustomText

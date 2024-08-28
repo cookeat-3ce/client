@@ -6,7 +6,9 @@ import {
   Routes,
   Navigate,
   useNavigate,
+  useSearchParams,
 } from 'react-router-dom';
+
 import CommonLayout from './pages/Layout';
 import Error from './pages/Error';
 import Home from './pages/Home';
@@ -21,7 +23,6 @@ import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
 
-// Component that handles redirecting admins
 const AdminRedirector = ({ role }) => {
   const navigate = useNavigate();
 
@@ -32,6 +33,21 @@ const AdminRedirector = ({ role }) => {
   }, [role, navigate]);
 
   return null;
+};
+
+const Sskcook = () => {
+  const [searchParams] = useSearchParams();
+  const tag = searchParams.get('tag');
+  const date = searchParams.get('date');
+  const sort = searchParams.get('sort');
+
+  return (
+    <CommonLayout isLogined={!!getCookie('accessToken')}>
+      {tag && <Tag />}
+      {date && <div>Date: {date}</div>}
+      {sort && <div>Sorted by: {sort}</div>}
+    </CommonLayout>
+  );
 };
 
 function App() {
@@ -90,22 +106,7 @@ function App() {
           }
         />
 
-        <Route
-          path={'/live'}
-          element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <Live />
-            </CommonLayout>
-          }
-        />
-        <Route
-          path="/sskcook/"
-          element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <Tag />
-            </CommonLayout>
-          }
-        />
+        <Route path="/sskcook" element={<Sskcook />} />
         {/* 위에건 쿼리 파라미터 라우팅 */}
         {/* ex) http://localhost:3000/sskccok?tag=한식&page=1*/}
         <Route
