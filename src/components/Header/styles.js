@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants';
 
 // 예시
-const logo = require('../../assets/icons/example_logo.png');
+const logo = require('../../assets/icons/logo.png');
 
 export const Header = styled.div`
   position: sticky;

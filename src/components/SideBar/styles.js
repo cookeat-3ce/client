@@ -9,7 +9,7 @@ export const SideBar = styled.div`
   margin-left: 2vh;
   margin-bottom: 2vh;
   width: 14vw;
-  height: 100vh;
+  height: 80vh;
   border-radius: 10px;
   box-shadow: 0px 2px 10px rgba(162, 162, 162, 0.2);
   background: ${COLORS.WHITE};
@@ -23,7 +23,7 @@ export const SideBar = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 4vh;
+  padding-top: 2vh;
   padding-right: 3vw;
 `;
 
@@ -37,8 +37,8 @@ const StyledButtonContainer = styled.div.withConfig({
   width: 12vw;
   margin-left: 2vh;
   height: 5.5vh;
-  margin-top: ${(props) => (props.isTopSpecial ? '5vh' : '0')};
-  margin-bottom: ${(props) => (props.isBottomSpecial ? '0' : '2.5vh')};
+  margin-top: ${(props) => (props.isTopSpecial ? '2vh' : '0')};
+  margin-bottom: ${(props) => (props.isBottomSpecial ? '0' : '1vh')};
   background-color: ${(props) =>
     props.isActive ? COLORS.GRAPEFRUIT : 'transparent'};
   position: relative;
@@ -50,10 +50,10 @@ const StyledButtonContainer = styled.div.withConfig({
     content: '';
     display: ${(props) => (props.isBottomSpecial ? 'block' : 'none')};
     position: absolute;
-    bottom: ${(props) => (props.isBottomSpecial ? '-2.5vh' : 'auto')};
+    bottom: ${(props) => (props.isBottomSpecial ? '-1vh' : 'auto')};
     left: 0;
     width: 12vw;
-    height: 0.2vh;
+    height: 0.1vh;
     background-color: rgba(1, 33, 64, 0.5);
     margin-right: -1vw;
   }
