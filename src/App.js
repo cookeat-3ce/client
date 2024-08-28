@@ -15,6 +15,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Live from './pages/Live';
+import SskcookMonthly from './pages/SskcookMonthly';
+import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
@@ -44,8 +46,8 @@ const Sskcook = () => {
   return (
     <CommonLayout isLogined={!!getCookie('accessToken')}>
       {tag && <Tag />}
-      {date && <div>Date: {date}</div>}
-      {sort && <div>Sorted by: {sort}</div>}
+      {date && <SskcookMonthly />}
+      {sort && <SskcookRecent />}
     </CommonLayout>
   );
 };
@@ -114,6 +116,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <SskcookDetails />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/live"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <Live />
             </CommonLayout>
           }
         />
