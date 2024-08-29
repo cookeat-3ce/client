@@ -1,39 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import queryString from 'query-string';
 import {
   Container,
   TextContainer,
   SkeletonContainer,
   CardContainer,
   CardWrapper,
-} from './styles';
+} from '../Tag/styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
-
-const Tag = () => {
-  const location = window.location.search;
-  const parsed = queryString.parse(location);
-  const tag = parsed.tag;
-
+import { memberState } from '../../store';
+import { useRecoilState } from 'recoil';
+const Stored = () => {
+  const [member] = useRecoilState(memberState);
+  const username = member.username;
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: [tag],
+    queryKey: ['Stored'],
     queryFn: ({ pageParam = 1 }) =>
       instance
-        .get(`/sskcook?tag=${tag}&page=${pageParam}`)
+        .get(`/member/sskcook/${username}?page=${pageParam}`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },
   });
-
   const [isLoading, setIsLoading] = useState(false);
 
   const allData = data?.pages.flatMap((page) => page.data) || [];
-
+  // console.log(data.pages[0].total);
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -53,18 +50,12 @@ const Tag = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetching]);
-
+  // console.log(data.pages[0].total);
   return (
     <Container>
       <TextContainer>
         <CustomText
-          text={'#'}
-          fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1.3vw'}
-          color={COLORS.BLACK}
-        />
-        <CustomText
-          text={tag}
+          text={'저장한 슥쿡 목록'}
           fontFamily={'Happiness-Sans-Bold'}
           fontSize={'1.3vw'}
           color={COLORS.BLACK}
@@ -84,7 +75,7 @@ const Tag = () => {
           >
             <CustomText
               fontFamily={'Happiness-Sans-Bold'}
-              text={'해당 태그의 슥쿡이 없어요!'}
+              text={'저장된 슥쿡이 없어요!'}
               fontSize={'1.5vw'}
               color={COLORS.DARKGRAPEFRUIT}
             />
@@ -134,4 +125,4 @@ const Tag = () => {
   );
 };
 
-export default Tag;
+export default Stored;
