@@ -183,18 +183,11 @@ const Index = () => {
               now={'month'}
             />
           ) : (
-            <SskcookSwiper
-              firstText={'이번달 슥쿡'}
-              secondText={'더보기'}
-              thirdText={'>'}
-              now={'month'}
-            />
+            <SskcookSwiper firstText={'이번달 슥쿡'} now={'month'} />
           )}
           {!getCookie('accessToken') ? (
             <SskcookSwiper
               firstText={'냉장고를 털어보자'}
-              secondText={'더보기'}
-              thirdText={'>'}
               isLogined={'fridge'}
               now={'fridge'}
             />
@@ -207,12 +200,7 @@ const Index = () => {
               now={'fridge'}
             />
           ) : (
-            <SskcookSwiper
-              firstText={'냉장고를 털어보자'}
-              secondText={'더보기'}
-              thirdText={'>'}
-              now={'fridge'}
-            />
+            <SskcookSwiper firstText={'냉장고를 털어보자'} now={'fridge'} />
           )}
           <TagSwiper firstText={'태그'} arr={TAG_VALUES} />
           {recentSskcooks ? (
@@ -224,12 +212,7 @@ const Index = () => {
               now={'recent'}
             />
           ) : (
-            <SskcookSwiper
-              firstText={'최신순'}
-              secondText={'더보기'}
-              thirdText={'>'}
-              now={'recent'}
-            />
+            <SskcookSwiper firstText={'최신순'} now={'recent'} />
           )}
           {recentLongcooks ? (
             <LongcookSwiper
@@ -239,11 +222,7 @@ const Index = () => {
               arr={recentLongcooks}
             />
           ) : (
-            <LongcookSwiper
-              firstText={'스-윽쿡'}
-              secondText={'더보기'}
-              thirdText={'>'}
-            />
+            <LongcookSwiper firstText={'스-윽쿡'} />
           )}
         </>
       )}
