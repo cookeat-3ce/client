@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import { Tabs } from 'antd';
+import { Skeleton, Tabs } from 'antd';
 import { COLORS } from '../../constants';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 3vw;
   width: 70vw;
 `;
 
@@ -61,4 +62,38 @@ export const TagImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const ProfileImageContainer = styled.img`
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  objectfit: 'fill';
+`;
+
+export const TextContainer = styled.div``;
+
+export const StyledTitleSkeleton = styled(Skeleton.Button)`
+  width: 10vw !important;
+  height: 2vw !important;
+`;
+
+export const StyledContentSkeleton = styled(Skeleton.Button)`
+  width: 10vw !important;
+  height: 1vw !important;
+`;
+
+export const StyledProfileSkeleton = styled(Skeleton.Avatar)`
+  .ant-skeleton-avatar {
+    width: 5vw !important;
+    height: 5vw !important;
+  }
+`;
+
+export const StyledCountSkeleton = styled(Skeleton.Button)`
+  width: 10vw !important;
+  height: 1vw !important;
 `;

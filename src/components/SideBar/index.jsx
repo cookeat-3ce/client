@@ -103,7 +103,7 @@ const CustomSideBar = () => {
               key={item.path}
               isBottomSpecial={isBottomSpecial}
               isTopSpecial={isTopSpecial}
-              onClick={() => handleChangeUrl(item.path)}
+              onClick={() => (window.location.href = item.path)}
               isActive={isActive || isSskcookLookActive}
             >
               <ButtonWrapper>
