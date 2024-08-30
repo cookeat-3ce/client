@@ -77,7 +77,6 @@ const Sskcook = () => {
         setIngredients(ingredients.filter((_, i) => i !== index));
     };
 
-    // 업로드를 위한 useMutation 훅
     const mutation = useMutation((formData) => sskcookAPI.sskcookUploadAPI(formData), {
         onSuccess: () => {
             console.log('업로드 성공');
@@ -107,15 +106,13 @@ const Sskcook = () => {
             }]
         });
 
-        // FormData에 파일과 JSON 데이터 추가
         formData.append('file', file.fileObject);
         formData.append('sskcook', sskcookData);
         
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
-    
-        // Mutation을 사용해 업로드 처리
+
         mutation.mutate(formData);
     };
 
@@ -157,7 +154,7 @@ const Sskcook = () => {
                 </IngredientsContainer>
                 <IngredientsInputWrapper>
                     <CustomInput
-                        placeholder={'재료'}
+                        text={'재료'}
                         value={ingredientName}
                         onChange={(e) => setIngredientName(e.target.value)}
                         fontSize={'1vw'}
@@ -165,7 +162,7 @@ const Sskcook = () => {
                         width={100}
                     />
                     <CustomInput
-                        placeholder={'양'}
+                        text={'양'}
                         value={ingredientAmount}
                         onChange={(e) => setIngredientAmount(e.target.value)}
                         fontSize={'1vw'}
@@ -183,7 +180,6 @@ const Sskcook = () => {
                     </AddButtonWrapper>
                 </IngredientsInputWrapper>
 
-                {/* 추가된 재료 목록을 렌더링 */}
                 <IngredientsListContainer>
                     {ingredients.map((ingredient, index) => (
                         <IngredientItem key={index}>
@@ -209,7 +205,7 @@ const Sskcook = () => {
                     fontSize={'1vw'}
                     height={120}
                     width={350}
-                    maxLength={500}  // 최대 글자 수를 지정 (선택 사항)
+                    maxLength={500}  // 최대 글자 수 지정
                 />
                 </CustomInputWrapper>
                 <HashtagContainer>

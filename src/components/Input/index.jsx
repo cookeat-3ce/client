@@ -1,6 +1,5 @@
 import { React, useState } from 'react';
 import { CustomInputContainer, CustomSearchInputContainer, CustomTextareaContainer, CharacterCountContainer} from './styles';
-import { COLORS } from '../../constants';
 import SearchInput from '../../assets/icons/searchInput.png';
 
 export const CustomInput = ({
@@ -10,11 +9,13 @@ export const CustomInput = ({
   height,
   type,
   onChange,
+  value,
 }) => {
   return (
     <CustomInputContainer
       type={type}
       placeholder={text}
+      value={value}
       style={{
         fontSize,
         fontFamily: 'Happiness-Sans-Regular',
