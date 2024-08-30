@@ -121,9 +121,7 @@ function App() {
                 <Stored />
               </CommonLayout>
             ) : (
-              <AuthLayout>
-                <Login />
-              </AuthLayout>
+              <Navigate to={'/login'} replace />
             )
           }
         />
