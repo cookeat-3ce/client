@@ -36,7 +36,7 @@ const Index = () => {
   const recentLongcooksQuery = useQuery({
     queryKey: ['recentLongcooks'],
     queryFn: () => longcookAPI.recentLongcookListAPI(1),
-    staleTime: Infinity,
+    staleTime: Infinity, 
   });
 
   const monthlyLikesSskcooksQuery = useQuery({

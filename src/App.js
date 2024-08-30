@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import './styles/reset.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   BrowserRouter,
   Route,
@@ -15,10 +16,13 @@ import SignUp from './pages/SignUp';
 import Live from './pages/Live';
 import Admin from './pages/Admin';
 import Tag from './pages/Tag';
+import Sskcook from './pages/Sskcook';
 import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
+
+const queryClient = new QueryClient();
 
 // Component that handles redirecting admins
 const AdminRedirector = ({ role }) => {
@@ -97,6 +101,18 @@ function App() {
             </CommonLayout>
           }
         />
+
+        <Route
+          path={'/sskcook/upload'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <Sskcook />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
         <Route
           path="/sskccok/"
           element={
