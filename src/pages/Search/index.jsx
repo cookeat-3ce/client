@@ -23,7 +23,7 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import CustomText from '../../components/Text';
 import { CardContainer, CardWrapper } from '../Tag/styles';
 import Card from '../../components/Card';
-import { StyledCarouselSkeleton, StyledSskcookSkeleton } from '../Home/styles';
+import { StyledSskcookSkeleton } from '../Home/styles';
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const [activeTab, setActiveTab] = useState('1');
