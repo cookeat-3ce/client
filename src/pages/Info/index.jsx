@@ -14,10 +14,12 @@ import {
   SskcookContainer,
   TabMenuContainer,
   TabMenuWrapper,
+  TabMenuTextWrapper,
   TabMenuWrapperContainer,
   TabSeparator,
   TopContainer,
   TopInfoContainer,
+  AddButton,
 } from './styles';
 import ProfileImage from '../../components/ProfileImage';
 import fridge_closed from '../../assets/images/fridge_closed.svg';
@@ -244,7 +246,7 @@ const Index = () => {
             fontFamily="Happiness-Sans-Bold"
             fontSize="1rem"
             color={COLORS.BLACK}
-            text={userInfo?.oneLiner || '비어잇음'}
+            text={userInfo?.oneLiner || ''}
           ></CustomText>
         </OnelinerContainer>
       </TopContainer>
@@ -252,57 +254,75 @@ const Index = () => {
         <TabMenuContainer>
           <TabMenuWrapperContainer>
             <TabMenuWrapper>
-              <CustomTextButton
-                text="슥쿡"
-                onClick={() => handleMenuClick('sskcook')}
-                color={COLORS.BLACK}
-                fontSize="1.2rem"
-                fontFamily={
-                  selectedMenu === 'sskcook'
-                    ? 'Happiness-Sans-Bold'
-                    : 'Happiness-Sans-Regular'
-                }
-              ></CustomTextButton>
+              <TabMenuTextWrapper>
+                <CustomTextButton
+                  text="슥쿡"
+                  onClick={() => handleMenuClick('sskcook')}
+                  color={COLORS.BLACK}
+                  fontSize="1.2rem"
+                  fontFamily={
+                    selectedMenu === 'sskcook'
+                      ? 'Happiness-Sans-Bold'
+                      : 'Happiness-Sans-Regular'
+                  }
+                ></CustomTextButton>
+              </TabMenuTextWrapper>
+              <TabMenuTextWrapper>
+                <CustomTextButton
+                  text="스윽쿡"
+                  onClick={() => handleMenuClick('longcook')}
+                  color={COLORS.BLACK}
+                  fontSize="1.2rem"
+                  fontFamily={
+                    selectedMenu === 'longcook'
+                      ? 'Happiness-Sans-Bold'
+                      : 'Happiness-Sans-Regular'
+                  }
+                ></CustomTextButton>
+              </TabMenuTextWrapper>
+              <TabMenuTextWrapper>
+                <CustomTextButton
+                  text="공지"
+                  onClick={() => handleMenuClick('notice')}
+                  color={COLORS.BLACK}
+                  fontSize="1.2rem"
+                  fontFamily={
+                    selectedMenu === 'notice'
+                      ? 'Happiness-Sans-Bold'
+                      : 'Happiness-Sans-Regular'
+                  }
+                ></CustomTextButton>
+              </TabMenuTextWrapper>
             </TabMenuWrapper>
-            <TabMenuWrapper>
-              <CustomTextButton
-                text="스윽쿡"
-                onClick={() => handleMenuClick('longcook')}
-                color={COLORS.BLACK}
-                fontSize="1.2rem"
-                fontFamily={
-                  selectedMenu === 'longcook'
-                    ? 'Happiness-Sans-Bold'
-                    : 'Happiness-Sans-Regular'
-                }
-              ></CustomTextButton>
-            </TabMenuWrapper>
-            <TabMenuWrapper>
-              <CustomTextButton
-                text="공지"
-                onClick={() => handleMenuClick('notice')}
-                color={COLORS.BLACK}
-                fontSize="1.2rem"
-                fontFamily={
-                  selectedMenu === 'notice'
-                    ? 'Happiness-Sans-Bold'
-                    : 'Happiness-Sans-Regular'
-                }
-              ></CustomTextButton>
-            </TabMenuWrapper>
+            <AddButton>
+              <CustomText
+                fontFamily="Happiness-Sans-Bold"
+                fontSize="1rem"
+                color={COLORS.WHITE}
+                text="추가"
+              ></CustomText>
+            </AddButton>
           </TabMenuWrapperContainer>
           <TabSeparator></TabSeparator>
         </TabMenuContainer>
 
         {selectedMenu === 'sskcook' && (
           <SskcookContainer>
-            <CustomVideoList type={selectedMenu} videos={sskcookList || []} />
+            <CustomVideoList
+              type={selectedMenu}
+              videos={sskcookList || []}
+              isInMyInfo={true}
+            />
             {isSskcookFetching && <div>Loading more...</div>}
           </SskcookContainer>
         )}
         {selectedMenu === 'longcook' && (
           <LongcookContainer>
-            <CustomVideoList type={selectedMenu} videos={longcookList || []} />
+            <CustomVideoList
+              type={selectedMenu}
+              videos={longcookList || []}
+              isInMyInfo={true}
+            />
             {isLongcookFetching && <div>Loading more...</div>}
           </LongcookContainer>
         )}

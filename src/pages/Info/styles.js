@@ -97,26 +97,52 @@ export const BottomContainer = styled.div`
 
 export const TabMenuContainer = styled.div`
   height: 6vh;
-  // border: 5px solid black;
+  // border: 5px solid BLUE;
 `;
 
 export const TabMenuWrapperContainer = styled.div`
-  width: 100%;
   height: 2vh;
   display: flex;
+  justify-content: space-between;
   padding: 1vh 1vw;
-  // border: 5px solid red;
+  // border: 5px solid black;
 `;
 
 export const TabMenuWrapper = styled.div`
+  display: flex;
+  // border: 10px solid black;
+`;
+
+export const TabMenuTextWrapper = styled.div`
   width: 4vw;
   // border: 5px solid red;
+`;
+
+export const AddButton = styled.button`
+  width: 4vw;
+  height: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: BLACK;
+  border-radius: 30px;
+  border: 5px solid BLACK;
+  margin: 0 1vw 0 0;
+  transition: background-color 0.3s ease;
+  &:active,
+  &:focus {
+    transform: scale(0.95);
+  }
+  &:hover {
+    transform: scale(1);
+    cursor: pointer;
+  }
 `;
 
 export const TabSeparator = styled.hr`
   border: none;
   border-top: 2px solid ${COLORS.STROKE};
-  margin: 0.2vh 1.6vw;
+  margin: 0.6vh 1.6vw;
 `;
 
 // 슥쿡 조회

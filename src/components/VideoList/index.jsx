@@ -3,7 +3,7 @@ import { Container, SskcookContainer, LongcookContainer } from './styles';
 import VideoPlayer from '../Card';
 import { COLORS } from '../../constants';
 
-const CustomVideoList = ({ type, videos }) => {
+const CustomVideoList = ({ type, videos, isInMyInfo = false }) => {
   const [currentVideos, setCurrentVideos] = useState([]);
 
   useEffect(() => {
@@ -22,8 +22,9 @@ const CustomVideoList = ({ type, videos }) => {
                 key={index}
                 type={'sskcook'}
                 url={video.sskcookUrl}
-                sskcookId={video.sskcookId}
+                id={video.sskcookId}
                 color={COLORS.BLACK}
+                isInMyInfo={isInMyInfo}
               />
             ))}
         </SskcookContainer>
@@ -38,6 +39,7 @@ const CustomVideoList = ({ type, videos }) => {
                 url={video.longcookUrl}
                 id={video.longcookId}
                 color={COLORS.BLACK}
+                isInMyInfo={isInMyInfo}
               />
             ))}
         </LongcookContainer>
