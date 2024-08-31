@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player/lazy';
 import { Container } from './styles';
 import { useCustomNavigate } from '../../hooks';
 
-const VideoPlayer = ({ url, sskcookId, color }) => {
+const VideoPlayer = ({ type, url, id, color }) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ const VideoPlayer = ({ url, sskcookId, color }) => {
   };
 
   const handleClick = () => {
-    handleChangeUrl(`/sskcook/${sskcookId}`);
+    handleChangeUrl(`/${type}/${id}`);
   };
 
   return (

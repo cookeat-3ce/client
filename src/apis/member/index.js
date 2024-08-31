@@ -10,4 +10,7 @@ export const memberAPI = {
   signUpAPI: (signUpData) => {
     return instance.post('/member/sign-up', signUpData);
   },
+  myInfoAPI: (username) => {
+    return instance.get(`/member/${username}`);
+  },
 };
