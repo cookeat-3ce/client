@@ -108,11 +108,6 @@ const Sskcook = () => {
 
         formData.append('file', file.fileObject);
         formData.append('sskcook', sskcookData);
-        
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
-
         mutation.mutate(formData);
     };
 
