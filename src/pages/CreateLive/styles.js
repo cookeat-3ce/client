@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from '../../constants';
-import { Upload, Radio } from 'antd';
+import { InputNumber, Upload, Radio } from 'antd';
 
 export const Container = styled.div`
   width: 72vw;
@@ -88,10 +88,14 @@ export const StyledRadio = styled(Radio)`
 `;
 
 export const TooltipIconWrapper = styled.img`
-  width: 2vw;
-  height: 2vw;
+  width: 1.2vw;
   margin: 0 0 0 1vw;
   // border: 10px solid GREEN;
+`;
+
+export const ParticipantTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const ParticipantContainer = styled.div`
@@ -99,6 +103,31 @@ export const ParticipantContainer = styled.div`
   flex-direction: column;
   gap: 2vw;
   // border: 10px solid GREEN;
+`;
+
+export const CustomInputNumber = styled(InputNumber)`
+  &.ant-input-number {
+    border-color: ${COLORS.STROKE}; /* 기본 테두리 색상 */
+  }
+
+  .ant-input-number-input {
+    border: 1px solid rgba(206, 206, 206, 0.5);
+    padding: 0 10px;
+  }
+
+  &.ant-input-number-focused,
+  &.ant-input-number:focus {
+    border-color: ${COLORS.STROKE} !important;
+    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2) !important;
+  }
+
+  .ant-input-number-input:focus {
+    border-color: ${COLORS.ORANGE} !important;
+  }
+
+  .ant-input-number-handler-wrap {
+    display: none;
+  }
 `;
 
 export const RightContainer = styled.div`
@@ -186,6 +215,12 @@ export const StyledUpload = styled(Upload)`
     svg {
       fill: white;
     }
+  }
+
+  /* 추가된 스타일: hover 및 focus 상태에서의 스타일 변경 */
+  &.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select:hover,
+  &.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select:focus {
+    border-color: ${COLORS.ORANGE} !important;
   }
 `;
 

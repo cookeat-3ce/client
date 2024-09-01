@@ -15,6 +15,8 @@ import {
   StyledRadio,
   UploadContainer,
   ButtonContainer,
+  CustomInputNumber,
+  ParticipantTitleWrapper,
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
@@ -258,21 +260,34 @@ const CreateLive = () => {
                 </RadioWrapper>
               </Radio.Group>
             </RadioContainer>
-            <InputContainer>
-              <CustomText
-                text="인원 수"
-                fontSize="1.2rem"
-                fontFamily="Happiness-Sans-Bold"
-                color={COLORS.BLACK}
-              />
-              <InputNumber
-                size="large"
-                min={1}
-                max={10}
-                defaultValue={1}
-                onChange={handleMaxParticipant}
-              />
-            </InputContainer>
+            {classType === 'online' && (
+              <InputContainer>
+                <ParticipantTitleWrapper>
+                  <CustomText
+                    text="인원 수"
+                    fontSize="1.2rem"
+                    fontFamily="Happiness-Sans-Bold"
+                    color={COLORS.BLACK}
+                  />
+                  <Tooltip
+                    title="최대 10명까지 설정할 수 있어요."
+                    color={COLORS.ORANGE}
+                    overlayInnerStyle={{
+                      textAlign: 'center',
+                    }}
+                  >
+                    <TooltipIconWrapper src={TooltipIcon} />
+                  </Tooltip>
+                </ParticipantTitleWrapper>
+                <CustomInputNumber
+                  min={1}
+                  max={10}
+                  defaultValue={1}
+                  size="large"
+                  onChange={(value) => console.log(value)}
+                />
+              </InputContainer>
+            )}
           </InputContainer>
         </LeftContainer>
         <RightContainer>
