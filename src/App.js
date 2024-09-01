@@ -26,6 +26,7 @@ import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
+import CreateLive from './pages/CreateLive';
 
 const AdminRedirector = ({ role }) => {
   const navigate = useNavigate();
@@ -164,6 +165,14 @@ function App() {
                 <Home />
               </CommonLayout>
             )
+          }
+        />
+        <Route
+          path="/live/create"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <CreateLive></CreateLive>
+            </CommonLayout>
           }
         />
       </Routes>
