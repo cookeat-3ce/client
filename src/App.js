@@ -17,6 +17,7 @@ import Live from './pages/Live';
 import Admin from './pages/Admin';
 import Tag from './pages/Tag';
 import Sskcook from './pages/Sskcook';
+import SskcookModify from './pages/SskcookModify';
 import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
@@ -108,6 +109,17 @@ function App() {
             <CommonLayout isLogined={!!getCookie('accessToken')}>
             <QueryClientProvider client={queryClient}>
               <Sskcook />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
+        <Route
+          path={'/sskcook/update/:id'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <SskcookModify />
             </QueryClientProvider>
             </CommonLayout>
           }

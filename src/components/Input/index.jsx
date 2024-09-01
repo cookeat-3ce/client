@@ -65,6 +65,7 @@ export const CustomInputTextarea = ({
   height,
   maxLength,
   onChange,
+  value,
 }) => {
   const [charCount, setCharCount] = useState(0);
 
@@ -80,6 +81,7 @@ export const CustomInputTextarea = ({
       <CustomTextareaContainer
         placeholder={text}
         maxLength={maxLength}
+        value={value}
         style={{
           fontSize,
           fontFamily: 'Happiness-Sans-Regular',

@@ -8,6 +8,7 @@ export const COLORS = {
   WHITE: '#FFFFFF',
   GRAY: '#585858',
   BLACK: '#000000',
+  LIGHTGRAY : '#ADADAD',
   GRAPEFRUIT: 'rgba(255, 89, 53, 0.4)',
   DARKGRAPEFRUIT: '#FF785B',
   STROKE: '#CECECE',
