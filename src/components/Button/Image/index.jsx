@@ -1,16 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CustomImageButton = ({ src, width, height, onClick, alt = '' }) => {
-  const style = {
+const CustomImageButton = ({
+  src,
+  width,
+  height,
+  onClick,
+  alt = '',
+  style = {},
+}) => {
+  const defaultStyle = {
     width: width,
     height: height,
     cursor: 'pointer',
     borderRadius: '50%',
-    objectFit: 'cover',
+    objectFit: 'fill',
+    ...style,
   };
 
-  return <img src={src} style={style} onClick={onClick} alt={alt} />;
+  return <img src={src} style={defaultStyle} onClick={onClick} alt={alt} />;
 };
 
 CustomImageButton.propTypes = {

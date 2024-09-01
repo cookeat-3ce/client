@@ -8,15 +8,23 @@ export const CustomInputContainer = styled.input`
     border: 1px solid ${COLORS.DARKGRAPEFRUIT} !important;
     outline: none;
   }
+
+  &::placeholder {
+    color: ${COLORS.TAG};
+  }
 `;
 
 export const CustomSearchInputContainer = styled.input`
-  padding-left: 68px;
-  border-radius: 100px;
+  padding-left: 3vw;
+  border-radius: 50px;
   transition: border-color 0.3s;
 
   &:focus {
     border: 1px solid ${COLORS.DARKGRAPEFRUIT} !important;
     outline: none;
+  }
+
+  &::placeholder {
+    color: ${COLORS.TAG};
   }
 `;
