@@ -27,4 +27,10 @@ export const sskcookAPI = {
   sskcookDetailsAPI: (sskcookId) => {
     return instance.get(`/sskcook/${sskcookId}`);
   },
+  LikeAPI: (sskcookId) => {
+    return instance.post('/sskcook/likes', { sskcookId: sskcookId });
+  },
+  ReportAPI: (sskcookId) => {
+    return instance.post('/sskcook/report', { sskcookId: sskcookId });
+  },
 };

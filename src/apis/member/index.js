@@ -10,4 +10,15 @@ export const memberAPI = {
   signUpAPI: (signUpData) => {
     return instance.post('/member/sign-up', signUpData);
   },
+  storeAPI: (sskcookId) => {
+    return instance.post(`/member/sskcook/${sskcookId}`, {
+      sskcookId: sskcookId,
+    });
+  },
+  subscriptionAPI: ({ followingUsername, followerUsername }) => {
+    return instance.post('/member/subscription', {
+      followingUsername,
+      followerUsername,
+    });
+  },
 };

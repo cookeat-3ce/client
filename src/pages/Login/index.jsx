@@ -93,7 +93,7 @@ const Login = () => {
   const debouncedLogin = useCallback(
     debounce((data) => {
       mutation.mutate(data);
-    }, 300),
+    }, 100),
     [],
   );
 
