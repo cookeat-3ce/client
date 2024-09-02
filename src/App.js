@@ -16,8 +16,8 @@ import SignUp from './pages/SignUp';
 import Live from './pages/Live';
 import Admin from './pages/Admin';
 import Tag from './pages/Tag';
-import Sskcook from './pages/Sskcook';
-import Longcook from './pages/Longcook';
+import SskcookUpload from './pages/SskcookUpload';
+import LongcookUpload from './pages/LongcookUpload';
 import SskcookModify from './pages/SskcookModify';
 import { getCookie } from './hooks';
 import { memberState } from './store';
@@ -105,33 +105,33 @@ function App() {
         />
 
         <Route
-          path={'/sskcook/upload'}
+          path={'info/sskcook/upload'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
             <QueryClientProvider client={queryClient}>
-              <Sskcook />
+              <SskcookUpload />
             </QueryClientProvider>
             </CommonLayout>
           }
         />
 
         <Route
-          path={'/sskcook/update/:id'}
+          path={'info/longcook/upload'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <LongcookUpload />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
+        <Route
+          path={'info/sskcook/update/:id'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
             <QueryClientProvider client={queryClient}>
               <SskcookModify />
-            </QueryClientProvider>
-            </CommonLayout>
-          }
-        />
-
-        <Route
-          path={'/longcook/upload'}
-          element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <Longcook />
             </QueryClientProvider>
             </CommonLayout>
           }

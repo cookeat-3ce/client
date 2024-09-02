@@ -28,7 +28,7 @@ import { COLORS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { longcookAPI } from '../../apis/longcook';
 
-const Longcook = () => {
+const LongcookUpload = () => {
     const [file, setFile] = useState(null);
     const [ingredients, setIngredients] = useState([]);
     const [ingredientName, setIngredientName] = useState('');
@@ -217,9 +217,10 @@ const Longcook = () => {
                     value={recipe}
                     onChange={(e) => setRecipe(e.target.value)}
                     fontSize={'1vw'}
-                    height={120}
-                    width={350}
-                    maxLength={500}
+                    height={150}
+                    width={500}
+                    maxLength={1200}
+                    paddingLeft={480}
                 />
                 </CustomInputWrapper>
                 <SubmitButtonWrapper>
@@ -241,4 +242,4 @@ const Longcook = () => {
     );
 };
 
-export default Longcook;
+export default LongcookUpload;
