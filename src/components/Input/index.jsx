@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { CustomInputContainer, CustomSearchInputContainer, CustomTextareaContainer, CharacterCountContainer} from './styles';
-import SearchInput from '../../assets/icons/searchInput.png';
+import SearchInput from '../../assets/icons/input_search.svg';
+import { COLORS } from '../../constants';
 
 export const CustomInput = ({
   text,
@@ -35,7 +36,9 @@ export const CustomSearchInput = ({
   width,
   height,
   type,
+  value,
   onChange,
+  onKeyDown,
 }) => {
   return (
     <CustomSearchInputContainer
@@ -46,14 +49,17 @@ export const CustomSearchInput = ({
         fontFamily: 'Happiness-Sans-Regular',
         width,
         height,
-        borderRadius: 100,
-        border: `1px solid rgba(206, 206, 206, 0.5)`,
+        borderRadius: 50,
+        border: `1px solid ${COLORS.TAG}`,
         backgroundImage: `url(${SearchInput})`,
         backgroundSize: '1.5vw 1.5vw',
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: '1.5vw center',
+        backgroundPosition: '1vw center',
+        objectFit: 'fill',
       }}
+      value={value}
       onChange={onChange}
+      onKeyDown={onKeyDown}
     />
   );
 };

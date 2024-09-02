@@ -1,35 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import queryString from 'query-string';
 import {
   Container,
   TextContainer,
   SkeletonContainer,
   CardContainer,
   CardWrapper,
-} from './styles';
+} from '../Tag/styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
-
-const Tag = () => {
-  const location = window.location.search;
-  const parsed = queryString.parse(location);
-  const tag = parsed.tag;
-
+const SskcookRecent = () => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: [tag],
+    queryKey: ['SskcookRecent'],
     queryFn: ({ pageParam = 1 }) =>
       instance
-        .get(`/sskcook?tag=${tag}&page=${pageParam}`)
+        .get(`/sskcook?sort=latest&page=${pageParam}`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },
   });
-
   const [isLoading, setIsLoading] = useState(false);
 
   const allData = data?.pages.flatMap((page) => page.data) || [];
@@ -58,13 +51,7 @@ const Tag = () => {
     <Container>
       <TextContainer>
         <CustomText
-          text={'#'}
-          fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1.3vw'}
-          color={COLORS.BLACK}
-        />
-        <CustomText
-          text={tag}
+          text={'최신순'}
           fontFamily={'Happiness-Sans-Bold'}
           fontSize={'1.3vw'}
           color={COLORS.BLACK}
@@ -84,7 +71,7 @@ const Tag = () => {
           >
             <CustomText
               fontFamily={'Happiness-Sans-Bold'}
-              text={'해당 태그의 슥쿡이 없어요!'}
+              text={'최근 슥쿡이 없어요!'}
               fontSize={'1.5vw'}
               color={COLORS.DARKGRAPEFRUIT}
             />
@@ -134,4 +121,4 @@ const Tag = () => {
   );
 };
 
-export default Tag;
+export default SskcookRecent;
