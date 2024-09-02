@@ -33,17 +33,17 @@ const CustomSideBar = () => {
   const accessToken = getCookie('accessToken');
   const list = [
     { icon: SskCook, label: '슥쿡 둘러보기', path: '/' },
-    { icon: Search, label: '슥쿡 검색', path: '/' },
+    { icon: Search, label: '슥쿡 검색', path: '/search' },
     { icon: Live, label: '실시간 클래스', path: '/live' },
     { icon: LongCook, label: '스-윽쿡', path: '/' },
     { icon: Subscribe, label: '구독', path: '/' },
-    { icon: Storage, label: '보관함', path: '/' },
+    { icon: Storage, label: '보관함', path: '/stored' },
     { icon: Event, label: '이벤트', path: '/' },
     { icon: MyInfo, label: '내 정보', path: '/' },
     { icon: Refrigerator, label: '냉장고 파헤치기', path: '/' },
   ];
   const resetMemberState = useResetRecoilState(memberState);
-  const isSskcookLocation = window.location.href.includes('/sskccok');
+  const isSskcookLocation = window.location.href.includes('/sskcook');
 
   // 예시
   // isLogined = false;
@@ -103,7 +103,7 @@ const CustomSideBar = () => {
               key={item.path}
               isBottomSpecial={isBottomSpecial}
               isTopSpecial={isTopSpecial}
-              onClick={() => handleChangeUrl(item.path)}
+              onClick={() => (window.location.href = item.path)}
               isActive={isActive || isSskcookLookActive}
             >
               <ButtonWrapper>

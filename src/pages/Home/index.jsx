@@ -180,20 +180,16 @@ const Index = () => {
               secondText={'더보기'}
               thirdText={'>'}
               arr={monthlyLikesSskcooks}
+              now={'month'}
             />
           ) : (
-            <SskcookSwiper
-              firstText={'이번달 슥쿡'}
-              secondText={'더보기'}
-              thirdText={'>'}
-            />
+            <SskcookSwiper firstText={'이번달 슥쿡'} now={'month'} />
           )}
           {!getCookie('accessToken') ? (
             <SskcookSwiper
               firstText={'냉장고를 털어보자'}
-              secondText={'더보기'}
-              thirdText={'>'}
-              isLogined={'refri'}
+              isLogined={'fridge'}
+              now={'fridge'}
             />
           ) : monthlyLikesSskcooks ? (
             <SskcookSwiper
@@ -201,33 +197,22 @@ const Index = () => {
               secondText={'더보기'}
               thirdText={'>'}
               arr={monthlyLikesSskcooks}
+              now={'fridge'}
             />
           ) : (
-            <SskcookSwiper
-              firstText={'냉장고를 털어보자'}
-              secondText={'더보기'}
-              thirdText={'>'}
-            />
+            <SskcookSwiper firstText={'냉장고를 털어보자'} now={'fridge'} />
           )}
-          <TagSwiper
-            firstText={'태그'}
-            secondText={'더보기'}
-            thirdText={'>'}
-            arr={TAG_VALUES}
-          />
+          <TagSwiper firstText={'태그'} arr={TAG_VALUES} />
           {recentSskcooks ? (
             <SskcookSwiper
               firstText={'최신순'}
               secondText={'더보기'}
               thirdText={'>'}
               arr={recentSskcooks}
+              now={'recent'}
             />
           ) : (
-            <SskcookSwiper
-              firstText={'최신순'}
-              secondText={'더보기'}
-              thirdText={'>'}
-            />
+            <SskcookSwiper firstText={'최신순'} now={'recent'} />
           )}
           {recentLongcooks ? (
             <LongcookSwiper
@@ -237,11 +222,7 @@ const Index = () => {
               arr={recentLongcooks}
             />
           ) : (
-            <LongcookSwiper
-              firstText={'스-윽쿡'}
-              secondText={'더보기'}
-              thirdText={'>'}
-            />
+            <LongcookSwiper firstText={'스-윽쿡'} />
           )}
         </>
       )}
