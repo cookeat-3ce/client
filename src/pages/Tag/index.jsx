@@ -108,7 +108,8 @@ const Tag = () => {
               <CardWrapper>
                 <Card
                   url={item.sskcookUrl}
-                  sskcookId={item.sskcookId}
+                  type={'sskcook'}
+                  id={item.sskcookId}
                   color={COLORS.BLACK}
                 />
               </CardWrapper>

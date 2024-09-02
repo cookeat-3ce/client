@@ -117,7 +117,11 @@ const CustomSwiper = ({
           >
             {arr.map((slide, index) => (
               <SwiperSlide key={index} className={'sskcook'}>
-                <Card url={slide.sskcookUrl} sskcookId={slide.sskcookId} />
+                <Card
+                  url={slide.sskcookUrl}
+                  type={'sskcook'}
+                  id={slide.sskcookId}
+                />
               </SwiperSlide>
             ))}
           </Swiper>

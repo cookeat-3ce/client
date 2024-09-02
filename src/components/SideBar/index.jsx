@@ -36,7 +36,7 @@ const CustomSideBar = () => {
     { icon: Search, label: '슥쿡 검색', path: '/search' },
     { icon: Live, label: '실시간 클래스', path: '/live' },
     { icon: LongCook, label: '스-윽쿡', path: '/' },
-    { icon: Subscribe, label: '구독', path: '/' },
+    { icon: Subscribe, label: '구독', path: '/subscription' },
     { icon: Storage, label: '보관함', path: '/stored' },
     { icon: Event, label: '이벤트', path: '/' },
     { icon: MyInfo, label: '내 정보', path: '/info' },
@@ -44,6 +44,7 @@ const CustomSideBar = () => {
   ];
   const resetMemberState = useResetRecoilState(memberState);
   const isSskcookLocation = window.location.href.includes('/sskcook');
+  const isSubscriptionLocation = window.location.href.includes('/subscription');
 
   // 예시
   // isLogined = false;
@@ -98,13 +99,20 @@ const CustomSideBar = () => {
           const isActive = location === item.path;
           const isSskcookLookActive =
             item.label === '슥쿡 둘러보기' && isSskcookLocation;
+          const isSubscriptionActive =
+            item.label === '구독' && isSubscriptionLocation;
           return (
             <ButtonContainer
               key={item.path}
               isBottomSpecial={isBottomSpecial}
               isTopSpecial={isTopSpecial}
               onClick={() => (window.location.href = item.path)}
-              isActive={isActive || isSskcookLookActive}
+              isActive={
+                isActive ||
+                isSskcookLookActive ||
+                isActive ||
+                isSubscriptionActive
+              }
             >
               <ButtonWrapper>
                 <img

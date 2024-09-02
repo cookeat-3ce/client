@@ -13,4 +13,10 @@ export const memberAPI = {
   myInfoAPI: (username) => {
     return instance.get(`/member/${username}`);
   },
+  subscriptionAPI: ({ followingUsername, followerUsername }) => {
+    return instance.post('/member/subscription', {
+      followingUsername,
+      followerUsername,
+    });
+  },
 };

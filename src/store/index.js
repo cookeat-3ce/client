@@ -16,3 +16,12 @@ export const memberState = atom({
 
   effects_UNSTABLE: [persistAtom],
 });
+
+export const subscriptionState = atom({
+  key: 'subscriptionState',
+  default: {
+    username: '',
+    nickname: '',
+    profileImage: '',
+  },
+});
