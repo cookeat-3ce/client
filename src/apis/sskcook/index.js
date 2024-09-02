@@ -29,5 +29,15 @@ export const sskcookAPI = {
         'Content-Type': 'multipart/form-data',
       },
     });
+  },
+  sskcookUpdateAPI: (formData) => {
+    return instance.put('/sskcook', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  sskcookDeleteAPI: (id) => {
+    return instance.delete(`/sskcook/${id}`);
   }
 };

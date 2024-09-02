@@ -21,10 +21,12 @@ import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
+import SskcookModify from './pages/SskcookModify';
 import SskcookUpload from './pages/SskcookUpload';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
 import Info from './pages/Info';
+
 import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
@@ -142,11 +144,22 @@ function App() {
         />
 
         <Route
-          path={'/info/upload'}
+          path={'/info/sskcook/upload'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
             <QueryClientProvider client={queryClient}>
               <SskcookUpload />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
+        <Route
+          path={'info/sskcook/update/:id'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <SskcookModify />
             </QueryClientProvider>
             </CommonLayout>
           }

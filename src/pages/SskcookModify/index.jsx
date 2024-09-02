@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { 
     Container,
@@ -31,7 +32,9 @@ import { COLORS, TAGS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { sskcookAPI } from '../../apis/sskcook';
 
-const SskcookUpload = () => {
+const SskcookModify = () => {
+    const { id } = useParams();
+
     const [file, setFile] = useState(null);
     const [ingredients, setIngredients] = useState([]);
     const [ingredientName, setIngredientName] = useState('');
@@ -40,7 +43,34 @@ const SskcookUpload = () => {
     const [recipe, setRecipe] = useState('');
     const [selectedTags, setSelectedTags] = useState([]);
     const fileInputRef = useRef(null);
+    const [sskcookUrl, setSskcookUrl] = useState('');
+    const [sskcookId, setSskcookId] = useState('');
 
+    useEffect(() => {
+        const fetchSskcookDetails = async() => {
+            try {
+                const{ data } = await sskcookAPI.sskcookDetailsAPI(id);
+                console.log(data.details[0]);
+                setTitle(data.details[0].title);
+                setRecipe(data.details[0].recipe);
+                setIngredients(data.ingredients);
+                // TODO : setSelectedTags(data.hashtags.map(tag => tag.id));
+                setSskcookUrl(data.details[0].sskcookUrl); 
+                setSskcookId(data.details[0].sskcookId); 
+                if (data.details[0].sskcookUrl) {
+                    setFile({
+                        fileObject: null,
+                        url: data.details[0].sskcookUrl,
+                        video: true,
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching sskcook details: ', error);
+            }
+        };
+
+        fetchSskcookDetails();
+    }, [id]);
     const options = Object.keys(TAGS).map(key => ({
         label: TAGS[key],
         value: key,
@@ -77,9 +107,9 @@ const SskcookUpload = () => {
         setIngredients(ingredients.filter((_, i) => i !== index));
     };
 
-    const mutation = useMutation((formData) => sskcookAPI.sskcookUploadAPI(formData), {
+    const mutation = useMutation((formData) => sskcookAPI.sskcookUpdateAPI(formData), {
         onSuccess: () => {
-            console.log('업로드 성공');
+            console.log('수정 성공');
         },
         onError: (error) => {
            console.error();
@@ -94,10 +124,11 @@ const SskcookUpload = () => {
 
         // FormData 생성
         const formData = new FormData();
-
+        console.log(sskcookId);
         // sskcook JSON 데이터
         const sskcookData = JSON.stringify({
-            username : 'faker',
+            sskcookUrl : sskcookUrl,
+            sskcookId : sskcookId,
             title: title,
             recipe: recipe,
             ingredient: ingredients,
@@ -105,10 +136,23 @@ const SskcookUpload = () => {
                 hashtagId : 1
             }]
         });
-
+        console.log(file.url);
+        console.log(sskcookUrl);
         formData.append('file', file.fileObject);
         formData.append('sskcook', sskcookData);
         mutation.mutate(formData);
+    };
+
+    const handleDelete = async () => {
+        try {
+            const confirmed = window.confirm("정말로 슥쿡을 삭제하시겠습니까?");
+            if (confirmed) {
+                await sskcookAPI.sskcookDeleteAPI(sskcookId);
+                console.log('삭제 성공');
+            }
+        } catch (error) {
+            console.error('삭제 실패:', error);
+        }
     };
 
     return (
@@ -116,7 +160,7 @@ const SskcookUpload = () => {
             <InputContainer>
                 <TextContainer>
                     <CustomText
-                        text="슥쿡 등록"
+                        text="슥쿡 수정"
                         fontFamily={'Happiness-Sans-Bold'}
                         color={COLORS.BLACK}
                     />
@@ -232,7 +276,7 @@ const SskcookUpload = () => {
                 />
                 <UploadButtonWrapper>
                 <CustomButton
-                    text={'업로드'}
+                    text={'변경하기'}
                     fontSize={'.6vw'}
                     width={'4vw'}
                     height={'3vh'}
@@ -257,22 +301,34 @@ const SskcookUpload = () => {
                     <PlaceholderText file={file && file.video}>영상 미리보기가 여기에 표시됩니다.</PlaceholderText>
                 </VideoPreviewContainer>
                 <SubmitButtonWrapper>
-                <CustomButton
-                    text={'등록'}
-                    fontSize={'.8vw'}
-                    width={'4vw'}
-                    height={'4vh'}
-                    color={COLORS.WHITE}
-                    borderRadius={'20px'}
-                    fontFamily={'Happiness-Sans-Bold'}
-                    backgroundColor={COLORS.DARKGRAPEFRUIT}
-                    borderColor={COLORS.DARKGRAPEFRUIT}
-                    onClick={handleFormSubmit} 
-                />
-                </SubmitButtonWrapper>
+            <CustomButton
+                text={'삭제'}
+                fontSize={'.8vw'}
+                width={'4vw'}
+                height={'4vh'}
+                color={COLORS.WHITE}
+                borderRadius={'20px'}
+                fontFamily={'Happiness-Sans-Bold'}
+                backgroundColor={COLORS.LIGHTGRAY}
+                borderColor={COLORS.LIGHTGRAY}
+                onClick={handleDelete} 
+            />
+            <CustomButton
+                text={'수정'}
+                fontSize={'.8vw'}
+                width={'4vw'}
+                height={'4vh'}
+                color={COLORS.WHITE}
+                borderRadius={'20px'}
+                fontFamily={'Happiness-Sans-Bold'}
+                backgroundColor={COLORS.DARKGRAPEFRUIT}
+                borderColor={COLORS.DARKGRAPEFRUIT}
+                onClick={handleFormSubmit} 
+            />
+            </SubmitButtonWrapper>
             </UploadContainer>
         </Container>
     );
 };
 
-export default SskcookUpload;
+export default SskcookModify;
