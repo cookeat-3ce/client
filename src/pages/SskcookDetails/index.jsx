@@ -42,9 +42,11 @@ import Play from '../../assets/icons/play.svg';
 import Link from '../../assets/icons/link.svg';
 import KakaoIcon from '../../assets/icons/kakao.svg';
 import { getCookie } from '../../hooks';
-import { message, Menu, Dropdown, Flex } from 'antd';
+import { message, Menu, Dropdown } from 'antd';
 import { memberAPI } from '../../apis/member';
 import CustomImageButton from '../../components/Button/Image';
+import { useCustomNavigate } from '../../hooks';
+import LeftArrow from '../../assets/icons/left_arrow.svg';
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
   const [member, setMember] = useRecoilState(memberState);
@@ -55,6 +57,7 @@ const SskcookDetails = () => {
   const [isSubscriptionClicked, setIsSubscriptionClicked] = useState(false);
   const { Kakao } = window;
   const playerRef = useRef(null);
+  const { handleChangeUrl } = useCustomNavigate();
 
   const { transcript } = useSpeechRecognition();
 
@@ -232,7 +235,7 @@ const SskcookDetails = () => {
       content: {
         title: `${sskcookDetailsData.data.details[0].title}`,
         description: `${sskcookDetailsData.data.details[0].recipe}`,
-        imageUrl: 'https://ifh.cc/g/xk8b6X.jpg',
+        imageUrl: 'https://ifh.cc/g/lzPj16.png',
         link: {
           mobileWebUrl: window.location.href,
           webUrl: window.location.href,
@@ -569,12 +572,38 @@ const SskcookDetails = () => {
               : null}
           </TagContainer>
           <IngredientContainer>
-            <CustomText
-              text={'준비 재료'}
-              color={COLORS.BLACK}
-              fontFamily={'Happiness-Sans-Bold'}
-              fontSize={'1.3vw'}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '2vw' }}>
+              <CustomText
+                text={'준비 재료'}
+                color={COLORS.BLACK}
+                fontFamily={'Happiness-Sans-Bold'}
+                fontSize={'1.3vw'}
+              />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <CustomButton
+                  text={'한번에 구매'}
+                  color={COLORS.BLACK}
+                  backgroundColor={COLORS.WHITE}
+                  borderColor={COLORS.ORANGE}
+                  fontFamily={'Happiness-Sans-Bold'}
+                  width={'5vw'}
+                  height={'4vh'}
+                  fontSize={'.7vw'}
+                  borderRadius={'100px'}
+                  onClick={() => {
+                    handleChangeUrl('/order');
+                  }}
+                  style={{ position: 'relative' }}
+                />
+                <img
+                  src={LeftArrow}
+                  alt=""
+                  style={{ marginLeft: '-.5vw', cursor: 'pointer' }}
+                  onClick={() => handleChangeUrl('/order')}
+                />
+              </div>
+            </div>
+
             <IngredientInner>
               {sskcookDetailsData?.data?.ingredients.map((item, index) => (
                 <IngredientWrapper key={index}>
@@ -606,12 +635,9 @@ const SskcookDetails = () => {
                       width={'3vw'}
                       height={'3vh'}
                       fontFamily={'Happiness-Sans-Bold'}
-                      onClick={() =>
-                        window.open(
-                          `https://tohome.thehyundai.com/front/pd/pdf/searchResultInit.do?searchTerm=${item.name}&searchTypeCd=A`,
-                          '_blank',
-                        )
-                      }
+                      onClick={() => {
+                        handleChangeUrl('/order');
+                      }}
                     />
                   </IngredientSection>
                 </IngredientWrapper>

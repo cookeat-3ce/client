@@ -19,7 +19,7 @@ const CustomButton = ({
     width: width,
     height: height,
     backgroundColor: backgroundColor,
-    border: `1px solid ${borderColor}`,
+    border: `2px solid ${borderColor}`,
     fontSize: fontSize,
     fontFamily: fontFamily,
     borderRadius: borderRadius,

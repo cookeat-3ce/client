@@ -22,6 +22,7 @@ import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
+import Order from './pages/Order';
 import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
@@ -166,6 +167,7 @@ function App() {
             )
           }
         />
+        <Route path="/order" element={<Order />} />
       </Routes>
     </BrowserRouter>
   );
