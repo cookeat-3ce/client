@@ -21,7 +21,7 @@ import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
-import Sskcook from './pages/Sskcook';
+import SskcookUpload from './pages/SskcookUpload';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
 import { getCookie } from './hooks';
@@ -140,11 +140,11 @@ function App() {
         />
 
         <Route
-          path={'/sskcook/upload'}
+          path={'/info/upload'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
             <QueryClientProvider client={queryClient}>
-              <Sskcook />
+              <SskcookUpload />
             </QueryClientProvider>
             </CommonLayout>
           }
