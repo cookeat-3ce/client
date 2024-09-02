@@ -20,4 +20,11 @@ export const sskcookAPI = {
   sskcookDetailsAPI: (sskcookId) => {
     return instance.get(`/sskcook/${sskcookId}`);
   },
+  sskcookUploadAPI: (formData) => {
+    return instance.post('/sskcook', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
 };

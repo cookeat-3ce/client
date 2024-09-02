@@ -28,3 +28,19 @@ export const CustomSearchInputContainer = styled.input`
     color: ${COLORS.TAG};
   }
 `;
+
+export const CustomTextareaContainer = styled.textarea`
+  font-family: 'Happiness-Sans-Regular';
+
+  &:focus {
+    border: 1px solid ${COLORS.DARKGRAPEFRUIT} !important;
+    outline: none;
+  }
+`;
+
+export const CharacterCountContainer = styled.div`
+  bottom: 5px;
+  padding-left: 330px;
+  font-size: 0.8vw;
+  color: ${COLORS.GRAY};
+`;
