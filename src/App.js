@@ -22,9 +22,13 @@ import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
 import SskcookUpload from './pages/SskcookUpload';
+import LongcookUpload from './pages/LongcookUpload';
+import SskcookModify from './pages/SskcookModify';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
+import Order from './pages/Order';
 import Info from './pages/Info';
+
 import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
@@ -143,12 +147,34 @@ function App() {
         />
 
         <Route
-          path={'/info/upload'}
+          path={'/info/sskcook/upload'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <QueryClientProvider client={queryClient}>
                 <SskcookUpload />
               </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
+        <Route
+          path={'info/longcook/upload'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <LongcookUpload />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
+        <Route
+          path={'info/sskcook/update/:id'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <SskcookModify />
+            </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -184,6 +210,7 @@ function App() {
             )
           }
         />
+        <Route path="/order" element={<Order />} />
         <Route
           path={'/info'}
           element={

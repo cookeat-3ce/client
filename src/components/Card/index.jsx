@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player/lazy';
+import { Container } from './styles';
 import { Container, Overlay } from './styles';
 import { useCustomNavigate } from '../../hooks';
 import TrashIcon from '../../assets/icons/trash_white.svg';
@@ -11,9 +12,7 @@ import { sskcookAPI } from '../../apis/sskcook';
 const VideoPlayer = ({ type, url, id, color, isInMyInfo = false }) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
-  const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
-  const { handleChangeUrl } = useCustomNavigate();
 
   const queryClient = useQueryClient();
 
@@ -45,6 +44,7 @@ const VideoPlayer = ({ type, url, id, color, isInMyInfo = false }) => {
     setPlay(false);
     setHover(false);
   };
+
 
   const handleClick = (event) => {
     event.stopPropagation();
