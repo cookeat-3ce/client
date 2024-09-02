@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import './styles/reset.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   BrowserRouter,
   Route,
@@ -20,6 +21,7 @@ import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
+import SskcookUpload from './pages/SskcookUpload';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
 import Info from './pages/Info';
@@ -27,7 +29,11 @@ import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
+import CreateLive from './pages/CreateLive';
 
+const queryClient = new QueryClient();
+
+// Component that handles redirecting admins
 const AdminRedirector = ({ role }) => {
   const navigate = useNavigate();
 
@@ -122,9 +128,7 @@ function App() {
                 <Stored />
               </CommonLayout>
             ) : (
-              <AuthLayout>
-                <Login />
-              </AuthLayout>
+              <Navigate to={'/login'} replace />
             )
           }
         />
@@ -136,6 +140,18 @@ function App() {
             </CommonLayout>
           }
         />
+
+        <Route
+          path={'/info/upload'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <SskcookUpload />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
         <Route
           path="/search"
           element={
@@ -172,6 +188,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <Info />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/live/create"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <CreateLive></CreateLive>
             </CommonLayout>
           }
         />
