@@ -12,6 +12,7 @@ export const COLORS = {
   GRAPEFRUIT: 'rgba(255, 89, 53, 0.4)',
   DARKGRAPEFRUIT: '#FF785B',
   STROKE: '#CECECE',
+  SUCCESS: '#79DEB4',
   한식: '#C93A40',
   일식: '#2E3A59',
   양식: '#4A7A8C',

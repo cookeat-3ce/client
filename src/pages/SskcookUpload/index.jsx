@@ -31,7 +31,7 @@ import { COLORS, TAGS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { sskcookAPI } from '../../apis/sskcook';
 
-const Sskcook = () => {
+const SskcookUpload = () => {
     const [file, setFile] = useState(null);
     const [ingredients, setIngredients] = useState([]);
     const [ingredientName, setIngredientName] = useState('');
@@ -275,4 +275,4 @@ const Sskcook = () => {
     );
 };
 
-export default Sskcook;
+export default SskcookUpload;

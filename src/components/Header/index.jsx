@@ -7,7 +7,7 @@ import {
   LogoContainer,
   Header,
 } from './styles';
-import AlarmIcon from '../../assets/icons/alarm.png';
+import AlarmIcon from '../../assets/icons/alarm.svg';
 import CustomTextButton from '../Button/Text';
 import CustomImageButton from '../Button/Image';
 import { COLORS } from '../../constants';
@@ -47,7 +47,9 @@ const CustomHeader = () => {
                 src={persist.profileImage}
                 width="5vh"
                 height="5vh"
-                onClick={handleClick}
+                onClick={() => {
+                  handleChangeUrl('/info');
+                }}
               />
             </>
           ) : location === '/login' ? (

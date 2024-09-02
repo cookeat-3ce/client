@@ -6,24 +6,24 @@ import {
   SkeletonContainer,
   CardContainer,
   CardWrapper,
-} from './styles';
+} from '../Tag/styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
-
-const Tag = () => {
+const SskcookMonthly = () => {
   const location = window.location.search;
   const parsed = queryString.parse(location);
-  const tag = parsed.tag;
-
+  const date = parsed.date;
+  const today = new Date();
+  const month = today.getMonth() + 1;
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: [tag],
+    queryKey: [date],
     queryFn: ({ pageParam = 1 }) =>
       instance
-        .get(`/sskcook?tag=${tag}&page=${pageParam}`)
+        .get(`/sskcook?date=${date}&page=${pageParam}`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
@@ -58,13 +58,7 @@ const Tag = () => {
     <Container>
       <TextContainer>
         <CustomText
-          text={'#'}
-          fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1.3vw'}
-          color={COLORS.BLACK}
-        />
-        <CustomText
-          text={tag}
+          text={`${month}월의 인기 슥쿡`}
           fontFamily={'Happiness-Sans-Bold'}
           fontSize={'1.3vw'}
           color={COLORS.BLACK}
@@ -84,7 +78,7 @@ const Tag = () => {
           >
             <CustomText
               fontFamily={'Happiness-Sans-Bold'}
-              text={'해당 태그의 슥쿡이 없어요!'}
+              text={'이번 달 인기 있는 슥쿡이 없어요!'}
               fontSize={'1.5vw'}
               color={COLORS.DARKGRAPEFRUIT}
             />
@@ -115,6 +109,7 @@ const Tag = () => {
             </CardContainer>
           ))
         )}
+
         {isLoading && (
           <>
             <StyledSskcookSkeleton />
@@ -134,4 +129,4 @@ const Tag = () => {
   );
 };
 
-export default Tag;
+export default SskcookMonthly;

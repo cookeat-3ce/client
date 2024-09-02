@@ -16,16 +16,12 @@ export const sskcookAPI = {
       },
     });
   },
-  tagSskcookListAPI: (tag, page) => {
-    return instance.get('/sskcook', {
-      params: {
-        tag: tag,
-        page: page,
-      },
-    });
+
+  sskcookDetailsAPI: (sskcookId) => {
+    return instance.get(`/sskcook/${sskcookId}`);
   },
-  sskcookDetailsAPI: (data) => {
-    return instance.get(`/sskcook/${data}`);
+  sskcookDeleteAPI: (sskcookId) => {
+    return instance.delete(`/sskcook/${sskcookId}`);
   },
   sskcookUploadAPI: (formData) => {
     return instance.post('/sskcook', formData, {
