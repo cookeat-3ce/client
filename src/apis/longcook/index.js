@@ -16,4 +16,11 @@ export const longcookAPI = {
       },
     });
   },
+  longcookUpdateAPI: (formData) => {
+    return instance.put('/longcook', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
 };

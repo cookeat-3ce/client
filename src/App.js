@@ -24,6 +24,7 @@ import Tag from './pages/Tag';
 import SskcookUpload from './pages/SskcookUpload';
 import LongcookUpload from './pages/LongcookUpload';
 import SskcookModify from './pages/SskcookModify';
+import LongcookModify from './pages/LongcookModify';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
 import Info from './pages/Info';
@@ -172,6 +173,17 @@ function App() {
             <CommonLayout isLogined={!!getCookie('accessToken')}>
             <QueryClientProvider client={queryClient}>
               <SskcookModify />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
+        <Route
+          path={'info/longcook/update/:id'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <LongcookModify />
             </QueryClientProvider>
             </CommonLayout>
           }
