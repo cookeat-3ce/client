@@ -37,6 +37,12 @@ export const sskcookAPI = {
       },
     });
   },
+  LikeAPI: (sskcookId) => {
+    return instance.post('/sskcook/likes', { sskcookId: sskcookId });
+  },
+  ReportAPI: (sskcookId) => {
+    return instance.post('/sskcook/report', { sskcookId: sskcookId });
+  },
   sskcookDeleteAPI: (id) => {
     return instance.delete(`/sskcook/${id}`);
   }

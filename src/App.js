@@ -26,6 +26,7 @@ import LongcookUpload from './pages/LongcookUpload';
 import SskcookModify from './pages/SskcookModify';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
+import Order from './pages/Order';
 import Info from './pages/Info';
 
 import { getCookie } from './hooks';
@@ -208,6 +209,7 @@ function App() {
             )
           }
         />
+        <Route path="/order" element={<Order />} />
         <Route
           path={'/info'}
           element={
