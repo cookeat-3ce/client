@@ -21,4 +21,7 @@ export const memberAPI = {
       followerUsername,
     });
   },
+  myInfoAPI: (username) => {
+    return instance.get(`/member/${username}`);
+  },
 };

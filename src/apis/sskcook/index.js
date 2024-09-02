@@ -16,16 +16,26 @@ export const sskcookAPI = {
       },
     });
   },
-  tagSskcookListAPI: (tag, pageParam) => {
-    return instance.get('/sskcook', {
-      params: {
-        tag: tag,
-        page: pageParam,
+
+  sskcookDetailsAPI: (sskcookId) => {
+    return instance.get(`/sskcook/${sskcookId}`);
+  },
+  sskcookDeleteAPI: (sskcookId) => {
+    return instance.delete(`/sskcook/${sskcookId}`);
+  },
+  sskcookUploadAPI: (formData) => {
+    return instance.post('/sskcook', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
     });
   },
-  sskcookDetailsAPI: (sskcookId) => {
-    return instance.get(`/sskcook/${sskcookId}`);
+  sskcookUpdateAPI: (formData) => {
+    return instance.put('/sskcook', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
   LikeAPI: (sskcookId) => {
     return instance.post('/sskcook/likes', { sskcookId: sskcookId });
@@ -33,4 +43,7 @@ export const sskcookAPI = {
   ReportAPI: (sskcookId) => {
     return instance.post('/sskcook/report', { sskcookId: sskcookId });
   },
+  sskcookDeleteAPI: (id) => {
+    return instance.delete(`/sskcook/${id}`);
+  }
 };

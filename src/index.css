@@ -1,0 +1,15 @@
+html, body {
+    height: 100%;
+    font-family: "Open Sans", sans-serif;
+  }
+  
+  html {
+    display: table;
+    margin: auto;
+  }
+  
+  body {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
