@@ -13,12 +13,9 @@ import {
     IngredientsInputWrapper,
     AddButtonWrapper,
     RecipeContainer,
-    HashtagContainer,
     IngredientsListContainer,
     IngredientItem,
     RemoveButton,
-    Space,
-    CustomSelect,
     VideoPreviewContainer,
     PlaceholderText,
     VideoPreview,
@@ -27,28 +24,18 @@ import {
 import CustomText from '../../components/Text';
 import CustomTextButton from '../../components/Button/Text';
 import CustomButton from '../../components/Button';
-import { COLORS, TAGS } from '../../constants';
+import { COLORS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
-import { sskcookAPI } from '../../apis/sskcook';
+import { longcookAPI } from '../../apis/longcook';
 
-const SskcookUpload = () => {
+const LongcookUpload = () => {
     const [file, setFile] = useState(null);
     const [ingredients, setIngredients] = useState([]);
     const [ingredientName, setIngredientName] = useState('');
     const [ingredientAmount, setIngredientAmount] = useState('');
     const [title, setTitle] = useState('');
     const [recipe, setRecipe] = useState('');
-    const [selectedTags, setSelectedTags] = useState([]);
     const fileInputRef = useRef(null);
-
-    const options = Object.keys(TAGS).map(key => ({
-        label: TAGS[key],
-        value: key,
-    }));
-
-    const handleChange = (value) => {
-        setSelectedTags(value);
-    };
 
     const videoUpload = (e) => {
         const selectedFile = e.target.files[0];
@@ -77,7 +64,7 @@ const SskcookUpload = () => {
         setIngredients(ingredients.filter((_, i) => i !== index));
     };
 
-    const mutation = useMutation((formData) => sskcookAPI.sskcookUploadAPI(formData), {
+    const mutation = useMutation((formData) => longcookAPI.longcookUploadAPI(formData), {
         onSuccess: () => {
             console.log('업로드 성공');
         },
@@ -96,31 +83,63 @@ const SskcookUpload = () => {
         const formData = new FormData();
 
         // sskcook JSON 데이터
-        const sskcookData = JSON.stringify({
+        const longcookData = JSON.stringify({
             username : 'faker',
             title: title,
             recipe: recipe,
-            ingredient: ingredients,
-            hashtag: [{
-                hashtagId : 1
-            }]
+            ingredient: ingredients
         });
 
         formData.append('file', file.fileObject);
-        formData.append('sskcook', sskcookData);
+        formData.append('longcook', longcookData);
         mutation.mutate(formData);
     };
 
     return (
         <Container>
+            <TextContainer>
+                <CustomText
+                    text="스-윽쿡 등록"
+                    fontFamily={'Happiness-Sans-Bold'}
+                    color={COLORS.BLACK}
+                />
+            </TextContainer>
+            <UploadContainer>
+            <SubTitleContainer>
+                <CustomText
+                    text="스-윽쿡"
+                    fontFamily={'Happiness-Sans-Bold'}
+                    fontSize={'1vw'}
+                    color={COLORS.BLACK}
+                />
+                <UploadButtonWrapper>
+                <CustomButton
+                    text={'업로드'}
+                    fontSize={'.6vw'}
+                    width={'4vw'}
+                    height={'3vh'}
+                    color={COLORS.WHITE}
+                    borderRadius={'20px'}
+                    fontFamily={'Happiness-Sans-Bold'}
+                    backgroundColor={COLORS.BLACK}
+                    borderColor={COLORS.BLACK}
+                    onClick={handleUploadClick}
+                />
+                </UploadButtonWrapper>
+                </SubTitleContainer>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={videoUpload}
+                    accept='video/*'
+                />
+                <VideoPreviewContainer>
+                    <VideoPreview file={file && file.video} src={file ? file.url : ''} controls />
+                    <PlaceholderText file={file && file.video}>영상 미리보기가 여기에 표시됩니다.</PlaceholderText>
+                </VideoPreviewContainer>
+            </UploadContainer>
             <InputContainer>
-                <TextContainer>
-                    <CustomText
-                        text="슥쿡 등록"
-                        fontFamily={'Happiness-Sans-Bold'}
-                        color={COLORS.BLACK}
-                    />
-                </TextContainer>
                 <TitleContainer>
                     <CustomText
                         text={"제목"}
@@ -198,64 +217,12 @@ const SskcookUpload = () => {
                     value={recipe}
                     onChange={(e) => setRecipe(e.target.value)}
                     fontSize={'1vw'}
-                    height={120}
-                    width={350}
-                    maxLength={500}  // 최대 글자 수 지정
+                    height={150}
+                    width={500}
+                    maxLength={1200}
+                    paddingLeft={480}
                 />
                 </CustomInputWrapper>
-                <HashtagContainer>
-                    <CustomText
-                        text={'해시태그'}
-                        fontFamily={'Happiness-Sans-Bold'}
-                        fontSize={'1vw'}
-                        color={COLORS.BLACK}
-                    />
-                    <Space>
-                        <CustomSelect
-                            mode="multiple"
-                            allowClear
-                            placeholder="태그 선택하기"
-                            onChange={handleChange}
-                            options={options}
-                        />
-                    </Space>
-                </HashtagContainer>
-            </InputContainer>
-            
-            <UploadContainer>
-            <SubTitleContainer>
-                <CustomText
-                    text="슥쿡"
-                    fontFamily={'Happiness-Sans-Bold'}
-                    fontSize={'1vw'}
-                    color={COLORS.BLACK}
-                />
-                <UploadButtonWrapper>
-                <CustomButton
-                    text={'업로드'}
-                    fontSize={'.6vw'}
-                    width={'4vw'}
-                    height={'3vh'}
-                    color={COLORS.WHITE}
-                    borderRadius={'20px'}
-                    fontFamily={'Happiness-Sans-Bold'}
-                    backgroundColor={COLORS.BLACK}
-                    borderColor={COLORS.BLACK}
-                    onClick={handleUploadClick}
-                />
-                </UploadButtonWrapper>
-                </SubTitleContainer>
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                    onChange={videoUpload}
-                    accept='video/*'
-                />
-                <VideoPreviewContainer>
-                    <VideoPreview file={file && file.video} src={file ? file.url : ''} controls />
-                    <PlaceholderText file={file && file.video}>영상 미리보기가 여기에 표시됩니다.</PlaceholderText>
-                </VideoPreviewContainer>
                 <SubmitButtonWrapper>
                 <CustomButton
                     text={'등록'}
@@ -270,9 +237,9 @@ const SskcookUpload = () => {
                     onClick={handleFormSubmit} 
                 />
                 </SubmitButtonWrapper>
-            </UploadContainer>
+            </InputContainer>
         </Container>
     );
 };
 
-export default SskcookUpload;
+export default LongcookUpload;

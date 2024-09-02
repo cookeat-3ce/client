@@ -21,8 +21,9 @@ import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
-import SskcookModify from './pages/SskcookModify';
 import SskcookUpload from './pages/SskcookUpload';
+import LongcookUpload from './pages/LongcookUpload';
+import SskcookModify from './pages/SskcookModify';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
 import Info from './pages/Info';
@@ -149,6 +150,17 @@ function App() {
             <CommonLayout isLogined={!!getCookie('accessToken')}>
             <QueryClientProvider client={queryClient}>
               <SskcookUpload />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
+
+        <Route
+          path={'info/longcook/upload'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <LongcookUpload />
             </QueryClientProvider>
             </CommonLayout>
           }
