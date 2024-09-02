@@ -24,6 +24,7 @@ import Tag from './pages/Tag';
 import SskcookUpload from './pages/SskcookUpload';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
+import Info from './pages/Info';
 import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
@@ -180,6 +181,14 @@ function App() {
                 <Home />
               </CommonLayout>
             )
+          }
+        />
+        <Route
+          path={'/info'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <Info />
+            </CommonLayout>
           }
         />
         <Route

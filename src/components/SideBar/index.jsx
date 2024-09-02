@@ -39,7 +39,7 @@ const CustomSideBar = () => {
     { icon: Subscribe, label: '구독', path: '/' },
     { icon: Storage, label: '보관함', path: '/stored' },
     { icon: Event, label: '이벤트', path: '/' },
-    { icon: MyInfo, label: '내 정보', path: '/' },
+    { icon: MyInfo, label: '내 정보', path: '/info' },
     { icon: Refrigerator, label: '냉장고 파헤치기', path: '/' },
   ];
   const resetMemberState = useResetRecoilState(memberState);

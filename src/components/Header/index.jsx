@@ -47,7 +47,9 @@ const CustomHeader = () => {
                 src={persist.profileImage}
                 width="5vh"
                 height="5vh"
-                onClick={handleClick}
+                onClick={() => {
+                  handleChangeUrl('/info');
+                }}
               />
             </>
           ) : location === '/login' ? (
