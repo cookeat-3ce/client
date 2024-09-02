@@ -9,4 +9,11 @@ export const longcookAPI = {
       },
     });
   },
+  longcookUploadAPI: (formData) => {
+    return instance.post('/longcook', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
 };

@@ -24,9 +24,9 @@ import {
 import CustomText from '../../components/Text';
 import CustomTextButton from '../../components/Button/Text';
 import CustomButton from '../../components/Button';
-import { COLORS, TAGS } from '../../constants';
+import { COLORS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
-import { sskcookAPI } from '../../apis/sskcook';
+import { longcookAPI } from '../../apis/longcook';
 
 const Longcook = () => {
     const [file, setFile] = useState(null);
@@ -35,17 +35,7 @@ const Longcook = () => {
     const [ingredientAmount, setIngredientAmount] = useState('');
     const [title, setTitle] = useState('');
     const [recipe, setRecipe] = useState('');
-    const [selectedTags, setSelectedTags] = useState([]);
     const fileInputRef = useRef(null);
-
-    const options = Object.keys(TAGS).map(key => ({
-        label: TAGS[key],
-        value: key,
-    }));
-
-    const handleChange = (value) => {
-        setSelectedTags(value);
-    };
 
     const videoUpload = (e) => {
         const selectedFile = e.target.files[0];
@@ -74,7 +64,7 @@ const Longcook = () => {
         setIngredients(ingredients.filter((_, i) => i !== index));
     };
 
-    const mutation = useMutation((formData) => sskcookAPI.sskcookUploadAPI(formData), {
+    const mutation = useMutation((formData) => longcookAPI.longcookUploadAPI(formData), {
         onSuccess: () => {
             console.log('업로드 성공');
         },
@@ -93,18 +83,15 @@ const Longcook = () => {
         const formData = new FormData();
 
         // sskcook JSON 데이터
-        const sskcookData = JSON.stringify({
+        const longcookData = JSON.stringify({
             username : 'faker',
             title: title,
             recipe: recipe,
-            ingredient: ingredients,
-            hashtag: [{
-                hashtagId : 1
-            }]
+            ingredient: ingredients
         });
 
         formData.append('file', file.fileObject);
-        formData.append('sskcook', sskcookData);
+        formData.append('longcook', longcookData);
         mutation.mutate(formData);
     };
 
@@ -232,7 +219,7 @@ const Longcook = () => {
                     fontSize={'1vw'}
                     height={120}
                     width={350}
-                    maxLength={500}  // 최대 글자 수 지정
+                    maxLength={500}
                 />
                 </CustomInputWrapper>
                 <SubmitButtonWrapper>
