@@ -77,8 +77,8 @@ export const RecipeContainer = styled.div`
 `;
 
 export const VideoPreviewContainer = styled.div`
-  width: 128vh;
-  height: 72vh;
+  width: 112vh;
+  height: 64vh;
   border: 1px solid #f0f0f0; /* 테두리 색상 */
   border-radius: 5px; /* 테두리 둥글기 */
   background-color: ${COLORS.LIGHT_GRAY}; /* 배경색 */
