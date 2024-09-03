@@ -34,8 +34,9 @@ import { message } from 'antd';
 import { useRecoilValue } from 'recoil';
 import { memberState } from '../../store';
 import { getCookie } from '../../hooks';
-
+import { useCustomNavigate } from '../../hooks';
 const SubscriptionInfo = () => {
+  const { handleChangeUrl } = useCustomNavigate();
   const [userDetailInfoString, setUserDetailInfoString] = useState('');
   const [userDetailOneLiner, setUserDetailOneLiner] = useState('');
   const [selectedMenu, setSelectedMenu] = useState('sskcook');
@@ -45,6 +46,12 @@ const SubscriptionInfo = () => {
   const [isSubscriptionClicked, setIsSubscriptionClicked] = useState(false);
   const { username } = useParams();
   const member = useRecoilValue(memberState);
+
+  useEffect(() => {
+    if (username === member.username) {
+      handleChangeUrl('/');
+    }
+  }, []);
 
   // Fetch user information
   const myInfoQuery = useQuery({
