@@ -301,30 +301,30 @@ const SskcookModify = () => {
                     <PlaceholderText file={file && file.video}>영상 미리보기가 여기에 표시됩니다.</PlaceholderText>
                 </VideoPreviewContainer>
                 <SubmitButtonWrapper>
-            <CustomButton
-                text={'삭제'}
-                fontSize={'.8vw'}
-                width={'4vw'}
-                height={'4vh'}
-                color={COLORS.WHITE}
-                borderRadius={'20px'}
-                fontFamily={'Happiness-Sans-Bold'}
-                backgroundColor={COLORS.LIGHTGRAY}
-                borderColor={COLORS.LIGHTGRAY}
-                onClick={handleDelete} 
-            />
-            <CustomButton
-                text={'수정'}
-                fontSize={'.8vw'}
-                width={'4vw'}
-                height={'4vh'}
-                color={COLORS.WHITE}
-                borderRadius={'20px'}
-                fontFamily={'Happiness-Sans-Bold'}
-                backgroundColor={COLORS.DARKGRAPEFRUIT}
-                borderColor={COLORS.DARKGRAPEFRUIT}
-                onClick={handleFormSubmit} 
-            />
+                <CustomButton
+                    text={'삭제'}
+                    fontSize={'.8vw'}
+                    width={'4vw'}
+                    height={'4vh'}
+                    color={COLORS.WHITE}
+                    borderRadius={'20px'}
+                    fontFamily={'Happiness-Sans-Bold'}
+                    backgroundColor={COLORS.LIGHTGRAY}
+                    borderColor={COLORS.LIGHTGRAY}
+                    onClick={handleDelete} 
+                />
+                <CustomButton
+                    text={'수정'}
+                    fontSize={'.8vw'}
+                    width={'4vw'}
+                    height={'4vh'}
+                    color={COLORS.WHITE}
+                    borderRadius={'20px'}
+                    fontFamily={'Happiness-Sans-Bold'}
+                    backgroundColor={COLORS.DARKGRAPEFRUIT}
+                    borderColor={COLORS.DARKGRAPEFRUIT}
+                    onClick={handleFormSubmit} 
+                />
             </SubmitButtonWrapper>
             </UploadContainer>
         </Container>

@@ -21,6 +21,7 @@ import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
+import LongcookList from './pages/LongcookList';
 import SskcookUpload from './pages/SskcookUpload';
 import LongcookUpload from './pages/LongcookUpload';
 import SskcookModify from './pages/SskcookModify';
@@ -178,7 +179,14 @@ function App() {
             </CommonLayout>
           }
         />
-
+        <Route
+          path="/longcook"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <LongcookList />
+            </CommonLayout>
+          }
+        />
         <Route
           path="/search"
           element={

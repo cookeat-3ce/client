@@ -35,6 +35,9 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
+          onClick={() => {
+            window.location.href = `/longcook?keyword=&page=1`
+          }}
         >
           <CustomText
             text={secondText}
