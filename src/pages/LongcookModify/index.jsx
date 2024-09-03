@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect, useParams } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { 
     Container,
@@ -42,9 +43,9 @@ const LongcookModify = () => {
     const [longcookId, setLongcookId] = useState('');
 
     useEffect(() => {
-        const fetchSskcookDetails = async() => {
+        const fetchLongcookDetails = async() => {
             try {
-                const{ data } = await longcookAPI.sskcookDetailsAPI(id);
+                const{ data } = await longcookAPI.longcookDetailsAPI(id);
                 console.log(data.details[0]);
                 setTitle(data.details[0].title);
                 setRecipe(data.details[0].recipe);
@@ -59,11 +60,11 @@ const LongcookModify = () => {
                     });
                 }
             } catch (error) {
-                console.error('Error fetching sskcook details: ', error);
+                console.error('Error fetching longcook details: ', error);
             }
         };
 
-        fetchSskcookDetails();
+        fetchLongcookDetails();
     }, [id]);
 
     const videoUpload = (e) => {
@@ -103,17 +104,14 @@ const LongcookModify = () => {
     });
 
     const handleFormSubmit = async () => {
-        if (!file || !file.fileObject) {
-            console.error("파일이 선택되지 않았습니다.");
-            return;
-        }
 
         // FormData 생성
         const formData = new FormData();
 
-        // sskcook JSON 데이터
+        // longcook JSON 데이터
         const longcookData = JSON.stringify({
-            username : 'faker',
+            longcookUrl : longcookUrl,
+            longcookId : longcookId,
             title: title,
             recipe: recipe,
             ingredient: ingredients
@@ -124,11 +122,23 @@ const LongcookModify = () => {
         mutation.mutate(formData);
     };
 
+    const handleDelete = async () => {
+        try {
+            const confirmed = window.confirm("정말로 슥쿡을 삭제하시겠습니까?");
+            if (confirmed) {
+                await longcookAPI.longcookDeleteAPI(longcookId);
+                console.log('삭제 성공');
+            }
+        } catch (error) {
+            console.error('삭제 실패:', error);
+        }
+    };
+
     return (
         <Container>
             <TextContainer>
                 <CustomText
-                    text="스-윽쿡 등록"
+                    text="스-윽쿡 수정"
                     fontFamily={'Happiness-Sans-Bold'}
                     color={COLORS.BLACK}
                 />
@@ -252,21 +262,33 @@ const LongcookModify = () => {
                     paddingLeft={480}
                 />
                 </CustomInputWrapper>
-                <SubmitButtonWrapper>
-                <CustomButton
-                    text={'등록'}
-                    fontSize={'.8vw'}
-                    width={'4vw'}
-                    height={'4vh'}
-                    color={COLORS.WHITE}
-                    borderRadius={'20px'}
-                    fontFamily={'Happiness-Sans-Bold'}
-                    backgroundColor={COLORS.DARKGRAPEFRUIT}
-                    borderColor={COLORS.DARKGRAPEFRUIT}
-                    onClick={handleFormSubmit} 
-                />
-                </SubmitButtonWrapper>
             </InputContainer>
+            <SubmitButtonWrapper>
+            <CustomButton
+                text={'삭제'}
+                fontSize={'.8vw'}
+                width={'4vw'}
+                height={'4vh'}
+                color={COLORS.WHITE}
+                borderRadius={'20px'}
+                fontFamily={'Happiness-Sans-Bold'}
+                backgroundColor={COLORS.LIGHTGRAY}
+                borderColor={COLORS.LIGHTGRAY}
+                onClick={handleDelete} 
+            />
+            <CustomButton
+                text={'수정'}
+                fontSize={'.8vw'}
+                width={'4vw'}
+                height={'4vh'}
+                color={COLORS.WHITE}
+                borderRadius={'20px'}
+                fontFamily={'Happiness-Sans-Bold'}
+                backgroundColor={COLORS.DARKGRAPEFRUIT}
+                borderColor={COLORS.DARKGRAPEFRUIT}
+                onClick={handleFormSubmit} 
+            />
+            </SubmitButtonWrapper>
         </Container>
     );
 };

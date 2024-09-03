@@ -1,6 +1,9 @@
 import instance from '..';
 
 export const longcookAPI = {
+  longcookDetailsAPI: (longcookId) => {
+    return instance.get(`/longcook/${longcookId}`);
+  },
   recentLongcookListAPI: (page) => {
     return instance.get('/longcook', {
       params: {
@@ -23,4 +26,7 @@ export const longcookAPI = {
       },
     });
   },
+  longcookDeleteAPI: (id) => {
+    return instance.delete(`/longcook/${id}`);
+  }
 };
