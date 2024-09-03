@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player/lazy';
-import { Container } from './styles';
 import { Container, Overlay } from './styles';
 import { useCustomNavigate } from '../../hooks';
 import TrashIcon from '../../assets/icons/trash_white.svg';
@@ -45,11 +44,10 @@ const VideoPlayer = ({ type, url, id, color, isInMyInfo = false }) => {
     setHover(false);
   };
 
-
   const handleClick = (event) => {
     event.stopPropagation();
     console.log('id: ', id);
-    handleChangeUrl(`/${type}/${id}`);
+    window.location.href = `/${type}/${id}`;
   };
 
   return (
