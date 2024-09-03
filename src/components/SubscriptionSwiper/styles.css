@@ -1,0 +1,39 @@
+.swiper.subscription {
+  width: 60vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  padding: 2vh;
+}
+
+.swiper-slide.subscription {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 5vw;
+  height: 5vw;
+
+  transition: transform 0.3s ease;
+}
+
+.swiper-slide.subscription:hover {
+  transform: scale(1.05);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: rgba(255, 89, 53, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.subscription:hover .swiper-button-next,
+.subscription:hover .swiper-button-prev {
+  opacity: 1;
+  visibility: visible;
+}

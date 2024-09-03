@@ -34,7 +34,8 @@ import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
 import CreateLive from './pages/CreateLive';
-
+import Subscription from './pages/Subscription';
+import SubscriptionInfo from './pages/SubscriptionInfo';
 const queryClient = new QueryClient();
 
 // Component that handles redirecting admins
@@ -149,9 +150,9 @@ function App() {
           path={'/info/sskcook/upload'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <SskcookUpload />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <SskcookUpload />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -223,6 +224,26 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <CreateLive></CreateLive>
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/subscription"
+          element={
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <Subscription />
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
+          }
+        />
+        <Route
+          path="/subscription/:username"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <SubscriptionInfo />
             </CommonLayout>
           }
         />

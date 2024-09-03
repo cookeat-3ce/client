@@ -482,6 +482,11 @@ const SskcookDetails = () => {
               src={sskcookDetailsData.data.details[0].profileImage}
               width={'3vw'}
               height={'3vw'}
+              onClick={() =>
+                handleChangeUrl(
+                  `/subscription/${sskcookDetailsData.data.details[0].username}`,
+                )
+              }
             />
           </IngredientSection>
           <IngredientSection>
