@@ -35,7 +35,7 @@ const CustomSwiper = ({ arr, onReachEnd }) => {
           ref={swiperRef}
           onReachEnd={handleReachEnd}
           slidesPerView={'auto'}
-          spaceBetween={20}
+          spaceBetween={30}
           pagination={false}
           navigation={true}
           modules={[Pagination, Navigation]}
