@@ -453,6 +453,7 @@ const Subscription = () => {
         <div style={{ width: '70vw' }}>
           <div
             style={{
+              marginTop: '3vh',
               height: '50vh',
               margin: '0 auto',
               textAlign: 'center',

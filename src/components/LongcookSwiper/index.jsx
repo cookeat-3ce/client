@@ -64,7 +64,11 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
           >
             {arr.map((slide, index) => (
               <SwiperSlide key={index} className={'longcook'}>
-                <Card url={slide.longcookUrl} />
+                <Card
+                  url={slide.longcookUrl}
+                  type={'longcook'}
+                  id={slide.longcookId}
+                />
               </SwiperSlide>
             ))}
           </Swiper>
