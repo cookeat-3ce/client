@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getCookie } from '../hooks';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'https://api.cookeat.site:443/api',
   headers: {
     Accept: 'application/json',
   },
