@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { COLORS } from '../../constants';
 
 export const Container = styled.div`
   display: flex;
@@ -41,8 +42,33 @@ export const CardWrapper = styled.div`
   height : 10vh;
 `;
 
-export const TitleContainer = styled.div`  // 새로 추가된 부분
+
+export const TitleContainer = styled.div`
   margin-top: 1vh;
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
+`;
+
+export const TitleText = styled.div`
+  font-family: 'Happiness-Sans-Bold';
+  font-size: 1vw;
+  color: ${COLORS.BLACK};
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+`;
+
+export const NicknameText = styled.div`
+  font-family: 'Happiness-Sans';
+  font-size: 1vw;
+  color: ${COLORS.LIGHTGRAY};
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 30%;
 `;

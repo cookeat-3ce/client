@@ -16,4 +16,7 @@ export const longcookAPI = {
       },
     });
   },
+  longcookDeleteAPI: (longcookId) => {
+    return instance.delete(`/longcook/${longcookId}`);
+  },
 };

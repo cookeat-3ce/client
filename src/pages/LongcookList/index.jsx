@@ -7,24 +7,26 @@ import {
   CardWrapper,
   CardGrid,
   InputContainer,
-  TitleContainer
+  TitleContainer,
+  TitleText,
+  NicknameText
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledLongcookSkeleton } from '../Home/styles';
-import Card from '../../components/LongcookCard';
+import Card from '../../components/Card';
 import { CustomSearchInput } from '../../components/Input';
 
 const LongcookList = () => {
   const [searchValue, setSearchValue] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ['LongcookList', searchQuery],  // searchValue를 queryKey에 포함
+    queryKey: ['LongcookList', searchQuery], 
     queryFn: ({ pageParam = 1 }) =>
       instance
-        .get(`/longcook?keyword=${searchQuery}&page=${pageParam}`)  // searchValue를 keyword로 사용
+        .get(`/longcook?keyword=${searchQuery}&page=${pageParam}`) 
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
@@ -124,15 +126,12 @@ const LongcookList = () => {
                     type={'longcook'}
                     id={item.longcookId}
                     color={COLORS.BLACK}
+                    height={'30vh'}
                   />
-                  <TitleContainer> {/* 새로 추가된 부분 */}
-                  <CustomText
-                    text={item.title} // 각 영상의 제목을 표시
-                    fontFamily={'Happiness-Sans-Bold'}
-                    fontSize={'1vw'}
-                    color={COLORS.BLACK}
-                  />
-                </TitleContainer>
+                  <TitleContainer>
+                      <TitleText>{item.title}</TitleText>
+                      <NicknameText>{item.nickname}</NicknameText>
+                  </TitleContainer>
                 </CardWrapper>
               </CardContainer>
             </CardGrid>

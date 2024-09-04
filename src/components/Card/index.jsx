@@ -1,32 +1,29 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player/lazy';
 import { Container, Overlay } from './styles';
-import { useCustomNavigate } from '../../hooks';
-import TrashIcon from '../../assets/icons/trash_white.svg';
 import CustomImageButton from '../Button/Image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { noticeAPI } from '../../apis/notice';
-import { sskcookAPI } from '../../apis/sskcook';
+import TrashIcon from '../../assets/icons/trash_white.svg';
 
-const VideoPlayer = ({ type, url, id, color, isInMyInfo = false }) => {
+const VideoPlayer = ({ type, url, id, color, isInMyInfo = false, deleteAPI, queryKey, height }) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
   const playerRef = useRef(null);
 
   const queryClient = useQueryClient();
-
+  console.log(typeof deleteAPI);
   const mutation = useMutation({
-    mutationFn: (sskcookId) => sskcookAPI.sskcookDeleteAPI(sskcookId),
+    mutationFn: (id) => deleteAPI(id),
     onSuccess: () => {
-      queryClient.invalidateQueries('sskcooks');
+      queryClient.invalidateQueries(queryKey);
     },
     onError: (error) => {
-      console.error('Failed to delete sskcook:', error);
+      console.error(`Failed to delete ${type}:`, error);
     },
   });
 
   const handleDeleteButtonClick = () => {
-    console.log('delete sskcook: ', id);
+    console.log(`delete ${type}: `, id);
     mutation.mutate(id);
   };
 
@@ -55,7 +52,8 @@ const VideoPlayer = ({ type, url, id, color, isInMyInfo = false }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
-      style={{ backgroundColor: color }}
+      height={height}
+      style={{ backgroundColor: color}}
     >
       <ReactPlayer
         style={{ cursor: 'pointer' }}
