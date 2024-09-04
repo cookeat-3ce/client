@@ -30,6 +30,8 @@ import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
 import CreateLive from './pages/CreateLive';
+import ClassSession from './pages/ClassSession';
+import LiveSession from './pages/LiveSession';
 
 const queryClient = new QueryClient();
 
@@ -145,9 +147,9 @@ function App() {
           path={'/info/upload'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <SskcookUpload />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <SskcookUpload />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -196,6 +198,22 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <CreateLive></CreateLive>
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/live/class/:sessionId"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <ClassSession></ClassSession>
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/live/:sessionId"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <LiveSession></LiveSession>
             </CommonLayout>
           }
         />
