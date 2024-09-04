@@ -11,7 +11,6 @@ const VideoPlayer = ({ type, url, id, color, isInMyInfo = false, deleteAPI, quer
   const playerRef = useRef(null);
 
   const queryClient = useQueryClient();
-  console.log(typeof deleteAPI);
   const mutation = useMutation({
     mutationFn: (id) => deleteAPI(id),
     onSuccess: () => {
