@@ -107,7 +107,7 @@ const Order = () => {
     } catch (error) {
       initialArrayData = [decodedData];
     }
-  }
+  } else initialArrayData = [decodedData];
 
   const [arrayData, setArrayData] = useState(initialArrayData);
 
