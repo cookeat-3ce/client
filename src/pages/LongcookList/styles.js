@@ -23,7 +23,7 @@ export const SkeletonContainer = styled.div`
 export const CardGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 20vh;
+  margin-bottom: 28vh;
 `;
 
 export const InputContainer = styled.div`
@@ -46,10 +46,19 @@ export const CardWrapper = styled.div`
 export const TitleContainer = styled.div`
   margin-top: 1vh;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap : 10px;
+`;
+
+export const ProfileContainer = styled.div`
+  margin-top: 1vh;
+  display: flex;
   align-items: center;
   width: 100%;
-`;
+  gap : 10px;
+`
 
 export const TitleText = styled.div`
   font-family: 'Happiness-Sans-Bold';
@@ -59,16 +68,16 @@ export const TitleText = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 70%;
+  max-width: 90%;
 `;
 
 export const NicknameText = styled.div`
   font-family: 'Happiness-Sans';
   font-size: 1vw;
   color: ${COLORS.LIGHTGRAY};
-  text-align: right;
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 30%;
+  max-width: 90%;
 `;

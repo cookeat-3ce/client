@@ -9,7 +9,8 @@ import {
   InputContainer,
   TitleContainer,
   TitleText,
-  NicknameText
+  NicknameText,
+  ProfileContainer
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
@@ -18,6 +19,7 @@ import instance from '../../apis';
 import { StyledLongcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
 import { CustomSearchInput } from '../../components/Input';
+import ProfileImage from '../../components/ProfileImage';
 
 const LongcookList = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -128,10 +130,21 @@ const LongcookList = () => {
                     color={COLORS.BLACK}
                     height={'30vh'}
                   />
+                  <ProfileContainer>
+                  <ProfileImage
+                      src={item.profileImage}
+                      width="4vw"
+                      height="4vw"
+                      borderRadius="50%"
+                      onClick={() =>
+                        (window.location.href = `/subscription/${item.username}`)
+                      }
+                    />
                   <TitleContainer>
-                      <TitleText>{item.title}</TitleText>
-                      <NicknameText>{item.nickname}</NicknameText>
+                    <TitleText>{item.title}</TitleText>
+                    <NicknameText>{item.nickname}</NicknameText>
                   </TitleContainer>
+                  </ProfileContainer>
                 </CardWrapper>
               </CardContainer>
             </CardGrid>
