@@ -39,6 +39,7 @@ import ClassSession from './pages/ClassSession';
 import LiveSession from './pages/LiveSession';
 import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
+import CreateNotice from './pages/CreateNotice';
 const queryClient = new QueryClient();
 
 // Component that handles redirecting admins
@@ -164,9 +165,9 @@ function App() {
           path={'info/longcook/upload'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <LongcookUpload />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <LongcookUpload />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -175,9 +176,9 @@ function App() {
           path={'info/sskcook/update/:id'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <SskcookModify />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <SskcookModify />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -186,9 +187,9 @@ function App() {
           path={'info/longcook/update/:id'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <LongcookModify />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <LongcookModify />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -230,6 +231,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <Info />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/notice/create"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <CreateNotice />
             </CommonLayout>
           }
         />
