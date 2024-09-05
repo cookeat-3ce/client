@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  height: 40vh;
+  height: ${(props) => props.height || '40vh'};
   position: relative;
   transition: transform 0.3s ease;
+  border-radius : 10px;
 `;
 
 export const Overlay = styled.div`

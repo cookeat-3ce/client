@@ -8,6 +8,7 @@ import CustomText from '../Text';
 import CustomTextButton from '../Button/Text';
 import { COLORS } from '../../constants';
 import { Pagination, Navigation } from 'swiper';
+import { longcookAPI } from '../../apis/longcook';
 import Card from '../Card';
 const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
   const swiperRef = useRef(null);
@@ -34,6 +35,9 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
             cursor: 'pointer',
             alignItems: 'center',
             justifyContent: 'center',
+          }}
+          onClick={() => {
+            window.location.href = `/longcook?keyword=&page=1`
           }}
         >
           <CustomText
@@ -68,6 +72,8 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
                   url={slide.longcookUrl}
                   type={'longcook'}
                   id={slide.longcookId}
+                  deleteAPI={longcookAPI.longcookDeleteAPI}
+                  queryKey="longcook"
                 />
               </SwiperSlide>
             ))}

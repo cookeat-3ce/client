@@ -16,6 +16,7 @@ import { COLORS } from '../../constants';
 import { Pagination, Navigation } from 'swiper';
 import Card from '../Card';
 import CustomButton from '../Button';
+import { sskcookAPI } from '../../apis/sskcook';
 import { getCookie, useCustomNavigate } from '../../hooks';
 
 const CustomSwiper = ({
@@ -121,6 +122,8 @@ const CustomSwiper = ({
                   url={slide.sskcookUrl}
                   type={'sskcook'}
                   id={slide.sskcookId}
+                  deleteAPI={sskcookAPI.sskcookDeleteAPI}
+                  queryKey="sskcooks"
                 />
               </SwiperSlide>
             ))}

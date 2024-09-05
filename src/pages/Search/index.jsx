@@ -14,6 +14,7 @@ import {
   StyledCountSkeleton,
   StyledProfileSkeleton,
 } from './styles';
+import { sskcookAPI } from '../../apis/sskcook';
 import { debounce } from 'lodash';
 import CustomTextButton from '../../components/Button/Text';
 import { COLORS, TAG_VALUES } from '../../constants';
@@ -314,6 +315,8 @@ const Search = () => {
                               url={item.sskcookUrl}
                               sskcookId={item.sskcookId}
                               color={COLORS.BLACK}
+                              deleteAPI={sskcookAPI.sskcookDeleteAPI}
+                              queryKey="sskcooks"
                             />
                           </CardWrapper>
                         </CardContainer>
@@ -360,6 +363,8 @@ const Search = () => {
                             url={item.sskcookUrl}
                             sskcookId={item.sskcookId}
                             color={COLORS.BLACK}
+                            deleteAPI={sskcookAPI.sskcookDeleteAPI}
+                            queryKey="sskcooks"
                           />
                         </CardWrapper>
                       </CardContainer>
