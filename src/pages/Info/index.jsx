@@ -34,6 +34,7 @@ import CustomImageButton from '../../components/Button/Image';
 import CustomTextButton from '../../components/Button/Text';
 import CustomVideoList from '../../components/VideoList';
 import CustomNoticeList from '../../components/NoticeList';
+import CustomButton from '../../components/Button';
 
 const Index = () => {
   const [member] = useRecoilState(memberState);
@@ -294,18 +295,19 @@ const Index = () => {
                 ></CustomTextButton>
               </TabMenuTextWrapper>
             </TabMenuWrapper>
-            <AddButton>
-              <CustomText
-                fontFamily="Happiness-Sans-Bold"
-                fontSize="1rem"
-                color={COLORS.WHITE}
-                text="추가"
-              ></CustomText>
-            </AddButton>
+            <CustomButton
+              text={'추가'}
+              color={COLORS.WHITE}
+              width={'4vw'}
+              height={'3vh'}
+              fontFamily={'Happiness-Sans-Bold'}
+              fontSize={'1rem'}
+              backgroundColor={COLORS.BLACK}
+              borderRadius={'30px'}
+            ></CustomButton>
           </TabMenuWrapperContainer>
           <TabSeparator></TabSeparator>
         </TabMenuContainer>
-
         {selectedMenu === 'sskcook' && (
           <SskcookContainer>
             <CustomVideoList

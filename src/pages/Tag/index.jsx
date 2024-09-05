@@ -7,6 +7,7 @@ import {
   CardContainer,
   CardWrapper,
 } from './styles';
+import { sskcookAPI } from '../../apis/sskcook';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -111,6 +112,8 @@ const Tag = () => {
                   type={'sskcook'}
                   id={item.sskcookId}
                   color={COLORS.BLACK}
+                  deleteAPI={sskcookAPI.sskcookDeleteAPI}
+                  queryKey="sskcooks"
                 />
               </CardWrapper>
             </CardContainer>

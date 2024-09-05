@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, SskcookContainer, LongcookContainer } from './styles';
 import VideoPlayer from '../Card';
 import { COLORS } from '../../constants';
+import { sskcookAPI } from '../../apis/sskcook';
+import { longcookAPI } from '../../apis/longcook';
 
 const CustomVideoList = ({ type, videos, isInMyInfo = false }) => {
   const [currentVideos, setCurrentVideos] = useState([]);
@@ -25,6 +27,8 @@ const CustomVideoList = ({ type, videos, isInMyInfo = false }) => {
                 id={video.sskcookId}
                 color={COLORS.BLACK}
                 isInMyInfo={isInMyInfo}
+                deleteAPI={sskcookAPI.sskcookDeleteAPI}
+                queryKey="sskcooks"
               />
             ))}
         </SskcookContainer>
@@ -40,6 +44,8 @@ const CustomVideoList = ({ type, videos, isInMyInfo = false }) => {
                 id={video.longcookId}
                 color={COLORS.BLACK}
                 isInMyInfo={isInMyInfo}
+                deleteAPI={longcookAPI.longcookDeleteAPI}
+                queryKey="longcook"
               />
             ))}
         </LongcookContainer>

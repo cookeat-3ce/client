@@ -21,9 +21,11 @@ import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
 import Tag from './pages/Tag';
+import LongcookList from './pages/LongcookList';
 import SskcookUpload from './pages/SskcookUpload';
 import LongcookUpload from './pages/LongcookUpload';
 import SskcookModify from './pages/SskcookModify';
+import LongcookModify from './pages/LongcookModify';
 import Stored from './pages/Stored';
 import Search from './pages/Search';
 import Order from './pages/Order';
@@ -33,6 +35,8 @@ import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
 import CreateLive from './pages/CreateLive';
+import ClassSession from './pages/ClassSession';
+import LiveSession from './pages/LiveSession';
 import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
 import OrderDone from './pages/OrderDone';
@@ -189,6 +193,24 @@ function App() {
             )
           }
         />
+        <Route
+          path="/longcook"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <LongcookList />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path={'info/longcook/update/:id'}
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <QueryClientProvider client={queryClient}>
+              <LongcookModify />
+            </QueryClientProvider>
+            </CommonLayout>
+          }
+        />
 
         <Route
           path="/search"
@@ -239,6 +261,22 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <CreateLive></CreateLive>
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/live/class/:sessionId"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <ClassSession></ClassSession>
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/live/:sessionId"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <LiveSession></LiveSession>
             </CommonLayout>
           }
         />
