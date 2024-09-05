@@ -12,17 +12,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
-import { memberState } from '../../store';
-import { useRecoilState } from 'recoil';
 const Stored = () => {
-  const [member] = useRecoilState(memberState);
-  const username = member.username;
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['Stored'],
     queryFn: ({ pageParam = 1 }) =>
-      instance
-        .get(`/member/sskcook/${username}?page=${pageParam}`)
-        .then((res) => res.data),
+      instance.get(`/member/sskcook?page=${pageParam}`).then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },

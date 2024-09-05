@@ -203,26 +203,27 @@ const Search = () => {
     isFetchingMember,
   ]);
 
-  const triggerSearch = (value, tab, sort) => {
-    if (searchValue.length === 0) {
+  const triggerSearch = (value, tab) => {
+    if (value.length === 0) {
       setIsNull(true);
     } else {
       setIsNull(false);
     }
+
+    if (tab === '2') {
+      if (value.length === 0) {
+        setIsTag([]);
+      } else {
+        const matchingTags = TAG_VALUES.filter((tag) => tag.includes(value));
+        setIsTag(matchingTags);
+      }
+    }
+
     if (value !== prevSearchValueRef.current) {
       queryClient.invalidateQueries('MemberSearch');
       queryClient.invalidateQueries('SskcookLikeSearch');
       queryClient.invalidateQueries('SskcookRecentSearch');
       prevSearchValueRef.current = value;
-
-      if (tab === '2') {
-        if (value.length === 0) {
-          setIsTag([]);
-        } else {
-          const matchingTags = TAG_VALUES.filter((tag) => tag.includes(value));
-          setIsTag(matchingTags);
-        }
-      }
     }
   };
 

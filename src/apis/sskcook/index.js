@@ -29,5 +29,21 @@ export const sskcookAPI = {
         'Content-Type': 'multipart/form-data',
       },
     });
+  },
+  sskcookUpdateAPI: (formData) => {
+    return instance.put('/sskcook', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  LikeAPI: (sskcookId) => {
+    return instance.post('/sskcook/likes', { sskcookId: sskcookId });
+  },
+  ReportAPI: (sskcookId) => {
+    return instance.post('/sskcook/report', { sskcookId: sskcookId });
+  },
+  sskcookDeleteAPI: (id) => {
+    return instance.delete(`/sskcook/${id}`);
   }
 };

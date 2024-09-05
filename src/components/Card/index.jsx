@@ -11,9 +11,7 @@ import { sskcookAPI } from '../../apis/sskcook';
 const VideoPlayer = ({ type, url, id, color, isInMyInfo = false }) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
-  const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
-  const { handleChangeUrl } = useCustomNavigate();
 
   const queryClient = useQueryClient();
 
@@ -49,7 +47,7 @@ const VideoPlayer = ({ type, url, id, color, isInMyInfo = false }) => {
   const handleClick = (event) => {
     event.stopPropagation();
     console.log('id: ', id);
-    handleChangeUrl(`/${type}/${id}`);
+    window.location.href = `/${type}/${id}`;
   };
 
   return (

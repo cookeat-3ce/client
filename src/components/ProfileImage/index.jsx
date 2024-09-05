@@ -7,6 +7,7 @@ const ProfileImage = ({ src, width, height, onClick, borderRadius }) => {
     height: height,
     borderRadius: borderRadius,
     objectFit: 'cover',
+    cursor: 'pointer',
   };
 
   return <Container src={src} style={style} onClick={onClick}></Container>;
