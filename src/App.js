@@ -35,6 +35,8 @@ import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
 import CreateLive from './pages/CreateLive';
+import ClassSession from './pages/ClassSession';
+import LiveSession from './pages/LiveSession';
 import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
 const queryClient = new QueryClient();
@@ -236,6 +238,22 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <CreateLive></CreateLive>
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/live/class/:sessionId"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <ClassSession></ClassSession>
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/live/:sessionId"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <LiveSession></LiveSession>
             </CommonLayout>
           }
         />

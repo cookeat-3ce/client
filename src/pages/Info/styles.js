@@ -104,7 +104,7 @@ export const TabMenuWrapperContainer = styled.div`
   height: 2vh;
   display: flex;
   justify-content: space-between;
-  padding: 1vh 1vw;
+  padding: 1vh 2vw 1vh 1vw;
   // border: 5px solid black;
 `;
 
@@ -116,27 +116,6 @@ export const TabMenuWrapper = styled.div`
 export const TabMenuTextWrapper = styled.div`
   width: 4vw;
   // border: 5px solid red;
-`;
-
-export const AddButton = styled.button`
-  width: 4vw;
-  height: 3vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: BLACK;
-  border-radius: 30px;
-  border: 5px solid BLACK;
-  margin: 0 1vw 0 0;
-  transition: background-color 0.3s ease;
-  &:active,
-  &:focus {
-    transform: scale(0.95);
-  }
-  &:hover {
-    transform: scale(1);
-    cursor: pointer;
-  }
 `;
 
 export const TabSeparator = styled.hr`
