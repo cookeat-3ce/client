@@ -1,6 +1,9 @@
 import instance from '..';
 
 export const longcookAPI = {
+  longcookDetailsAPI: (longcookId) => {
+    return instance.get(`/longcook/${longcookId}`);
+  },
   recentLongcookListAPI: (page) => {
     return instance.get('/longcook', {
       params: {
@@ -16,7 +19,14 @@ export const longcookAPI = {
       },
     });
   },
-  longcookDeleteAPI: (longcookId) => {
-    return instance.delete(`/longcook/${longcookId}`);
+  longcookUpdateAPI: (formData) => {
+    return instance.put('/longcook', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
+  longcookDeleteAPI: (id) => {
+    return instance.delete(`/longcook/${id}`);
+  }
 };

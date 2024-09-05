@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  ClassNameInput,
   Container,
   PageTitleContainer,
   InputContainer,
@@ -20,7 +19,7 @@ import {
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
-import { Tooltip, Radio, Image, InputNumber } from 'antd';
+import { Tooltip, Radio, Image } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import TooltipIcon from '../../assets/icons/tooltip.svg';
 import imageCompression from 'browser-image-compression';
@@ -31,6 +30,10 @@ import { liveAPI } from '../../apis/live';
 import { useCustomNavigate } from '../../hooks';
 import { useRecoilState } from 'recoil';
 import { memberState } from '../../store';
+import axios from 'axios';
+
+const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
+const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
 
 const CreateLive = () => {
   const [member] = useRecoilState(memberState);
@@ -45,22 +48,18 @@ const CreateLive = () => {
   const [fileList, setFileList] = useState([]);
   const { handleChangeUrl } = useCustomNavigate();
   const [backError, setBackError] = useState(false);
+  const [showError, setShowError] = useState(false);
 
-  const addLiveData = {
-    username: username,
-    title: className,
-    people: maxParticipant,
-    thumbnail: thumbnail,
-    sessionId: 'asdf', // TODO: openvidu에서 주는 Session Id로 수정 필요
-  };
+  const [sessionId, setSessionId] = useState(null);
 
   const mutation = useMutation({
     mutationFn: async (data) => {
       await liveAPI.addLiveAPI(data);
     },
     onSuccess: (response) => {
-      console.log(response);
-      handleChangeUrl('/'); // TODO: 추후 라이브 클래스 창으로 이동하도록 수정할 예정
+      handleChangeUrl(
+        `/live${classType === 'class' ? '/class' : ''}/${sessionId}`,
+      );
     },
 
     onError: (error) => {
@@ -68,8 +67,21 @@ const CreateLive = () => {
     },
   });
 
-  const handleClickSubmitButton = () => {
-    console.log('addLiveData: ', addLiveData);
+  const handleClickSubmitButton = async () => {
+    const sessionId = await createSession();
+    setSessionId(sessionId);
+
+    console.log('sessionId: ', sessionId);
+
+    const addLiveData = {
+      username: username,
+      title: className,
+      people: maxParticipant,
+      thumbnail: thumbnail,
+      sessionId: sessionId,
+      type: classType === 'class' ? 0 : 1,
+    };
+
     mutation.mutate(addLiveData);
   };
 
@@ -86,10 +98,32 @@ const CreateLive = () => {
     setMaxParticipant(value);
   };
 
-  // TODO: 30자 넘었을 때 에러 메시지 출력
+  const createSession = async () => {
+    try {
+      const response = await axios.post(
+        `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
+        {},
+        {
+          headers: {
+            Authorization:
+              'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      return response.data.id;
+    } catch (error) {
+      console.error('Error creating session:', error);
+      return null;
+    }
+  };
+
   const handleClassName = (e) => {
     const value = e.target.value;
-    if (value.length <= 30) {
+    if (value.length > 30) {
+      setShowError(true);
+    } else {
+      setShowError(false);
       setClassName(value);
     }
   };
@@ -194,6 +228,14 @@ const CreateLive = () => {
               fontSize={'.8vw'}
               onChange={handleClassName}
             />
+            {showError && (
+              <CustomText
+                text={'제목은 30자까지 작성 가능합니다.'}
+                fontSize=".8rem"
+                fontFamily="Happiness-Sans-Regular"
+                color={COLORS.DARKGRAPEFRUIT}
+              />
+            )}
           </InputContainer>
           <InputContainer>
             <CustomText
@@ -232,7 +274,7 @@ const CreateLive = () => {
                   </StyledRadio>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <StyledRadio value="online">
+                  <StyledRadio value="class">
                     <RadioLabel>
                       <CustomText
                         text="온라인 클래스"
@@ -260,7 +302,7 @@ const CreateLive = () => {
                 </RadioWrapper>
               </Radio.Group>
             </RadioContainer>
-            {classType === 'online' && (
+            {classType === 'class' && (
               <InputContainer>
                 <ParticipantTitleWrapper>
                   <CustomText
