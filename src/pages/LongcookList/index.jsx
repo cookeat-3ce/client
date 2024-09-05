@@ -7,10 +7,6 @@ import {
   CardWrapper,
   CardGrid,
   InputContainer,
-  TitleContainer,
-  TitleText,
-  NicknameText,
-  ProfileContainer
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
@@ -18,17 +14,17 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledLongcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
+import ProfileCard from '../../components/ProfileCard';
 import { CustomSearchInput } from '../../components/Input';
-import ProfileImage from '../../components/ProfileImage';
-
+import { longcookAPI } from '../../apis/longcook';
 const LongcookList = () => {
   const [searchValue, setSearchValue] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ['LongcookList', searchQuery], 
+    queryKey: ['LongcookList', searchQuery],
     queryFn: ({ pageParam = 1 }) =>
       instance
-        .get(`/longcook?keyword=${searchQuery}&page=${pageParam}`) 
+        .get(`/longcook?keyword=${searchQuery}&page=${pageParam}`)
         .then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
@@ -84,7 +80,7 @@ const LongcookList = () => {
           height={'5vh'}
           type={'text'}
           onChange={handleChange}
-          onKeyDown={handleKeyDown} 
+          onKeyDown={handleKeyDown}
           value={searchValue}
         />
       </InputContainer>
@@ -124,27 +120,15 @@ const LongcookList = () => {
               <CardContainer>
                 <CardWrapper>
                   <Card
+                    type="longcook"
                     url={item.longcookUrl}
-                    type={'longcook'}
                     id={item.longcookId}
                     color={COLORS.BLACK}
-                    height={'30vh'}
+                    height="30vh"
+                    deleteAPI={longcookAPI.longcookDeleteAPI}
+                    queryKey="longcook"
                   />
-                  <ProfileContainer>
-                  <ProfileImage
-                      src={item.profileImage}
-                      width="4vw"
-                      height="4vw"
-                      borderRadius="50%"
-                      onClick={() =>
-                        (window.location.href = `/subscription/${item.username}`)
-                      }
-                    />
-                  <TitleContainer>
-                    <TitleText>{item.title}</TitleText>
-                    <NicknameText>{item.nickname}</NicknameText>
-                  </TitleContainer>
-                  </ProfileContainer>
+                  <ProfileCard profileImage={item.profileImage} index={item} />
                 </CardWrapper>
               </CardContainer>
             </CardGrid>

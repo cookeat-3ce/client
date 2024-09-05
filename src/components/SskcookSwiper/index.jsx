@@ -15,6 +15,7 @@ import CustomTextButton from '../Button/Text';
 import { COLORS } from '../../constants';
 import { Pagination, Navigation } from 'swiper';
 import Card from '../Card';
+import ProfileCard from '../ProfileCard';
 import CustomButton from '../Button';
 import { sskcookAPI } from '../../apis/sskcook';
 import { getCookie, useCustomNavigate } from '../../hooks';
@@ -119,12 +120,15 @@ const CustomSwiper = ({
             {arr.map((slide, index) => (
               <SwiperSlide key={index} className={'sskcook'}>
                 <Card
+                  type="sskcook"
                   url={slide.sskcookUrl}
-                  type={'sskcook'}
                   id={slide.sskcookId}
+                  color={COLORS.BLACK}
+                  height="30vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
                 />
+                <ProfileCard profileImage={slide.profileImage} index={slide} />
               </SwiperSlide>
             ))}
           </Swiper>

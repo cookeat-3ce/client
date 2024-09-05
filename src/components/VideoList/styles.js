@@ -4,7 +4,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  // border: 10px solid black;
 `;
 
 export const SskcookContainer = styled.div`
@@ -21,4 +20,10 @@ export const LongcookContainer = styled.div`
   gap: 16px;
   margin: 2vh 0;
   width: 100%;
+`;
+
+export const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
 `;

@@ -1,22 +1,24 @@
 .swiper.longcook {
   width: 70vw;
-  height: 30vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   margin-top: 3vh;
   padding: 2vh;
+  /* border: 10px solid black; */
 }
 
 .swiper-slide.longcook {
-  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  width: 20vw;
+  width: 22vw;
   height: 100%;
 
   transition: transform 0.3s ease;
+  /* border: 10px solid red; */
+  flex-direction: column;
 }
 
 .swiper-slide:hover {

@@ -13,6 +13,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
+import ProfileCard from '../../components/ProfileCard';
 const SskcookRecent = () => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['SskcookRecent'],
@@ -95,13 +96,15 @@ const SskcookRecent = () => {
             <CardContainer key={item.sskcookId}>
               <CardWrapper>
                 <Card
+                  type="sskcook"
                   url={item.sskcookUrl}
-                  type={'sskcook'}
                   id={item.sskcookId}
                   color={COLORS.BLACK}
+                  height="30vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
-                  queryKey="sskcooks"
+                  queryKey="sskcook"
                 />
+                <ProfileCard profileImage={item.profileImage} index={item} />
               </CardWrapper>
             </CardContainer>
           ))
