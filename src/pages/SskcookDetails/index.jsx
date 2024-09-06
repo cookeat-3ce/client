@@ -50,7 +50,6 @@ import LeftArrow from '../../assets/icons/left_arrow.svg';
 import { useLocation } from 'react-router-dom';
 import instance from '../../apis';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { debounce } from 'lodash';
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
   const [member, setMember] = useRecoilState(memberState);
@@ -144,9 +143,11 @@ const SskcookDetails = () => {
     fetchNextPage: dateFetchNextPage,
     hasNextPage: dateHasNextPage,
     isFetching: dateIsFetching,
+    hasPreviousPage: dateHasPrevPage,
+    fetchPreviousPage: dateFetchPrevPage,
   } = useInfiniteQuery({
-    queryKey: [formattedDate],
-    queryFn: ({ pageParam = 1 }) =>
+    queryKey: ['foremattedDate', formattedDate],
+    queryFn: ({ pageParam = page }) =>
       instance
         .get(`/sskcook?date=${formattedDate}&page=${pageParam}`)
         .then((res) => res.data),
@@ -154,7 +155,7 @@ const SskcookDetails = () => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },
     getPreviousPageParam: (firstPage, allPages) => {
-      return firstPage.prev ? allPages.length - 1 : undefined;
+      return firstPage.prev ? allPages.length + 1 : undefined;
     },
     enabled: flag === 2,
   });
@@ -164,11 +165,12 @@ const SskcookDetails = () => {
     fetchNextPage: fetchSskcookNextPage,
     hasNextPage: hasSskcookNextPage,
     isFetchingNextPage: isSskcookFetching,
+    fetchPreviousPage: fetchSskcookPrevPage,
+    hasPreviousPage: fetchHasPrevPage,
   } = useInfiniteQuery({
     queryKey: ['userSskcookList', keyword],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam = page }) =>
       instance.get(`/sskcook/list/${keyword}?page=${pageParam}`).then((res) => {
-        // console.log('res: ', res.data);
         return res.data;
       }),
     getNextPageParam: (lastPage, allPages) => {
@@ -185,9 +187,11 @@ const SskcookDetails = () => {
     fetchNextPage: fetchNextPageRecent,
     hasNextPage: hasNextPageRecent,
     isFetching: isFetchingRecent,
+    hasPreviousPage: recentSearchHasPrevPage,
+    fetchPreviousPage: recentSearchFetchPrev,
   } = useInfiniteQuery({
     queryKey: ['SskcookRecentSearch'],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam = page }) =>
       instance
         .get(`/sskcook?keyword=${keyword}&sort=latest&page=${pageParam}`)
         .then((res) => res.data),
@@ -195,7 +199,7 @@ const SskcookDetails = () => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },
     getPreviousPageParam: (firstPage, allPages) => {
-      return firstPage.prev ? allPages.length - 1 : undefined;
+      return firstPage.prev ? allPages.length + 1 : undefined;
     },
     enabled: flag === 5,
   });
@@ -205,9 +209,11 @@ const SskcookDetails = () => {
     fetchNextPage: fetchNextPageLike,
     hasNextPage: hasNextPageLike,
     isFetching: isFetchingLike,
+    hasPreviousPage: likeHasPrevPage,
+    fetchPreviousPage: likeFetchPrevPage,
   } = useInfiniteQuery({
     queryKey: ['SskcookLikeSearch'],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam = page }) =>
       instance
         .get(`/sskcook?keyword=${keyword}&sort=likes&page=${pageParam}`)
         .then((res) => res.data),
@@ -215,7 +221,7 @@ const SskcookDetails = () => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },
     getPreviousPageParam: (firstPage, allPages) => {
-      return firstPage.prev ? allPages.length - 1 : undefined;
+      return firstPage.prev ? allPages.length + 1 : undefined;
     },
     enabled: flag === 7,
   });
@@ -225,9 +231,11 @@ const SskcookDetails = () => {
     fetchNextPage: tagFetchNextPage,
     hasNextPage: tagHasNextPage,
     isFetching: tagIsFetching,
+    hasPreviousPage: tagHasPrevPage,
+    fetchPreviousPage: tagFetchPrevPage,
   } = useInfiniteQuery({
     queryKey: ['tag', keyword],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam = page }) =>
       instance
         .get(`/sskcook?tag=${keyword}&page=${pageParam}`)
         .then((res) => res.data),
@@ -235,7 +243,7 @@ const SskcookDetails = () => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },
     getPreviousPageParam: (firstPage, allPages) => {
-      return firstPage.prev ? allPages.length - 1 : undefined;
+      return firstPage.prev ? allPages.length + 1 : undefined;
     },
     enabled: flag === 6,
   });
@@ -245,21 +253,28 @@ const SskcookDetails = () => {
     fetchNextPage: storeFetchNextPage,
     hasNextPage: storeHasNextPage,
     isFetching: storeIsFetching,
+    hasPreviousPage: storeHasPreviousPage,
+    fetchPreviousPage: storeFetchPreviousPage,
   } = useInfiniteQuery({
     queryKey: ['Stored'],
-    queryFn: ({ pageParam = 1 }) =>
+    queryFn: ({ pageParam = page }) =>
       instance.get(`/member/sskcook?page=${pageParam}`).then((res) => res.data),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },
     getPreviousPageParam: (firstPage, allPages) => {
-      return firstPage.prev ? allPages.length - 1 : undefined;
+      return firstPage.prev ? allPages.length + 1 : undefined;
     },
     enabled: flag === 3,
   });
 
   const [recentAllData, setRecentAllData] = useState([]);
-
+  const [tagAllData, setTagAllData] = useState([]);
+  const [storeAllData, setStoreAllData] = useState([]);
+  const [dateAllData, setDateAllData] = useState([]);
+  const [recentSearchAllData, setRecentSearchAllData] = useState([]);
+  const [likeSearchAllData, setLikeSearchAllData] = useState([]);
+  const [fetchSskcookAllData, setFetchSskcookAllData] = useState([]);
   useEffect(() => {
     if (recentData?.pages) {
       const allData = recentData.pages.flatMap((page) => page.data);
@@ -267,41 +282,209 @@ const SskcookDetails = () => {
     }
   }, [recentData]);
 
-  const likesAllData = likeData?.pages.flatMap((page) => page.data) || [];
-  const tagAllData = tagData?.pages.flatMap((page) => page.data) || [];
-  const storeAllData = storeData?.pages.flatMap((page) => page.data) || [];
-  const recentSearchAllData =
-    recentSearchData?.pages.flatMap((page) => page.data) || [];
-  const fetchedSskcookAllData =
-    fetchedSskcookList?.pages.flatMap((page) => page.data) || [];
-  const dateAllData = dateData?.pages.flatMap((page) => page.data) || [];
+  useEffect(() => {
+    if (likeData?.pages) {
+      const allData = likeData.pages.flatMap((page) => page.data);
+      setLikeSearchAllData(allData);
+    }
+  }, [likeData]);
+
+  useEffect(() => {
+    if (tagData?.pages) {
+      const allData = tagData.pages.flatMap((page) => page.data);
+      setTagAllData(allData);
+    }
+  }, [tagData]);
+
+  useEffect(() => {
+    if (storeData?.pages) {
+      const allData = storeData.pages.flatMap((page) => page.data);
+      setStoreAllData(allData);
+    }
+  }, [storeData]);
+
+  useEffect(() => {
+    if (dateData?.pages) {
+      const allData = dateData.pages.flatMap((page) => page.data);
+      setDateAllData(allData);
+    }
+  }, [dateData]);
+
+  useEffect(() => {
+    if (recentSearchData?.pages) {
+      const allData = recentSearchData.pages.flatMap((page) => page.data);
+      setRecentSearchAllData(allData);
+    }
+  }, [recentSearchData]);
+
+  useEffect(() => {
+    if (fetchedSskcookList?.pages) {
+      const allData = fetchedSskcookList.pages.flatMap((page) => page.data);
+      setFetchSskcookAllData(allData);
+    }
+  }, [fetchedSskcookList]);
+
   // console.log(recentAllData, Number(sskcookId));
-  let index = recentAllData?.findIndex(
+  let index1 = recentAllData?.findIndex(
     (item) => item.sskcookId === Number(sskcookId),
   );
-  console.log('여기', index);
-  console.log(recentAllData);
+
+  let index2 = dateAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+
+  let index3 = storeAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+
+  let index4 = fetchSskcookAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+
+  let index5 = recentSearchAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+
+  let index6 = tagAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+
+  let index7 = likeSearchAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+
+  const debounce = (func, delay) => {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  };
+
   const handleScroll = async () => {
     const scrollTop = window.scrollY;
     const windowHeight = window.innerHeight;
     const bodyHeight = document.body.scrollHeight;
 
-    if (scrollTop === 0 && recentAllData?.length > 0) {
-      console.log(index);
-      if (flag === 1) {
-        if (index > -1) {
-          index--;
-        }
-        if (index >= 0) {
-          const currentItem = recentAllData[index];
+    if (scrollTop === 0) {
+      if (flag === 1 && recentAllData?.length > 0) {
+        index1--;
+        if (index1 < -1) index1 = -1;
+        if (index1 >= 0) {
+          const currentItem = recentAllData[index1];
           if (currentItem) {
             handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
           }
         } else if (recentHasPrevPage && !recentIsFetching) {
           const page = await recentFetchPrevPage();
           console.log(page);
-          index = recentAllData?.length - 1;
-          const currentItem = recentAllData[index];
+          index1 = recentAllData?.length - 1;
+          const currentItem = recentAllData[index1];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        }
+      } else if (flag === 2 && dateAllData?.length > 0) {
+        index2--;
+        if (index2 < -1) index2 = -1;
+        if (index2 >= 0) {
+          const currentItem = dateAllData[index2];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        } else if (dateHasPrevPage && !dateIsFetching) {
+          const page = await dateFetchPrevPage();
+          console.log(page);
+          index2 = dateAllData?.length - 1;
+          const currentItem = dateAllData[index2];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        }
+      } else if (flag === 3 && storeAllData?.length > 0) {
+        index3--;
+        console.log(index3);
+        if (index3 < -1) index3 = -1;
+        if (index3 >= 0) {
+          const currentItem = storeAllData[index3];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        } else if (storeHasPreviousPage && !storeIsFetching) {
+          const page = await storeFetchPreviousPage();
+          console.log(page);
+          index3 = storeAllData?.length - 1;
+          const currentItem = storeAllData[index3];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        }
+      } else if (flag === 4 && fetchSskcookAllData?.length > 0) {
+        index4--;
+        if (index4 < -1) index4 = -1;
+        if (index4 >= 0) {
+          const currentItem = fetchSskcookAllData[index4];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        } else if (fetchHasPrevPage && !isSskcookFetching) {
+          const page = await fetchSskcookPrevPage();
+          console.log(page);
+          index4 = fetchSskcookAllData?.length - 1;
+          const currentItem = fetchSskcookAllData[index4];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        }
+      } else if (flag === 5 && recentSearchAllData?.length > 0) {
+        index5--;
+        if (index5 < -1) index5 = -1;
+        if (index5 >= 0) {
+          const currentItem = recentSearchAllData[index5];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        } else if (recentSearchHasPrevPage && !isFetchingRecent) {
+          const page = await recentSearchFetchPrev();
+          console.log(page);
+          index5 = recentSearchAllData?.length - 1;
+          const currentItem = recentSearchAllData[index5];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        }
+      } else if (flag === 6 && tagAllData?.length > 0) {
+        index6--;
+        if (index6 < -1) index6 = -1;
+        if (index6 >= 0) {
+          const currentItem = tagAllData[index6];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        } else if (tagHasPrevPage && !tagIsFetching) {
+          const page = await tagFetchPrevPage();
+          console.log(page);
+          index6 = tagAllData?.length - 1;
+          const currentItem = tagAllData[index6];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        }
+      } else if (flag === 7 && likeSearchAllData?.length > 0) {
+        index7--;
+        if (index7 < -1) index7 = -1;
+        if (index7 >= 0) {
+          const currentItem = likeSearchAllData[index7];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        } else if (likeHasPrevPage && !isFetchingLike) {
+          const page = await likeFetchPrevPage();
+          console.log(page);
+          index7 = likeSearchAllData?.length - 1;
+          const currentItem = likeSearchAllData[index7];
           if (currentItem) {
             handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
           }
@@ -309,51 +492,142 @@ const SskcookDetails = () => {
       }
     }
     // 맨 아래
-    else if (
-      scrollTop + windowHeight >= bodyHeight &&
-      recentAllData?.length > 0
-    ) {
-      if (flag === 1) {
-        if (index < recentAllData?.length) {
-          index++;
-          const currentItem = recentAllData[index];
-          if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
-          }
+    else if (scrollTop + windowHeight >= bodyHeight - 1) {
+      let allData, fetchNextPage, hasNextPage, isFetching, index;
+
+      switch (flag) {
+        case 1:
+          allData = recentAllData;
+          fetchNextPage = recentFetchNextPage;
+          hasNextPage = recentHasNextPage;
+          isFetching = recentIsFetching;
+          index = index1;
+          break;
+        case 2:
+          allData = dateAllData;
+          fetchNextPage = dateFetchNextPage;
+          hasNextPage = dateHasNextPage;
+          isFetching = dateIsFetching;
+          index = index2;
+          break;
+        case 3:
+          allData = storeAllData;
+          fetchNextPage = storeFetchNextPage;
+          hasNextPage = storeHasNextPage;
+          isFetching = storeIsFetching;
+          index = index3;
+          break;
+        case 4:
+          allData = fetchSskcookAllData;
+          fetchNextPage = fetchSskcookNextPage;
+          hasNextPage = hasSskcookNextPage;
+          isFetching = isSskcookFetching;
+          index = index4;
+          break;
+        case 5:
+          allData = recentSearchAllData;
+          fetchNextPage = fetchNextPageRecent;
+          hasNextPage = hasNextPageRecent;
+          isFetching = isFetchingRecent;
+          index = index5;
+          break;
+        case 6:
+          allData = tagAllData;
+          fetchNextPage = tagFetchNextPage;
+          hasNextPage = tagHasNextPage;
+          isFetching = tagIsFetching;
+          index = index6;
+          break;
+        case 7:
+          allData = likeSearchAllData;
+          fetchNextPage = fetchNextPageLike;
+          hasNextPage = hasNextPageLike;
+          isFetching = isFetchingLike;
+          index = index7;
+          break;
+        default:
+          return;
+      }
+
+      console.log(allData);
+      if (index < allData?.length) {
+        index++;
+        console.log(index);
+
+        // 증가된 index 값을 원래 상태에 저장
+        switch (flag) {
+          case 1:
+            index1 = index;
+            break;
+          case 2:
+            index2 = index;
+            break;
+          case 3:
+            index3 = index;
+            break;
+          case 4:
+            index4 = index;
+            break;
+          case 5:
+            index5 = index;
+            break;
+          case 6:
+            index6 = index;
+            break;
+          case 7:
+            index7 = index;
+            break;
+          default:
+            return;
         }
-        if (
-          index >= recentAllData?.length &&
-          recentHasNextPage &&
-          !recentIsFetching
-        ) {
-          console.log('여기 인덱스', index);
-          const pages = await recentFetchNextPage();
-          console.log(pages);
-          const newRecentData =
-            pages?.data?.pages[pages?.data?.pages?.length - 1]?.data || [];
-          console.log(newRecentData);
-          setRecentAllData((prevData) => [...prevData, ...newRecentData]);
-          // Update index to be consistent with newly fetched data
-          index = recentAllData?.length - 1;
+
+        const currentItem = allData[index];
+        if (currentItem) {
+          handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
         }
-      } else if (flag === 2 && dateHasNextPage && !dateIsFetching) {
-        dateFetchNextPage();
-      } else if (flag === 4 && hasSskcookNextPage && !isSskcookFetching) {
-        fetchSskcookNextPage();
-      } else if (flag === 5 && hasNextPageRecent && !isFetchingRecent) {
-        fetchNextPageRecent();
-      } else if (flag === 7 && hasNextPageLike && !isFetchingLike) {
-        fetchNextPageLike();
-      } else if (flag === 6 && tagHasNextPage && !tagIsFetching) {
-        tagFetchNextPage();
-      } else if (flag === 3 && storeHasNextPage && !storeIsFetching) {
-        storeFetchNextPage();
+      } else if (index >= allData?.length && hasNextPage && !isFetching) {
+        const pages = await fetchNextPage();
+        console.log(pages);
+        const newData =
+          pages?.data?.pages[pages?.data?.pages?.length - 1]?.data || [];
+        console.log(newData);
+        allData((prevData) => [...prevData, ...newData]);
+        index = allData?.length - 1;
+
+        // 새로운 데이터의 인덱스 저장
+        switch (flag) {
+          case 1:
+            index1 = index;
+            break;
+          case 2:
+            index2 = index;
+            break;
+          case 3:
+            index3 = index;
+            break;
+          case 4:
+            index4 = index;
+            break;
+          case 5:
+            index5 = index;
+            break;
+          case 6:
+            index6 = index;
+            break;
+          case 7:
+            index7 = index;
+            break;
+          default:
+            return;
+        }
       }
     }
   };
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const debouncedHandleScroll = debounce(handleScroll, 400);
+    window.addEventListener('scroll', debouncedHandleScroll);
+
+    return () => window.removeEventListener('scroll', debouncedHandleScroll);
   }, [
     flag,
     recentAllData,
@@ -362,26 +636,43 @@ const SskcookDetails = () => {
     recentIsFetching,
     recentHasPrevPage,
     recentFetchPrevPage,
+    dateAllData,
     dateFetchNextPage,
     dateHasNextPage,
     dateIsFetching,
-    fetchSskcookNextPage,
-    hasSskcookNextPage,
-    isSskcookFetching,
-    fetchNextPageRecent,
-    hasNextPageRecent,
-    isFetchingRecent,
-    fetchNextPageLike,
-    hasNextPageLike,
-    isFetchingLike,
-    tagFetchNextPage,
-    tagHasNextPage,
-    tagIsFetching,
+    dateHasPrevPage,
+    dateFetchPrevPage,
+    storeAllData,
     storeFetchNextPage,
     storeHasNextPage,
     storeIsFetching,
+    storeHasPreviousPage,
+    storeFetchPreviousPage,
+    fetchSskcookAllData,
+    fetchSskcookNextPage,
+    hasSskcookNextPage,
+    isSskcookFetching,
+    fetchSskcookPrevPage,
+    fetchHasPrevPage,
+    recentSearchAllData,
+    fetchNextPageRecent,
+    hasNextPageRecent,
+    isFetchingRecent,
+    recentSearchHasPrevPage,
+    recentSearchFetchPrev,
+    tagAllData,
+    tagFetchNextPage,
+    tagHasNextPage,
+    tagIsFetching,
+    tagHasPrevPage,
+    tagFetchPrevPage,
+    likeSearchAllData,
+    fetchNextPageLike,
+    hasNextPageLike,
+    isFetchingLike,
+    likeHasPrevPage,
+    likeFetchPrevPage,
   ]);
-
   const likeMutation = useMutation({
     mutationFn: async (data) => {
       try {

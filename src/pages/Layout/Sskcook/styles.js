@@ -11,7 +11,6 @@ export const ContentContainer = styled.div`
 
 export const CustomContents = styled.div`
   margin-top: 5vh;
-
   display: flex;
   flex-direction: column;
   justify-content: center;

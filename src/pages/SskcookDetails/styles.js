@@ -128,3 +128,21 @@ export const SwitchSkeleton = styled(Skeleton.Button)`
   width: 100%;
   height: 100%;
 `;
+
+export const HeaderSkeleton = styled(Skeleton.Button)`
+  width: 60vw !important;
+  height: 40vh !important;
+  position: absolute !important;
+  top: 0 !important;
+  border-radius: 20px !important;
+  margin-left: 3.5vw !important;
+`;
+
+export const FooterSkeletion = styled(Skeleton.Button)`
+  width: 60vw !important;
+  height: 30vh !important;
+  position: absolute !important;
+  bottom: -40vh !important;
+  border-radius: 20px 20px 0 0 !important;
+  margin-left: 3.5vw !important;
+`;

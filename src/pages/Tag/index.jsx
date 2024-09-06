@@ -36,6 +36,7 @@ const Tag = () => {
   const allData = data?.pages.flatMap((page) => page.data) || [];
   const handleItemClick = (itemId) => {
     const index = allData.findIndex((item) => item.sskcookId === itemId);
+
     return index;
   };
   useEffect(() => {
