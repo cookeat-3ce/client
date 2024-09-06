@@ -40,6 +40,7 @@ import LiveSession from './pages/LiveSession';
 import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
 import OrderDone from './pages/OrderDone';
+import CreateNotice from './pages/CreateNotice';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -176,6 +177,11 @@ function App() {
             ) : (
               <Navigate to={'/login'} replace />
             )
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <QueryClientProvider client={queryClient}>
+                <LongcookUpload />
+              </QueryClientProvider>
+            </CommonLayout>
           }
         />
 
@@ -191,6 +197,11 @@ function App() {
             ) : (
               <Navigate to={'/login'} replace />
             )
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <QueryClientProvider client={queryClient}>
+                <SskcookModify />
+              </QueryClientProvider>
+            </CommonLayout>
           }
         />
         <Route
@@ -205,9 +216,9 @@ function App() {
           path={'info/longcook/update/:id'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <LongcookModify />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <LongcookModify />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -254,6 +265,14 @@ function App() {
             ) : (
               <Navigate to={'/login'} replace />
             )
+          }
+        />
+        <Route
+          path="/notice/create"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <CreateNotice />
+            </CommonLayout>
           }
         />
         <Route
