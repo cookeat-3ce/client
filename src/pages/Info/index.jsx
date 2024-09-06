@@ -180,6 +180,10 @@ const Index = () => {
     }
   };
 
+  const handleClickFridgeButton = () => {
+    window.location.href = '/myfridge';
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
@@ -236,7 +240,7 @@ const Index = () => {
               width="6vw"
               height="6vw"
               borderRadius="50%"
-              onClick={() => console.log('image click')}
+              onClick={handleClickFridgeButton}
             ></CustomImageButton>
             <CustomText
               fontFamily="Happiness-Sans-Bold"

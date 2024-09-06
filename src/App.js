@@ -41,6 +41,7 @@ import LiveSession from './pages/LiveSession';
 import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
 import CreateNotice from './pages/CreateNotice';
+import Fridge from './pages/Fridge';
 const queryClient = new QueryClient();
 
 // Component that handles redirecting admins
@@ -291,6 +292,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <SubscriptionInfo />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/myfridge"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <Fridge />
             </CommonLayout>
           }
         />
