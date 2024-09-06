@@ -35,6 +35,7 @@ import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
+import SskcookDetailsLayout from './pages/Layout/Sskcook';
 import CreateLive from './pages/CreateLive';
 import ClassSession from './pages/ClassSession';
 import LiveSession from './pages/LiveSession';
@@ -42,7 +43,6 @@ import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
 const queryClient = new QueryClient();
 
-// Component that handles redirecting admins
 const AdminRedirector = ({ role }) => {
   const navigate = useNavigate();
 
@@ -144,9 +144,9 @@ function App() {
         <Route
           path="/sskcook/:sskcookId"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <SskcookDetailsLayout isLogined={!!getCookie('accessToken')}>
               <SskcookDetails />
-            </CommonLayout>
+            </SskcookDetailsLayout>
           }
         />
 
@@ -165,9 +165,9 @@ function App() {
           path={'info/longcook/upload'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <LongcookUpload />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <LongcookUpload />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -176,9 +176,9 @@ function App() {
           path={'info/sskcook/update/:id'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <SskcookModify />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <SskcookModify />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />
@@ -194,9 +194,9 @@ function App() {
           path={'info/longcook/update/:id'}
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-            <QueryClientProvider client={queryClient}>
-              <LongcookModify />
-            </QueryClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <LongcookModify />
+              </QueryClientProvider>
             </CommonLayout>
           }
         />

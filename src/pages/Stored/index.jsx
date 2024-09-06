@@ -44,7 +44,11 @@ const Stored = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetching]);
-  // console.log(data.pages[0].total);
+  console.log(allData);
+  const handleItemClick = (itemId) => {
+    const index = allData.findIndex((item) => item.sskcookId === itemId);
+    return index;
+  };
   return (
     <Container>
       <TextContainer>
@@ -88,17 +92,22 @@ const Stored = () => {
             <StyledSskcookSkeleton />
           </>
         ) : (
-          allData.map((item) => (
-            <CardContainer key={item.sskcookId}>
-              <CardWrapper>
-                <Card
-                  url={item.sskcookUrl}
-                  sskcookId={item.sskcookId}
-                  color={COLORS.BLACK}
-                />
-              </CardWrapper>
-            </CardContainer>
-          ))
+          allData.map((item) => {
+            return (
+              <CardContainer key={item.sskcookId}>
+                <CardWrapper>
+                  <Card
+                    url={item.sskcookUrl}
+                    id={item.sskcookId}
+                    type={'sskcook'}
+                    status={'stored'}
+                    color={COLORS.BLACK}
+                    page={handleItemClick(item.sskcookId)}
+                  />
+                </CardWrapper>
+              </CardContainer>
+            );
+          })
         )}
         {isLoading && (
           <>

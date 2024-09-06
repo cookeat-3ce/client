@@ -33,7 +33,6 @@ export const DetailsContainer = styled.div`
 export const VideoContainer = styled.div`
   position: relative;
   width: 50%;
-  height: 80vh;
   border-right: 1px solid ${COLORS.BLACK};
   background: ${COLORS.BLACK};
   cursor: pointer;
@@ -114,7 +113,7 @@ export const SubscriptionContainer = styled.div`
   align-items: center;
   position: absolute;
   z-index: 1;
-  bottom: 5vw;
+  bottom: -25vh;
   left: 28vw;
   gap: 0.5vw;
 `;

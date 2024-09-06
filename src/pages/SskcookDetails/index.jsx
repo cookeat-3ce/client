@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   SwitchContainer,
   StyledSwitch,
@@ -47,6 +47,10 @@ import { memberAPI } from '../../apis/member';
 import CustomImageButton from '../../components/Button/Image';
 import { useCustomNavigate } from '../../hooks';
 import LeftArrow from '../../assets/icons/left_arrow.svg';
+import { useLocation } from 'react-router-dom';
+import instance from '../../apis';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { debounce } from 'lodash';
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
   const [member, setMember] = useRecoilState(memberState);
@@ -58,16 +62,325 @@ const SskcookDetails = () => {
   const { Kakao } = window;
   const playerRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
-
   const { transcript } = useSpeechRecognition();
-
+  const location = useLocation();
+  const state = location.state;
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedDate = `${year}-${formattedMonth}`;
+  console.log('State 값:', state);
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
+  const [keyword, setKeyword] = useState('');
+  const [flag, setFlag] = useState('');
+  const [page, setPage] = useState('');
+  useEffect(() => {
+    const stateValue = state.key;
+    const stateString = state.key.status;
+
+    if (stateString === 'recent') {
+      setFlag(1);
+      setPage(stateValue.transformedPage);
+    } else if (stateString === 'month') {
+      setFlag(2);
+      setPage(stateValue.transformedPage);
+    } else if (stateString === 'stored') {
+      setFlag(3);
+      setPage(stateValue.transformedPage);
+    } else if (stateString.substring(0, 10) === 'subscribe_') {
+      setFlag(4);
+      setKeyword(stateString.substring(11, stateString.length));
+      setPage(stateValue.transformedPage);
+    } else if (stateString.substring(0, 14) === 'search_recent:') {
+      setFlag(5);
+      setKeyword(stateString.substring(15, stateString.length));
+      setPage(stateValue.transformedPage);
+    } else if (stateString.substring(0, 4) === 'tag:') {
+      setFlag(6);
+      setKeyword(stateString.substring(5, stateString.length));
+      setPage(stateValue.transformedPage);
+    } else {
+      setFlag(7);
+      setKeyword(stateString.substring(14, stateString.length));
+      setPage(stateValue.transformedPage);
+    }
+  }, []);
+
+  // console.log(flag, keyword);
+
+  // console.log(page);
 
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_KAKAO_INIT_KEY);
   }, []);
+
+  const {
+    data: recentData,
+    fetchNextPage: recentFetchNextPage,
+    hasNextPage: recentHasNextPage,
+    isFetching: recentIsFetching,
+    hasPreviousPage: recentHasPrevPage,
+    fetchPreviousPage: recentFetchPrevPage,
+  } = useInfiniteQuery({
+    queryKey: ['SskcookRecent'],
+    queryFn: ({ pageParam = page }) =>
+      instance
+        .get(`/sskcook?sort=latest&page=${pageParam}`)
+        .then((res) => res.data),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    getPreviousPageParam: (firstPage, allPages) => {
+      return firstPage.prev ? allPages.length + 1 : undefined;
+    },
+    enabled: flag === 1,
+  });
+
+  const {
+    data: dateData,
+    fetchNextPage: dateFetchNextPage,
+    hasNextPage: dateHasNextPage,
+    isFetching: dateIsFetching,
+  } = useInfiniteQuery({
+    queryKey: [formattedDate],
+    queryFn: ({ pageParam = 1 }) =>
+      instance
+        .get(`/sskcook?date=${formattedDate}&page=${pageParam}`)
+        .then((res) => res.data),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    getPreviousPageParam: (firstPage, allPages) => {
+      return firstPage.prev ? allPages.length - 1 : undefined;
+    },
+    enabled: flag === 2,
+  });
+
+  const {
+    data: fetchedSskcookList,
+    fetchNextPage: fetchSskcookNextPage,
+    hasNextPage: hasSskcookNextPage,
+    isFetchingNextPage: isSskcookFetching,
+  } = useInfiniteQuery({
+    queryKey: ['userSskcookList', keyword],
+    queryFn: ({ pageParam = 1 }) =>
+      instance.get(`/sskcook/list/${keyword}?page=${pageParam}`).then((res) => {
+        // console.log('res: ', res.data);
+        return res.data;
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    getPreviousPageParam: (firstPage, allPages) => {
+      return firstPage.prev ? allPages.length + 1 : undefined;
+    },
+    enabled: flag === 4,
+  });
+
+  const {
+    data: recentSearchData,
+    fetchNextPage: fetchNextPageRecent,
+    hasNextPage: hasNextPageRecent,
+    isFetching: isFetchingRecent,
+  } = useInfiniteQuery({
+    queryKey: ['SskcookRecentSearch'],
+    queryFn: ({ pageParam = 1 }) =>
+      instance
+        .get(`/sskcook?keyword=${keyword}&sort=latest&page=${pageParam}`)
+        .then((res) => res.data),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    getPreviousPageParam: (firstPage, allPages) => {
+      return firstPage.prev ? allPages.length - 1 : undefined;
+    },
+    enabled: flag === 5,
+  });
+
+  const {
+    data: likeData,
+    fetchNextPage: fetchNextPageLike,
+    hasNextPage: hasNextPageLike,
+    isFetching: isFetchingLike,
+  } = useInfiniteQuery({
+    queryKey: ['SskcookLikeSearch'],
+    queryFn: ({ pageParam = 1 }) =>
+      instance
+        .get(`/sskcook?keyword=${keyword}&sort=likes&page=${pageParam}`)
+        .then((res) => res.data),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    getPreviousPageParam: (firstPage, allPages) => {
+      return firstPage.prev ? allPages.length - 1 : undefined;
+    },
+    enabled: flag === 7,
+  });
+
+  const {
+    data: tagData,
+    fetchNextPage: tagFetchNextPage,
+    hasNextPage: tagHasNextPage,
+    isFetching: tagIsFetching,
+  } = useInfiniteQuery({
+    queryKey: ['tag', keyword],
+    queryFn: ({ pageParam = 1 }) =>
+      instance
+        .get(`/sskcook?tag=${keyword}&page=${pageParam}`)
+        .then((res) => res.data),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    getPreviousPageParam: (firstPage, allPages) => {
+      return firstPage.prev ? allPages.length - 1 : undefined;
+    },
+    enabled: flag === 6,
+  });
+
+  const {
+    data: storeData,
+    fetchNextPage: storeFetchNextPage,
+    hasNextPage: storeHasNextPage,
+    isFetching: storeIsFetching,
+  } = useInfiniteQuery({
+    queryKey: ['Stored'],
+    queryFn: ({ pageParam = 1 }) =>
+      instance.get(`/member/sskcook?page=${pageParam}`).then((res) => res.data),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.next ? allPages.length + 1 : undefined;
+    },
+    getPreviousPageParam: (firstPage, allPages) => {
+      return firstPage.prev ? allPages.length - 1 : undefined;
+    },
+    enabled: flag === 3,
+  });
+
+  const [recentAllData, setRecentAllData] = useState([]);
+
+  useEffect(() => {
+    if (recentData?.pages) {
+      const allData = recentData.pages.flatMap((page) => page.data);
+      setRecentAllData(allData);
+    }
+  }, [recentData]);
+
+  const likesAllData = likeData?.pages.flatMap((page) => page.data) || [];
+  const tagAllData = tagData?.pages.flatMap((page) => page.data) || [];
+  const storeAllData = storeData?.pages.flatMap((page) => page.data) || [];
+  const recentSearchAllData =
+    recentSearchData?.pages.flatMap((page) => page.data) || [];
+  const fetchedSskcookAllData =
+    fetchedSskcookList?.pages.flatMap((page) => page.data) || [];
+  const dateAllData = dateData?.pages.flatMap((page) => page.data) || [];
+  // console.log(recentAllData, Number(sskcookId));
+  let index = recentAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+  console.log('여기', index);
+  console.log(recentAllData);
+  const handleScroll = async () => {
+    const scrollTop = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const bodyHeight = document.body.scrollHeight;
+
+    if (scrollTop === 0 && recentAllData?.length > 0) {
+      console.log(index);
+      if (flag === 1) {
+        if (index > -1) {
+          index--;
+        }
+        if (index >= 0) {
+          const currentItem = recentAllData[index];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        } else if (recentHasPrevPage && !recentIsFetching) {
+          const page = await recentFetchPrevPage();
+          console.log(page);
+          index = recentAllData?.length - 1;
+          const currentItem = recentAllData[index];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        }
+      }
+    }
+    // 맨 아래
+    else if (
+      scrollTop + windowHeight >= bodyHeight &&
+      recentAllData?.length > 0
+    ) {
+      if (flag === 1) {
+        if (index < recentAllData?.length) {
+          index++;
+          const currentItem = recentAllData[index];
+          if (currentItem) {
+            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          }
+        }
+        if (
+          index >= recentAllData?.length &&
+          recentHasNextPage &&
+          !recentIsFetching
+        ) {
+          console.log('여기 인덱스', index);
+          const pages = await recentFetchNextPage();
+          console.log(pages);
+          const newRecentData =
+            pages?.data?.pages[pages?.data?.pages?.length - 1]?.data || [];
+          console.log(newRecentData);
+          setRecentAllData((prevData) => [...prevData, ...newRecentData]);
+          // Update index to be consistent with newly fetched data
+          index = recentAllData?.length - 1;
+        }
+      } else if (flag === 2 && dateHasNextPage && !dateIsFetching) {
+        dateFetchNextPage();
+      } else if (flag === 4 && hasSskcookNextPage && !isSskcookFetching) {
+        fetchSskcookNextPage();
+      } else if (flag === 5 && hasNextPageRecent && !isFetchingRecent) {
+        fetchNextPageRecent();
+      } else if (flag === 7 && hasNextPageLike && !isFetchingLike) {
+        fetchNextPageLike();
+      } else if (flag === 6 && tagHasNextPage && !tagIsFetching) {
+        tagFetchNextPage();
+      } else if (flag === 3 && storeHasNextPage && !storeIsFetching) {
+        storeFetchNextPage();
+      }
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [
+    flag,
+    recentAllData,
+    recentFetchNextPage,
+    recentHasNextPage,
+    recentIsFetching,
+    recentHasPrevPage,
+    recentFetchPrevPage,
+    dateFetchNextPage,
+    dateHasNextPage,
+    dateIsFetching,
+    fetchSskcookNextPage,
+    hasSskcookNextPage,
+    isSskcookFetching,
+    fetchNextPageRecent,
+    hasNextPageRecent,
+    isFetchingRecent,
+    fetchNextPageLike,
+    hasNextPageLike,
+    isFetchingLike,
+    tagFetchNextPage,
+    tagHasNextPage,
+    tagIsFetching,
+    storeFetchNextPage,
+    storeHasNextPage,
+    storeIsFetching,
+  ]);
 
   const likeMutation = useMutation({
     mutationFn: async (data) => {
@@ -136,7 +449,7 @@ const SskcookDetails = () => {
       }
     },
     onSuccess: (response) => {
-      console.log(response);
+      // console.log(response);
       if (response === 1) message.success('구독 성공!', 5);
       else message.error('구독 취소!', 5);
     },
@@ -233,8 +546,8 @@ const SskcookDetails = () => {
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: `${sskcookDetailsData.data.details[0].title}`,
-        description: `${sskcookDetailsData.data.details[0].recipe}`,
+        title: `${sskcookDetailsData?.data?.details[0]?.title}`,
+        description: `${sskcookDetailsData?.data?.details[0]?.recipe}`,
         imageUrl: 'https://ifh.cc/g/lzPj16.png',
         link: {
           mobileWebUrl: window.location.href,
@@ -242,10 +555,10 @@ const SskcookDetails = () => {
         },
       },
       itemContent: {
-        profileText: `${sskcookDetailsData.data.details[0].nickname}`,
+        profileText: `${sskcookDetailsData?.data?.details[0]?.nickname}`,
       },
       social: {
-        likeCount: Number(sskcookDetailsData.data.details[0].likeCount),
+        likeCount: Number(sskcookDetailsData?.data?.details[0]?.likeCount),
       },
     });
   };
@@ -291,7 +604,7 @@ const SskcookDetails = () => {
       <DetailsContainer>
         <VideoContainer onClick={() => setIsPlaying(!isPlaying)}>
           <ReactPlayer
-            url={sskcookDetailsData?.data.details[0]?.sskcookUrl}
+            url={sskcookDetailsData?.data?.details[0]?.sskcookUrl}
             width="100%"
             height="100%"
             muted={false}
@@ -308,7 +621,7 @@ const SskcookDetails = () => {
               zIndex: '1',
               cursor: 'pointer',
               left: '53vw',
-              top: '20vh',
+              top: '55vh',
             }}
             onClick={() => {
               if (accessToken) {
@@ -328,7 +641,7 @@ const SskcookDetails = () => {
               zIndex: '1',
               cursor: 'pointer',
               left: '53vw',
-              top: '20vh',
+              top: '55vh',
             }}
             onClick={() => {
               if (accessToken) {
@@ -348,7 +661,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '11vw',
+              bottom: '-10vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -368,7 +681,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '11vw',
+              bottom: '-10vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -395,7 +708,7 @@ const SskcookDetails = () => {
                 position: 'absolute',
                 zIndex: '1',
                 cursor: 'pointer',
-                bottom: '8vw',
+                bottom: '-17vh',
                 left: '53vw',
               }}
             >
@@ -412,7 +725,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '5vw',
+              bottom: '-24vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -432,7 +745,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '5vw',
+              bottom: '-24vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -453,7 +766,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              top: '20vh',
+              top: '55vh',
               left: '30vw',
             }}
             onClick={() => setIsPlaying(!isPlaying)}
@@ -466,7 +779,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              top: '20vh',
+              top: '55vh',
               left: '30vw',
             }}
             onClick={() => {
@@ -479,19 +792,19 @@ const SskcookDetails = () => {
         <SubscriptionContainer>
           <IngredientSection>
             <CustomImageButton
-              src={sskcookDetailsData.data.details[0].profileImage}
+              src={sskcookDetailsData?.data?.details[0]?.profileImage}
               width={'3vw'}
               height={'3vw'}
               onClick={() =>
                 handleChangeUrl(
-                  `/subscription/${sskcookDetailsData.data.details[0].username}`,
+                  `/subscription/${sskcookDetailsData?.data?.details[0]?.username}`,
                 )
               }
             />
           </IngredientSection>
           <IngredientSection>
             <CustomText
-              text={sskcookDetailsData.data.details[0].nickname}
+              text={sskcookDetailsData?.data?.details[0]?.nickname}
               fontFamily={'Happiness-Sans-Regular'}
               fontSize={'.8vw'}
               color={COLORS.WHITE}
@@ -514,7 +827,7 @@ const SskcookDetails = () => {
                     setIsSubscriptionClicked(!isSubscriptionClicked);
                     subscriptionMutation.mutate({
                       followingUsername:
-                        sskcookDetailsData.data.details[0].username,
+                        sskcookDetailsData?.data?.details[0]?.username,
                       followerUsername: member.username,
                     });
                   } else {
@@ -538,7 +851,7 @@ const SskcookDetails = () => {
                     setIsSubscriptionClicked(!isSubscriptionClicked);
                     subscriptionMutation.mutate({
                       followingUsername:
-                        sskcookDetailsData.data.details[0].username,
+                        sskcookDetailsData?.data?.details[0]?.username,
                       followerUsername: member.username,
                     });
                   } else {

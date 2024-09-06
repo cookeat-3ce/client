@@ -4,13 +4,13 @@ export const Container = styled.div`
   height: ${(props) => props.height || '40vh'};
   position: relative;
   transition: transform 0.3s ease;
-  border-radius : 10px;
+  border-radius: 10px;
 `;
 
 export const Overlay = styled.div`
   position: absolute;
-  width: 90%;
-  height: 90%;
+  width: 91%;
+  height: 95%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

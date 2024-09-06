@@ -25,6 +25,7 @@ import CustomText from '../../components/Text';
 import { CardContainer, CardWrapper } from '../Tag/styles';
 import Card from '../../components/Card';
 import { StyledSskcookSkeleton } from '../Home/styles';
+import { useCustomNavigate } from '../../hooks';
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const [activeTab, setActiveTab] = useState('1');
@@ -35,6 +36,7 @@ const Search = () => {
   const [isNull, setIsNull] = useState(false);
   const queryClient = useQueryClient();
   const prevSearchValueRef = useRef('');
+  const { handleChangeUrl } = useCustomNavigate();
 
   const handleChange = (event) => {
     setSearchValue(event.target.value);
@@ -155,6 +157,10 @@ const Search = () => {
     likeData?.pages.flatMap((page) => page.data) || [];
   const memberSearchData = memberData?.pages.flatMap((page) => page.data) || [];
 
+  const handleItemClick = (data, itemId) => {
+    const index = data.findIndex((item) => item.sskcookId === itemId);
+    return index;
+  };
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -313,10 +319,16 @@ const Search = () => {
                           <CardWrapper>
                             <Card
                               url={item.sskcookUrl}
-                              sskcookId={item.sskcookId}
+                              id={item.sskcookId}
+                              type={'sskcook'}
                               color={COLORS.BLACK}
                               deleteAPI={sskcookAPI.sskcookDeleteAPI}
                               queryKey="sskcooks"
+                              status={`search_recent: ${searchValue}`}
+                              page={handleItemClick(
+                                sskcookSearchRecentData,
+                                item.sskcookId,
+                              )}
                             />
                           </CardWrapper>
                         </CardContainer>
@@ -361,10 +373,16 @@ const Search = () => {
                         <CardWrapper>
                           <Card
                             url={item.sskcookUrl}
-                            sskcookId={item.sskcookId}
+                            id={item.sskcookId}
                             color={COLORS.BLACK}
+                            type={'sskcook'}
                             deleteAPI={sskcookAPI.sskcookDeleteAPI}
                             queryKey="sskcooks"
+                            status={`search_likes: ${searchValue}`}
+                            page={handleItemClick(
+                              sskcookSearchLikeData,
+                              item.sskcookId,
+                            )}
                           />
                         </CardWrapper>
                       </CardContainer>
@@ -479,7 +497,9 @@ const Search = () => {
                       alignItems: 'center',
                       gap: '1vw',
                     }}
-                    onClick={() => console.log(1)} // Example -> Navigate to the member's page
+                    onClick={() =>
+                      handleChangeUrl(`/subscription/${item.username}`)
+                    }
                   >
                     <ProfileImageContainer src={item.profileImage} />
                     <TextContainer>

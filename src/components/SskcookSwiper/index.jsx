@@ -18,7 +18,6 @@ import Card from '../Card';
 import CustomButton from '../Button';
 import { sskcookAPI } from '../../apis/sskcook';
 import { getCookie, useCustomNavigate } from '../../hooks';
-
 const CustomSwiper = ({
   firstText,
   secondText,
@@ -26,6 +25,7 @@ const CustomSwiper = ({
   arr,
   isLogined,
   now,
+  page,
 }) => {
   const swiperRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
@@ -124,6 +124,8 @@ const CustomSwiper = ({
                   id={slide.sskcookId}
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
+                  status={now}
+                  page={page}
                 />
               </SwiperSlide>
             ))}

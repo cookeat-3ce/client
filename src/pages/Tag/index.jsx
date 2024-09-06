@@ -34,7 +34,10 @@ const Tag = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const allData = data?.pages.flatMap((page) => page.data) || [];
-
+  const handleItemClick = (itemId) => {
+    const index = allData.findIndex((item) => item.sskcookId === itemId);
+    return index;
+  };
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -114,6 +117,8 @@ const Tag = () => {
                   color={COLORS.BLACK}
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
+                  status={`tag: ${tag}`}
+                  page={handleItemClick(item.sskcookId)}
                 />
               </CardWrapper>
             </CardContainer>

@@ -5,15 +5,17 @@ import { COLORS } from '../../constants';
 import { sskcookAPI } from '../../apis/sskcook';
 import { longcookAPI } from '../../apis/longcook';
 
-const CustomVideoList = ({ type, videos, isInMyInfo = false }) => {
+const CustomVideoList = ({ type, videos, isInMyInfo = false, status }) => {
   const [currentVideos, setCurrentVideos] = useState([]);
-
   useEffect(() => {
     if (!videos) return;
     console.log('videos at custom list: ', videos.length);
     setCurrentVideos(videos);
   }, [videos]);
-
+  const handleItemClick = (itemId) => {
+    const index = videos.findIndex((item) => item.sskcookId === itemId);
+    return index;
+  };
   return (
     <Container>
       {type === 'sskcook' && (
@@ -29,6 +31,8 @@ const CustomVideoList = ({ type, videos, isInMyInfo = false }) => {
                 isInMyInfo={isInMyInfo}
                 deleteAPI={sskcookAPI.sskcookDeleteAPI}
                 queryKey="sskcooks"
+                status={status}
+                page={handleItemClick(video.sskcookId)}
               />
             ))}
         </SskcookContainer>
