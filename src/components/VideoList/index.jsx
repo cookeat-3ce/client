@@ -10,6 +10,7 @@ import ProfileCard from '../ProfileCard';
 import { COLORS } from '../../constants';
 import { sskcookAPI } from '../../apis/sskcook';
 import { longcookAPI } from '../../apis/longcook';
+import VideoPlayer from '../Card';
 
 const CustomVideoList = ({ type, videos, isInMyInfo = false, status }) => {
   const [currentVideos, setCurrentVideos] = useState([]);
