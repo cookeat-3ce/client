@@ -47,6 +47,7 @@ import { memberAPI } from '../../apis/member';
 import CustomImageButton from '../../components/Button/Image';
 import { useCustomNavigate } from '../../hooks';
 import LeftArrow from '../../assets/icons/left_arrow.svg';
+import SalesIcon from '../../assets/icons/sale.svg';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
@@ -331,7 +332,7 @@ const SskcookDetails = () => {
             ref={playerRef}
           />
         </VideoContainer>
-        {isSirenClicked ? (
+        {member.nickname !== sskcookDetailsData?.data.details[0]?.nickname && (
           <div
             style={{
               position: 'absolute',
@@ -349,29 +350,13 @@ const SskcookDetails = () => {
               }
             }}
           >
-            <img src={ClickedSiren} alt="ClickedSiren Icon" />
-          </div>
-        ) : (
-          <div
-            style={{
-              position: 'absolute',
-              zIndex: '1',
-              cursor: 'pointer',
-              left: '53vw',
-              top: '20vh',
-            }}
-            onClick={() => {
-              if (accessToken) {
-                setIsSirenClicked(!isSirenClicked);
-                reportMutation.mutate(sskcookId);
-              } else {
-                message.warning('로그인이 필요한 서비스예요!', 5);
-              }
-            }}
-          >
-            <img src={Siren} alt="Siren Icon" />
+            <img
+              src={isSirenClicked ? ClickedSiren : Siren}
+              alt={isSirenClicked ? 'ClickedSiren Icon' : 'Siren Icon'}
+            />
           </div>
         )}
+
         {isLikeClicked ? (
           <div
             style={{
@@ -528,36 +513,17 @@ const SskcookDetails = () => {
             />
           </IngredientSection>
           <IngredientSection>
-            {isSubscriptionClicked ? (
+            {member.nickname !==
+              sskcookDetailsData?.data?.details[0]?.nickname && (
               <CustomButton
-                text={'구독중'}
-                color={COLORS.BLACK}
-                backgroundColor={COLORS.WHITE}
-                borderColor={COLORS.BLACK}
-                fontFamily={'Happiness-Sans-Bold'}
-                borderRadius={'100px'}
-                width={'4vw'}
-                height={'4vh'}
-                fontSize={'.8vw'}
-                onClick={() => {
-                  if (accessToken) {
-                    setIsSubscriptionClicked(!isSubscriptionClicked);
-                    subscriptionMutation.mutate({
-                      followingUsername:
-                        sskcookDetailsData.data.details[0].username,
-                      followerUsername: member.username,
-                    });
-                  } else {
-                    message.warning('로그인이 필요한 서비스예요!', 5);
-                  }
-                }}
-              />
-            ) : (
-              <CustomButton
-                text={'구독'}
-                color={COLORS.WHITE}
-                backgroundColor={COLORS.BLACK}
-                borderColor={COLORS.WHITE}
+                text={isSubscriptionClicked ? '구독중' : '구독'}
+                color={isSubscriptionClicked ? COLORS.BLACK : COLORS.WHITE}
+                backgroundColor={
+                  isSubscriptionClicked ? COLORS.WHITE : COLORS.BLACK
+                }
+                borderColor={
+                  isSubscriptionClicked ? COLORS.BLACK : COLORS.WHITE
+                }
                 fontFamily={'Happiness-Sans-Bold'}
                 borderRadius={'100px'}
                 width={'4vw'}
@@ -614,26 +580,35 @@ const SskcookDetails = () => {
                 fontFamily={'Happiness-Sans-Bold'}
                 fontSize={'1.3vw'}
               />
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <CustomButton
-                  text={'한번에 구매'}
-                  color={COLORS.BLACK}
-                  backgroundColor={COLORS.WHITE}
-                  borderColor={COLORS.ORANGE}
-                  fontFamily={'Happiness-Sans-Bold'}
-                  width={'5vw'}
-                  height={'4vh'}
-                  fontSize={'.7vw'}
-                  borderRadius={'100px'}
-                  onClick={handleArrayClick}
-                  style={{ position: 'relative' }}
-                />
-                <img
-                  src={LeftArrow}
-                  alt=""
-                  style={{ marginLeft: '-.5vw', cursor: 'pointer' }}
-                  onClick={handleArrayClick}
-                />
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <img src={SalesIcon} alt="Sales Icon" />
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <CustomButton
+                    text={'한번에 구매'}
+                    color={COLORS.ORANGE}
+                    backgroundColor={COLORS.WHITE}
+                    borderColor={COLORS.ORANGE}
+                    fontFamily={'Happiness-Sans-Bold'}
+                    width={'5vw'}
+                    height={'4vh'}
+                    fontSize={'.7vw'}
+                    borderRadius={'100px'}
+                    onClick={handleArrayClick}
+                    style={{ position: 'relative' }}
+                  />
+                  <img
+                    src={LeftArrow}
+                    alt=""
+                    style={{ marginLeft: '-.5vw', cursor: 'pointer' }}
+                    onClick={handleArrayClick}
+                  />
+                </div>
               </div>
             </div>
 

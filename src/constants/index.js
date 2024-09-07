@@ -8,7 +8,7 @@ export const COLORS = {
   WHITE: '#FFFFFF',
   GRAY: '#585858',
   BLACK: '#000000',
-  LIGHTGRAY : '#ADADAD',
+  LIGHTGRAY: '#ADADAD',
   GRAPEFRUIT: 'rgba(255, 89, 53, 0.4)',
   DARKGRAPEFRUIT: '#FF785B',
   STROKE: '#CECECE',
@@ -45,7 +45,18 @@ export const TAGS = {
   RUDIMENTS: '초보',
   LIGHT: '가벼운',
 };
+
+export const INGREDIENTS = {
+  계란: '5000',
+  감자: '3000',
+  당근: '2000',
+  콩나물: '2500',
+  소고기: '10000',
+  닭고기: '10000',
+};
+
 export const TAG_VALUES = Object.values(TAGS);
+
 export const TAG_COLOR_MAPPING = Object.fromEntries(
   Object.entries(TAGS).map(([key, tagValue]) => [tagValue, COLORS[tagValue]]),
 );
