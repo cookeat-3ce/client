@@ -4,13 +4,14 @@ import {
   Container,
   UploadContainer,
   CustomWrapper,
-  TitleContainer,
   IngredientItem,
   VideoPreviewContainer,
   VideoPreview,
   BorderLine,
   IngredientSection,
   IngredientWrapper,
+  SubTitleContainer,
+  TitleContainer,
 } from './styles';
 import CustomText from '../../components/Text';
 import CustomButton from '../../components/Button';
@@ -26,6 +27,7 @@ const LongcookDetails = () => {
   const [recipe, setRecipe] = useState('');
   const [longcookUrl, setLongcookUrl] = useState('');
   const [longcookId, setLongcookId] = useState('');
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const fetchLongcookDetails = async () => {
@@ -37,6 +39,7 @@ const LongcookDetails = () => {
         setIngredients(data.ingredients);
         setLongcookUrl(data.details[0].longcookUrl);
         setLongcookId(data.details[0].longcookId);
+        setUsername(data.details[0].username);
         if (data.details[0].longcookUrl) {
           setFile({
             fileObject: null,
@@ -72,12 +75,20 @@ const LongcookDetails = () => {
           />
         </VideoPreviewContainer>
       </UploadContainer>
-      <CustomText
-        text={title}
-        fontFamily={'Happiness-Sans-Bold'}
-        fontSize={'1.4vw'}
-      />
       <TitleContainer>
+        <CustomText
+          text={title}
+          fontFamily={'Happiness-Sans-Bold'}
+          fontSize={'1.4vw'}
+        />
+        <CustomText
+          text={username}
+          fontFamily={'Happiness-Sans-Regular'}
+          color={COLORS.GRAY}
+          fontSize={'1.2vw'}
+        />
+      </TitleContainer>
+      <SubTitleContainer>
         <CustomText
           text={'식재료'}
           fontFamily={'Happiness-Sans-Bold'}
@@ -85,7 +96,7 @@ const LongcookDetails = () => {
           color={COLORS.GRAY}
         />
         <BorderLine />
-      </TitleContainer>
+      </SubTitleContainer>
 
       <IngredientWrapper>
         {ingredients.map((ingredient, index) => (
@@ -108,14 +119,14 @@ const LongcookDetails = () => {
                 height={'3vh'}
                 fontFamily={'Happiness-Sans-Bold'}
                 marginTop={'-0.2vh'}
-                onClick={handleItemClick(ingredient.name)}
+                onClick={() => handleItemClick(ingredient.name)}
               />
             </IngredientSection>
           </IngredientItem>
         ))}
       </IngredientWrapper>
 
-      <TitleContainer>
+      <SubTitleContainer>
         <CustomText
           text={'레시피'}
           fontFamily={'Happiness-Sans-Bold'}
@@ -123,7 +134,7 @@ const LongcookDetails = () => {
           color={COLORS.GRAY}
         />
         <BorderLine />
-      </TitleContainer>
+      </SubTitleContainer>
       <CustomWrapper>
         <CustomText text={recipe} fontSize={'1vw'} />
       </CustomWrapper>

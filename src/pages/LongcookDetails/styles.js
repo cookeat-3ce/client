@@ -33,14 +33,22 @@ export const CustomWrapper = styled.div`
   margin-left: 4vw;
 `;
 
-export const TitleContainer = styled.div`
+export const SubTitleContainer = styled.div`
   display: flex;
   margin-top: 4vh;
   flex-direction: row;
 `;
 
+export const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 2vh;
+`;
+
 export const VideoPreviewContainer = styled.div`
-  width: 112vh;
+  width: 100%;
   height: 64vh;
   border: 1px solid #f0f0f0; /* 테두리 색상 */
   border-radius: 5px; /* 테두리 둥글기 */
@@ -75,7 +83,7 @@ export const IngredientItem = styled.div`
 `;
 
 export const BorderLine = styled.div`
-  flex: 0.9;
+  flex: 1;
   height: 0.4vh;
   margin: 0.4vw;
   background-color: ${COLORS.GRAPEFRUIT};
