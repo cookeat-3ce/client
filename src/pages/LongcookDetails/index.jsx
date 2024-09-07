@@ -52,6 +52,15 @@ const LongcookDetails = () => {
     fetchLongcookDetails();
   }, [id]);
 
+  const handleItemClick = (item) => {
+    const encodedItem = encodeURIComponent(item);
+    window.open(
+      `http://localhost:3000/order?data=${encodedItem}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
+  };
+
   return (
     <Container>
       <UploadContainer>
@@ -99,6 +108,7 @@ const LongcookDetails = () => {
                 height={'3vh'}
                 fontFamily={'Happiness-Sans-Bold'}
                 marginTop={'-0.2vh'}
+                onClick={handleItemClick(ingredient.name)}
               />
             </IngredientSection>
           </IngredientItem>
