@@ -100,7 +100,7 @@ const SskcookRecent = () => {
                   url={item.sskcookUrl}
                   id={item.sskcookId}
                   color={COLORS.BLACK}
-                  height="30vh"
+                  height="35vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcook"
                 />

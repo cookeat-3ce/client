@@ -124,7 +124,7 @@ const CustomSwiper = ({
                   url={slide.sskcookUrl}
                   id={slide.sskcookId}
                   color={COLORS.BLACK}
-                  height="30vh"
+                  height="35vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
                 />
@@ -158,7 +158,7 @@ const CustomSwiper = ({
         ) : (
           <div
             style={{
-              height: '30vh',
+              height: '35vh',
               width: '100%',
               display: 'flex',
               justifyContent: 'center',

@@ -177,11 +177,6 @@ function App() {
             ) : (
               <Navigate to={'/login'} replace />
             )
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <QueryClientProvider client={queryClient}>
-                <LongcookUpload />
-              </QueryClientProvider>
-            </CommonLayout>
           }
         />
 
@@ -197,11 +192,6 @@ function App() {
             ) : (
               <Navigate to={'/login'} replace />
             )
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <QueryClientProvider client={queryClient}>
-                <SskcookModify />
-              </QueryClientProvider>
-            </CommonLayout>
           }
         />
         <Route
