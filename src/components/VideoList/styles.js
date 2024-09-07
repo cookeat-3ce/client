@@ -23,3 +23,9 @@ export const LongcookContainer = styled.div`
   margin: 2vh 0;
   width: 100%;
 `;
+
+export const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+`;
