@@ -4,7 +4,6 @@ import { COLORS } from '../../constants';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
 `;
 
 export const TextContainer = styled.div`
@@ -15,7 +14,6 @@ export const TextContainer = styled.div`
 
 export const SkeletonContainer = styled.div`
   display: flex;
-  width: 90vw;
   gap: 50px;
   flex-wrap: wrap;
 `;
