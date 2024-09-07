@@ -1,14 +1,15 @@
 .swiper {
   width: 70vw;
-  height: 40vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   margin-top: 3vh;
   padding: 2vh;
+  /* border: 10px solid black; */
 }
 
 .swiper-slide.sskcook {
-  background-color: black;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,6 +18,9 @@
   height: 100%;
 
   transition: transform 0.3s ease;
+  /* border: 10px solid red; */
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .swiper-slide.sskcook:hover {

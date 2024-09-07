@@ -12,6 +12,9 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
+import ProfileCard from '../../components/ProfileCard';
+import { sskcookAPI } from '../../apis/sskcook';
+
 const Stored = () => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['Stored'],

@@ -19,7 +19,6 @@ import {
   TabSeparator,
   TopContainer,
   TopInfoContainer,
-  AddButton,
 } from './styles';
 import ProfileImage from '../../components/ProfileImage';
 import fridge_closed from '../../assets/images/fridge_closed.svg';
@@ -35,6 +34,7 @@ import CustomTextButton from '../../components/Button/Text';
 import CustomVideoList from '../../components/VideoList';
 import CustomNoticeList from '../../components/NoticeList';
 import CustomButton from '../../components/Button';
+import Modal from '../../components/Modal';
 
 const Index = () => {
   const [member] = useRecoilState(memberState);
@@ -52,6 +52,17 @@ const Index = () => {
     queryKey: ['myInfo'],
     queryFn: () => memberAPI.myInfoAPI(username),
   });
+
+  useEffect(() => {
+    if (myInfoQuery.data?.data) {
+      const userInfo = myInfoQuery.data.data;
+      console.log('userInfo: ', userInfo);
+      setUserInfo(userInfo);
+      setUserDetailInfoString(
+        `구독자 ${userInfo.subscriptionCount}명 | 슥쿡 ${userInfo.sskcookCount}개`,
+      );
+    }
+  }, [myInfoQuery.data]);
 
   const {
     data: fetchedSskcookList,
@@ -156,6 +167,18 @@ const Index = () => {
     setSelectedMenu(menu);
   };
 
+  const handleClickButton = () => {
+    if (selectedMenu === 'sskcook') {
+      window.location.href = '/info/sskcook/upload';
+    }
+    if (selectedMenu === 'longcook') {
+      window.location.href = '/info/longcook/upload';
+    }
+    if (selectedMenu === 'notice') {
+      window.location.href = '/notice/create';
+    }
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
@@ -174,19 +197,6 @@ const Index = () => {
     hasNoticeNextPage,
     isNoticeFetching,
   ]);
-
-  useEffect(() => {
-    if (myInfoQuery.data?.data) {
-      setUserInfo(myInfoQuery.data?.data);
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log('userinfo: ', userInfo);
-    setUserDetailInfoString(
-      `구독자 ${userInfo?.subscriptionCount}명 | 슥쿡 ${userInfo?.sskcookCount}개`,
-    );
-  }, [userInfo]);
 
   return (
     <Container>
@@ -303,6 +313,7 @@ const Index = () => {
               fontSize={'1rem'}
               backgroundColor={COLORS.BLACK}
               borderRadius={'30px'}
+              onClick={handleClickButton}
             ></CustomButton>
           </TabMenuWrapperContainer>
           <TabSeparator></TabSeparator>

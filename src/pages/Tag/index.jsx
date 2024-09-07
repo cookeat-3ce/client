@@ -14,7 +14,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
-
+import ProfileCard from '../../components/ProfileCard';
 const Tag = () => {
   const location = window.location.search;
   const parsed = queryString.parse(location);
@@ -46,7 +46,7 @@ const Tag = () => {
         window.innerHeight || document.documentElement.clientHeight;
       const documentHeight =
         document.documentElement.scrollHeight || document.body.scrollHeight;
-
+      console.log(allData);
       if (windowHeight + scrollTop >= documentHeight - 1) {
         if (hasNextPage && !isFetching) {
           setIsLoading(true);
@@ -112,15 +112,17 @@ const Tag = () => {
             <CardContainer key={item.sskcookId}>
               <CardWrapper>
                 <Card
+                  type="sskcook"
                   url={item.sskcookUrl}
-                  type={'sskcook'}
                   id={item.sskcookId}
                   color={COLORS.BLACK}
+                  height="35vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
                   status={`tag: ${tag}`}
                   page={handleItemClick(item.sskcookId)}
                 />
+                <ProfileCard profileImage={item.profileImage} index={item} />
               </CardWrapper>
             </CardContainer>
           ))

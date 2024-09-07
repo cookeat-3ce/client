@@ -30,7 +30,6 @@ import Stored from './pages/Stored';
 import Search from './pages/Search';
 import Order from './pages/Order';
 import Info from './pages/Info';
-
 import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
@@ -41,6 +40,8 @@ import ClassSession from './pages/ClassSession';
 import LiveSession from './pages/LiveSession';
 import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
+import OrderDone from './pages/OrderDone';
+import CreateNotice from './pages/CreateNotice';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -153,33 +154,45 @@ function App() {
         <Route
           path={'/info/sskcook/upload'}
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <QueryClientProvider client={queryClient}>
-                <SskcookUpload />
-              </QueryClientProvider>
-            </CommonLayout>
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <QueryClientProvider client={queryClient}>
+                  <SskcookUpload />
+                </QueryClientProvider>
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
           }
         />
 
         <Route
           path={'info/longcook/upload'}
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <QueryClientProvider client={queryClient}>
-                <LongcookUpload />
-              </QueryClientProvider>
-            </CommonLayout>
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <QueryClientProvider client={queryClient}>
+                  <LongcookUpload />
+                </QueryClientProvider>
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
           }
         />
 
         <Route
           path={'info/sskcook/update/:id'}
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <QueryClientProvider client={queryClient}>
-                <SskcookModify />
-              </QueryClientProvider>
-            </CommonLayout>
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <QueryClientProvider client={queryClient}>
+                  <SskcookModify />
+                </QueryClientProvider>
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
           }
         />
         <Route
@@ -236,8 +249,20 @@ function App() {
         <Route
           path={'/info'}
           element={
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <Info />
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
+          }
+        />
+        <Route
+          path="/notice/create"
+          element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <Info />
+              <CreateNotice />
             </CommonLayout>
           }
         />
@@ -285,6 +310,7 @@ function App() {
             </CommonLayout>
           }
         />
+        <Route path="/order/done" element={<OrderDone />} />
       </Routes>
     </BrowserRouter>
   );

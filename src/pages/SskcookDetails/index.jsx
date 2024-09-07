@@ -58,6 +58,7 @@ const SskcookDetails = () => {
   const [isShareClicked, setIsShareClicked] = useState(false);
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
   const [isSubscriptionClicked, setIsSubscriptionClicked] = useState(false);
+  const [orderList, setOrderList] = useState([]);
   const { Kakao } = window;
   const playerRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
@@ -779,6 +780,35 @@ const SskcookDetails = () => {
     queryFn: () => sskcookAPI.sskcookDetailsAPI(sskcookId),
   });
 
+  const handleArrayClick = useCallback(() => {
+    if (sskcookDetailsData && sskcookDetailsData.data.ingredients) {
+      const newIngredientNames = sskcookDetailsData.data.ingredients.map(
+        (item) => item.name,
+      );
+
+      setOrderList(newIngredientNames);
+
+      const encodedData = encodeURIComponent(
+        JSON.stringify(newIngredientNames),
+      );
+
+      window.open(
+        `http://localhost:3000/order?data=${encodedData}`,
+        '_blank',
+        'noopener,noreferrer',
+      );
+    }
+  }, [sskcookDetailsData, setOrderList]);
+
+  const handleItemClick = (item) => {
+    const encodedItem = encodeURIComponent(item);
+    window.open(
+      `http://localhost:3000/order?data=${encodedItem}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
+  };
+
   useEffect(() => {
     if (!sskcookDetailsData) return;
 
@@ -829,7 +859,7 @@ const SskcookDetails = () => {
   const handleCopy = (copyText) => {
     navigator.clipboard
       .writeText(copyText)
-      .then(() => message.success('주소 복사 성공!', 5), console.log(copyText))
+      .then(() => message.success('주소 복사 성공!', 5))
       .catch((err) => message.error('주소 복사 실패!', 5));
   };
 
@@ -1199,16 +1229,14 @@ const SskcookDetails = () => {
                   height={'4vh'}
                   fontSize={'.7vw'}
                   borderRadius={'100px'}
-                  onClick={() => {
-                    handleChangeUrl('/order');
-                  }}
+                  onClick={handleArrayClick}
                   style={{ position: 'relative' }}
                 />
                 <img
                   src={LeftArrow}
                   alt=""
                   style={{ marginLeft: '-.5vw', cursor: 'pointer' }}
-                  onClick={() => handleChangeUrl('/order')}
+                  onClick={handleArrayClick}
                 />
               </div>
             </div>
@@ -1244,9 +1272,7 @@ const SskcookDetails = () => {
                       width={'3vw'}
                       height={'3vh'}
                       fontFamily={'Happiness-Sans-Bold'}
-                      onClick={() => {
-                        handleChangeUrl('/order');
-                      }}
+                      onClick={() => handleItemClick(item.name)}
                     />
                   </IngredientSection>
                 </IngredientWrapper>
