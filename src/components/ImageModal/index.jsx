@@ -103,11 +103,11 @@ const ImageModal = ({ show, onClose, info, onDelete }) => {
             }}
           />
           <CustomButton
-            text={'삭제'}
+            text={'사용 완료'}
             color={COLORS.WHITE}
-            width="6vw"
-            height="4vh"
-            fontSize=".8rem"
+            width={'6vw'}
+            height={'4vh'}
+            fontSize={'.8rem'}
             borderRadius={'20px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.ORANGE}

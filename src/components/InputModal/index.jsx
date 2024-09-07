@@ -39,6 +39,17 @@ const InputModal = ({ show, onClose, onSubmit }) => {
   const today = new Date();
   const [expiredDate, setExpiredDate] = useState(today);
 
+  const initSetting = () => {
+    setSelectedIngreidentType(0);
+    setIngredientName(null);
+    setIngredientAmount(null);
+    setExpiredDate(today);
+  };
+
+  useEffect(() => {
+    initSetting();
+  }, [show]);
+
   const addIngredientData = {
     username: username,
     name: ingredientName,

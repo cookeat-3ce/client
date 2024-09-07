@@ -23,6 +23,8 @@ import icon_meat from '../../assets/icons/meat.svg';
 import InputModal from '../../components/InputModal';
 import { fridgeAPI } from '../../apis/fridge';
 import ImageModal from '../../components/ImageModal';
+import { Tooltip } from 'antd';
+import moment from 'moment';
 
 const Fridge = () => {
   const [ingredients, setIngredients] = useState([]);
@@ -41,6 +43,7 @@ const Fridge = () => {
   };
 
   useEffect(() => {
+    setSelectedIngredient(null);
     fetchMyIngredients();
   }, []);
 
@@ -115,7 +118,7 @@ const Fridge = () => {
           <NoIngredientAlertContainer>
             <FridgeImageWrapper src={fridge_opened}></FridgeImageWrapper>
             <CustomText
-              text={'내 냉장고에 아무것도 없어요.'}
+              text={'내 냉장고에 아무것도 없어요!'}
               color={COLORS.BLACK}
               fontFamily={'Happiness-Sans-Bold'}
               fontSize={'1rem'}
@@ -136,15 +139,42 @@ const Fridge = () => {
         ) : (
           <FridgeContainer>
             <ImageGridContainer>
-              {ingredients.map((item, index) => (
-                <div key={index}>
+              {ingredients.map((item) => (
+                <Tooltip
+                  title={
+                    <div
+                      style={{
+                        color: `${
+                          moment(item.expdate).isBefore(moment())
+                            ? COLORS.ORANGE
+                            : COLORS.WHITE
+                        }`,
+                        textAlign: 'center',
+                      }}
+                    >
+                      {item.name}
+                      {moment(item.expdate).isBefore(moment()) && (
+                        <>
+                          <br />
+                          유통기한이 지났습니다.
+                        </>
+                      )}
+                    </div>
+                  }
+                  color={
+                    moment(item.expdate).isBefore(moment())
+                      ? COLORS.LIGHTORANGE
+                      : COLORS.ORANGE
+                  }
+                >
                   <IngredientImage
+                    isExpired={moment(item.expdate).isBefore(moment())}
                     src={getIcon(item.icon)}
                     onClick={() => {
                       openIngredientModal(item);
                     }}
                   />
-                </div>
+                </Tooltip>
               ))}
             </ImageGridContainer>
           </FridgeContainer>

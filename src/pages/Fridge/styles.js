@@ -56,14 +56,20 @@ export const ImageGridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   column-gap: 1vw;
-  row-gap: 4vh;
-  width: 76%;
-  margin: 12vh 0;
+  row-gap: 6vh;
+  width: 70%;
+  margin: 12vh 0 0 0;
 `;
 
 export const IngredientImage = styled.img`
+  opacity: ${(props) => (props.isExpired ? 0.3 : 1)};
+  border-radius: ${(props) => props.isExpired && '20px'};
   width: 100%;
-  height: auto;
+  transition: transform 0.1s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 export const NoIngredientAlertContainer = styled.div`
