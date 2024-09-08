@@ -153,7 +153,7 @@ const EventDetail = () => {
           fontSize={'1rem'}
           color={COLORS.BLACK}
         />
-        {moment() > moment(eventDetail?.enddate) && (
+        {moment() < moment(eventDetail?.enddate) && (
           <CustomButton
             text={'알림 받기'}
             color={COLORS.WHITE}
