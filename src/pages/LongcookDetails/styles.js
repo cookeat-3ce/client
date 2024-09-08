@@ -13,7 +13,6 @@ export const VideoContainer = styled.div`
   flex-direction: column;
   align-items: left;
   gap: 2vh;
-  margin: 3vh 0px;
   width: 100%;
 `;
 
