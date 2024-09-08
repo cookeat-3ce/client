@@ -14,6 +14,7 @@ export const SskcookContainer = styled.div`
   gap: 25px;
   margin-top: 16px;
   width: 100%;
+  flex-wrap: wrap;
 
   > * {
     width: 10vw;

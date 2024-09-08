@@ -31,7 +31,8 @@ const VideoPlayer = ({
     },
   });
 
-  const handleDeleteButtonClick = () => {
+  const handleDeleteButtonClick = (event) => {
+    event.stopPropagation();
     console.log(`delete ${type}: `, id);
     mutation.mutate(id);
   };
@@ -60,10 +61,9 @@ const VideoPlayer = ({
     <Container
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
       height={height}
       width={width}
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color, position: 'relative' }}
     >
       <ReactPlayer
         style={{ cursor: 'pointer' }}
@@ -86,7 +86,7 @@ const VideoPlayer = ({
           zIndex: 1,
           cursor: 'pointer',
         }}
-        onClick={() => setPlay(!play)}
+        onClick={handleClick}
       />
       {isInMyInfo && hover && (
         <Overlay onClick={(event) => event.stopPropagation()}>
@@ -94,6 +94,7 @@ const VideoPlayer = ({
             src={TrashIcon}
             width="2vw"
             onClick={handleDeleteButtonClick}
+            zIndex="3"
           />
         </Overlay>
       )}
