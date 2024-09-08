@@ -16,9 +16,13 @@
     url('./fonts/Happiness-Sans-Regular.woff') format('woff');
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600&display=swap');
+
 *,
 html {
   color: #000000;
+
+  font-family: 'Happiness-Sans-Regular', 'Noto Sans KR', sans-serif;
 }
 body {
   -webkit-font-smoothing: antialiased;

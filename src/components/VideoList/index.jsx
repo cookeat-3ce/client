@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Container, SskcookContainer, LongcookContainer } from './styles';
-import VideoPlayer from '../Card';
+import {
+  Container,
+  SskcookContainer,
+  LongcookContainer,
+  CardWrapper,
+} from './styles';
+import Card from '../Card';
+import ProfileCard from '../ProfileCard';
 import { COLORS } from '../../constants';
 import { sskcookAPI } from '../../apis/sskcook';
 import { longcookAPI } from '../../apis/longcook';
@@ -20,16 +26,19 @@ const CustomVideoList = ({ type, videos, isInMyInfo = false }) => {
         <SskcookContainer>
           {currentVideos &&
             currentVideos.map((video, index) => (
-              <VideoPlayer
-                key={index}
-                type={'sskcook'}
-                url={video.sskcookUrl}
-                id={video.sskcookId}
-                color={COLORS.BLACK}
-                isInMyInfo={isInMyInfo}
-                deleteAPI={sskcookAPI.sskcookDeleteAPI}
-                queryKey="sskcooks"
-              />
+              <CardWrapper>
+                <Card
+                  key={index}
+                  type={'sskcook'}
+                  url={video.sskcookUrl}
+                  id={video.sskcookId}
+                  color={COLORS.BLACK}
+                  isInMyInfo={isInMyInfo}
+                  deleteAPI={sskcookAPI.sskcookDeleteAPI}
+                  queryKey="sskcooks"
+                />
+                <ProfileCard index={video} profile={false} />
+              </CardWrapper>
             ))}
         </SskcookContainer>
       )}
@@ -37,16 +46,19 @@ const CustomVideoList = ({ type, videos, isInMyInfo = false }) => {
         <LongcookContainer>
           {currentVideos &&
             currentVideos.map((video, index) => (
-              <VideoPlayer
-                key={index}
-                type={'longcook'}
-                url={video.longcookUrl}
-                id={video.longcookId}
-                color={COLORS.BLACK}
-                isInMyInfo={isInMyInfo}
-                deleteAPI={longcookAPI.longcookDeleteAPI}
-                queryKey="longcook"
-              />
+              <CardWrapper>
+                <Card
+                  key={index}
+                  type={'longcook'}
+                  url={video.longcookUrl}
+                  id={video.longcookId}
+                  color={COLORS.BLACK}
+                  isInMyInfo={isInMyInfo}
+                  deleteAPI={longcookAPI.longcookDeleteAPI}
+                  queryKey="longcook"
+                />
+                <ProfileCard index={video} profile={false} />
+              </CardWrapper>
             ))}
         </LongcookContainer>
       )}

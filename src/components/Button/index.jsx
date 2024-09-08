@@ -13,6 +13,7 @@ const CustomButton = ({
   disabled,
   fontFamily,
   borderRadius,
+  fontWeight,
 }) => {
   const style = {
     // cneter 정렬
@@ -27,6 +28,7 @@ const CustomButton = ({
     fontSize: fontSize,
     fontFamily: fontFamily,
     borderRadius: borderRadius,
+    fontWeight: fontWeight,
   };
 
   return (

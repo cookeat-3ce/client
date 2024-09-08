@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useResetRecoilState } from 'recoil';
 import { memberState } from '../store';
 import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../apis/member';
 import { debounce } from 'lodash';
-import { InfiniteQueryObserverResult } from '@tanstack/react-query';
 
 // url 이동
 export const useCustomNavigate = () => {
