@@ -6,7 +6,6 @@ export const Container = styled.div`
   flex-direction: column;
   display: flex;
   width: 100%;
-  margin-left: 10vh;
 `;
 
 export const VideoContainer = styled.div`
