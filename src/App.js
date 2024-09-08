@@ -42,6 +42,8 @@ import SubscriptionInfo from './pages/SubscriptionInfo';
 import OrderDone from './pages/OrderDone';
 import CreateNotice from './pages/CreateNotice';
 import Fridge from './pages/Fridge';
+import Event from './pages/Event';
+import EventDetail from './pages/EventDetail';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -108,6 +110,22 @@ function App() {
                 <SignUp />
               </AuthLayout>
             )
+          }
+        />
+        <Route
+          path={'/notice'}
+          element={
+            <CommonLayout>
+              <Event />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path={'/notice/:eventId'}
+          element={
+            <CommonLayout>
+              <EventDetail />
+            </CommonLayout>
           }
         />
 
