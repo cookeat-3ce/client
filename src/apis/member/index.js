@@ -30,4 +30,10 @@ export const memberAPI = {
       followerUsername,
     });
   },
+  verifyCheckAPI: (username) => {
+    return instance.get(`/member/verify/${username}`);
+  },
+  verifyRequestAPI: (username) => {
+    return instance.patch(`/member/${username}/verify`);
+  },
 };
