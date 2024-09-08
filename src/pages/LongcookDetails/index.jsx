@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Container,
-  UploadContainer,
+  VideoContainer,
   CustomWrapper,
   IngredientItem,
   VideoPreviewContainer,
@@ -40,6 +40,7 @@ const LongcookDetails = () => {
         setLongcookUrl(data.details[0].longcookUrl);
         setLongcookId(data.details[0].longcookId);
         setUsername(data.details[0].username);
+
         if (data.details[0].longcookUrl) {
           setFile({
             fileObject: null,
@@ -66,15 +67,17 @@ const LongcookDetails = () => {
 
   return (
     <Container>
-      <UploadContainer>
+      <VideoContainer>
         <VideoPreviewContainer>
           <VideoPreview
             file={file && file.video}
             src={file ? file.url : ''}
             controls
+            autoPlay
+            muted
           />
         </VideoPreviewContainer>
-      </UploadContainer>
+      </VideoContainer>
       <TitleContainer>
         <CustomText
           text={title}

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { COLORS } from '../../constants';
-import { Select as AntdSelect } from 'antd';
 
 export const Container = styled.div`
   display: flex;
@@ -10,21 +9,13 @@ export const Container = styled.div`
   margin-left: 10vh;
 `;
 
-export const UploadContainer = styled.div`
+export const VideoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: left;
   gap: 2vh;
   margin: 3vh 0px;
   width: 100%;
-`;
-
-export const UploadButtonWrapper = styled.div`
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  margin-top: -0.8vh;
 `;
 
 export const CustomWrapper = styled.div`
@@ -56,6 +47,7 @@ export const VideoPreviewContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  autoplay: true;
 `;
 
 export const VideoPreview = styled.video`
