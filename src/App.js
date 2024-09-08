@@ -41,6 +41,7 @@ import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
 import OrderDone from './pages/OrderDone';
 import CreateNotice from './pages/CreateNotice';
+import Fridge from './pages/Fridge';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -306,6 +307,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <SubscriptionInfo />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/myfridge"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <Fridge />
             </CommonLayout>
           }
         />
