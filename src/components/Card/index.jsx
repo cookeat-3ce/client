@@ -75,6 +75,19 @@ const VideoPlayer = ({
         muted={true}
         controls={false}
       />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'transparent',
+          zIndex: 1,
+          cursor: 'pointer',
+        }}
+        onClick={() => setPlay(!play)}
+      />
       {isInMyInfo && hover && (
         <Overlay onClick={(event) => event.stopPropagation()}>
           <CustomImageButton
