@@ -13,6 +13,7 @@ export const COLORS = {
   DARKGRAPEFRUIT: '#FF785B',
   STROKE: '#CECECE',
   SUCCESS: '#79DEB4',
+  SALES: '#FFD800',
   한식: '#C93A40',
   일식: '#2E3A59',
   양식: '#4A7A8C',

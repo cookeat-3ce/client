@@ -27,7 +27,7 @@ export const DetailsContainer = styled.div`
   height: 80vh;
   margin-left: 7vw;
   border: 1px solid ${COLORS.TAG};
-  border-radius: 20px;
+  border-radius: 20px !important;
 `;
 
 export const VideoContainer = styled.div`

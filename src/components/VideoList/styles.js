@@ -9,11 +9,16 @@ export const Container = styled.div`
 `;
 
 export const SskcookContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
   margin-top: 16px;
   width: 100%;
+
+  > * {
+    width: 10vw;
+    height: 100%;
+  }
 `;
 
 export const LongcookContainer = styled.div`

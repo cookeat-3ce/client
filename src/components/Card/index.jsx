@@ -5,7 +5,17 @@ import CustomImageButton from '../Button/Image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import TrashIcon from '../../assets/icons/trash_white.svg';
 
-const VideoPlayer = ({ type, url, id, color, isInMyInfo = false, deleteAPI, queryKey, height }) => {
+const VideoPlayer = ({
+  type,
+  url,
+  id,
+  color,
+  isInMyInfo = false,
+  deleteAPI,
+  queryKey,
+  height,
+  width,
+}) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
   const playerRef = useRef(null);
@@ -52,7 +62,8 @@ const VideoPlayer = ({ type, url, id, color, isInMyInfo = false, deleteAPI, quer
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
       height={height}
-      style={{ backgroundColor: color}}
+      width={width}
+      style={{ backgroundColor: color }}
     >
       <ReactPlayer
         style={{ cursor: 'pointer' }}

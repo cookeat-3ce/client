@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import {
   SwitchContainer,
   StyledSwitch,
@@ -48,6 +54,7 @@ import CustomImageButton from '../../components/Button/Image';
 import { useCustomNavigate } from '../../hooks';
 import LeftArrow from '../../assets/icons/left_arrow.svg';
 import SalesIcon from '../../assets/icons/sale.svg';
+import { INGREDIENTS } from '../../constants';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
@@ -58,6 +65,7 @@ const SskcookDetails = () => {
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
   const [isSubscriptionClicked, setIsSubscriptionClicked] = useState(false);
   const [orderList, setOrderList] = useState([]);
+  const [randomNumber, setRandomNumber] = useState(null);
   const { Kakao } = window;
   const playerRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
@@ -67,11 +75,24 @@ const SskcookDetails = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
 
+  const getProductPriceRandom = useCallback(() => {
+    const prices = [10, 20, 30, 40, 50];
+    return prices[Math.floor(Math.random() * prices.length)];
+  }, []);
+
+  const getRandomNumber = useCallback((min, max) => {
+    const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.round(randomNum / 100) * 100;
+  }, []);
+
+  const randomPrice = useMemo(() => getRandomNumber(1000, 20000), []);
+
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_KAKAO_INIT_KEY);
-  }, []);
-
+    setRandomNumber(getProductPriceRandom());
+  }, [Kakao, getProductPriceRandom]);
+  console.log(randomNumber);
   const likeMutation = useMutation({
     mutationFn: async (data) => {
       try {
@@ -209,21 +230,25 @@ const SskcookDetails = () => {
   useEffect(() => {
     if (!sskcookDetailsData) return;
 
-    if (sskcookDetailsData?.data?.details[0]?.followStatus === 'Following')
-      setIsSubscriptionClicked(true);
-    else setIsSubscriptionClicked(false);
+    const details = sskcookDetailsData.data.details[0];
 
-    if (sskcookDetailsData?.data?.details[0]?.likeStatus === 'Liked')
-      setIsLikeClicked(true);
-    else setIsLikeClicked(false);
+    const newIsSubscriptionClicked = details.followStatus === 'Following';
+    const newIsLikeClicked = details.likeStatus === 'Liked';
+    const newIsBookmarkClicked = details.storeStatus === 'Saved';
+    const newIsSirenClicked = details.reportStatus === 'Reported';
 
-    if (sskcookDetailsData?.data?.details[0]?.storeStatus === 'Saved')
-      setIsBookmarkClicked(true);
-    else setIsBookmarkClicked(false);
-
-    if (sskcookDetailsData?.data?.details[0]?.reportStatus === 'Reported')
-      setIsSirenClicked(true);
-    else setIsSirenClicked(false);
+    setIsSubscriptionClicked((prev) =>
+      prev !== newIsSubscriptionClicked ? newIsSubscriptionClicked : prev,
+    );
+    setIsLikeClicked((prev) =>
+      prev !== newIsLikeClicked ? newIsLikeClicked : prev,
+    );
+    setIsBookmarkClicked((prev) =>
+      prev !== newIsBookmarkClicked ? newIsBookmarkClicked : prev,
+    );
+    setIsSirenClicked((prev) =>
+      prev !== newIsSirenClicked ? newIsSirenClicked : prev,
+    );
   }, [sskcookDetailsData]);
 
   if (isLoading) {
@@ -330,8 +355,34 @@ const SskcookDetails = () => {
             playing={isPlaying}
             loop={true}
             ref={playerRef}
+            config={{
+              youtube: {
+                playerVars: {
+                  autoplay: 1,
+                  controls: 0,
+                  disablekb: 1,
+                  modestbranding: 1,
+                  rel: 0,
+                  loop: 1,
+                },
+              },
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'transparent',
+              zIndex: 1,
+              cursor: 'pointer',
+            }}
+            onClick={() => setIsPlaying(!isPlaying)}
           />
         </VideoContainer>
+
         {member.nickname !== sskcookDetailsData?.data.details[0]?.nickname && (
           <div
             style={{
@@ -587,7 +638,37 @@ const SskcookDetails = () => {
                   alignItems: 'center',
                 }}
               >
-                <img src={SalesIcon} alt="Sales Icon" />
+                <div
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <img src={SalesIcon} alt="Sales Icon" />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <CustomText
+                      text={randomNumber}
+                      fontFamily={'Happiness-Sans-Bold'}
+                      color={COLORS.SALES}
+                      fontSize={'.9vw'}
+                    />
+                    <CustomText
+                      text={'%'}
+                      fontFamily={'Happiness-Sans-Bold'}
+                      color={COLORS.SALES}
+                      fontSize={'.9vw'}
+                    />
+                  </div>
+                </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <CustomButton
                     text={'한번에 구매'}
@@ -633,13 +714,21 @@ const SskcookDetails = () => {
                     />
                   </IngredientSection>
                   <IngredientSection>
+                    <CustomText
+                      text={INGREDIENTS[item.name] || randomPrice.toString()}
+                      fontFamily={'Happiness-Sans-Regular'}
+                      color={COLORS.BLACK}
+                      fontSize={'1vw'}
+                    />
+                  </IngredientSection>
+                  <IngredientSection>
                     <CustomButton
                       text={'구매'}
                       fontSize={'.7vw'}
                       borderRadius={'100px'}
-                      color={COLORS.WHITE}
-                      backgroundColor={COLORS.ORANGE}
-                      borderColor={COLORS.ORANGE}
+                      color={COLORS.BLACK}
+                      backgroundColor={COLORS.WHITE}
+                      borderColor={COLORS.BLACK}
                       width={'3vw'}
                       height={'3vh'}
                       fontFamily={'Happiness-Sans-Bold'}

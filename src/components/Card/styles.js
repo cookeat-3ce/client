@@ -8,8 +8,8 @@ export const Container = styled.div`
 
 export const Overlay = styled.div`
   position: absolute;
-  width: 90%;
-  height: 90%;
+  width: 88%;
+  height: 94%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
