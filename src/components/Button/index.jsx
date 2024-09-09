@@ -13,6 +13,7 @@ const CustomButton = ({
   disabled,
   fontFamily,
   borderRadius,
+  marginTop,
   fontWeight,
 }) => {
   const style = {
@@ -28,6 +29,7 @@ const CustomButton = ({
     fontSize: fontSize,
     fontFamily: fontFamily,
     borderRadius: borderRadius,
+    marginTop: marginTop,
     fontWeight: fontWeight,
   };
 

@@ -20,6 +20,7 @@ import SskcookMonthly from './pages/SskcookMonthly';
 import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
+import LongcookDetails from './pages/LongcookDetails';
 import Tag from './pages/Tag';
 import LongcookList from './pages/LongcookList';
 import SskcookUpload from './pages/SskcookUpload';
@@ -167,6 +168,14 @@ function App() {
             <SskcookDetailsLayout isLogined={!!getCookie('accessToken')}>
               <SskcookDetails />
             </SskcookDetailsLayout>
+          }
+        />
+        <Route
+          path="/longcook/:id"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <LongcookDetails />
+            </CommonLayout>
           }
         />
 
