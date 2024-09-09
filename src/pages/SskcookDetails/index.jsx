@@ -65,6 +65,7 @@ const SskcookDetails = () => {
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
   const [isSubscriptionClicked, setIsSubscriptionClicked] = useState(false);
   const [orderList, setOrderList] = useState([]);
+  const [priceList, setPriceList] = useState([]);
   const [randomNumber, setRandomNumber] = useState(null);
   const { Kakao } = window;
   const playerRef = useRef(null);
@@ -85,14 +86,12 @@ const SskcookDetails = () => {
     return Math.round(randomNum / 100) * 100;
   }, []);
 
-  const randomPrice = useMemo(() => getRandomNumber(1000, 20000), []);
-
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_KAKAO_INIT_KEY);
     setRandomNumber(getProductPriceRandom());
   }, [Kakao, getProductPriceRandom]);
-  console.log(randomNumber);
+
   const likeMutation = useMutation({
     mutationFn: async (data) => {
       try {
@@ -196,36 +195,8 @@ const SskcookDetails = () => {
   const { data: sskcookDetailsData, isLoading } = useQuery({
     queryKey: ['sskccokDetails', sskcookId],
     queryFn: () => sskcookAPI.sskcookDetailsAPI(sskcookId),
+    staleTime: Infinity,
   });
-
-  const handleArrayClick = useCallback(() => {
-    if (sskcookDetailsData && sskcookDetailsData.data.ingredients) {
-      const newIngredientNames = sskcookDetailsData.data.ingredients.map(
-        (item) => item.name,
-      );
-
-      setOrderList(newIngredientNames);
-
-      const encodedData = encodeURIComponent(
-        JSON.stringify(newIngredientNames),
-      );
-
-      window.open(
-        `http://localhost:3000/order?data=${encodedData}`,
-        '_blank',
-        'noopener,noreferrer',
-      );
-    }
-  }, [sskcookDetailsData, setOrderList]);
-
-  const handleItemClick = (item) => {
-    const encodedItem = encodeURIComponent(item);
-    window.open(
-      `http://localhost:3000/order?data=${encodedItem}`,
-      '_blank',
-      'noopener,noreferrer',
-    );
-  };
 
   useEffect(() => {
     if (!sskcookDetailsData) return;
@@ -250,6 +221,58 @@ const SskcookDetails = () => {
       prev !== newIsSirenClicked ? newIsSirenClicked : prev,
     );
   }, [sskcookDetailsData]);
+
+  const generateRandomPrices = (items) => {
+    return items.map(() => getRandomNumber(1000, 20000));
+  };
+
+  const [prices, setPrices] = useState([]);
+  const [totalPrice, setTotalPrice] = useState('');
+  const [discountPrice, setDiscountPrice] = useState('');
+
+  useEffect(() => {
+    if (sskcookDetailsData?.data?.ingredients) {
+      const price = setPrices(
+        generateRandomPrices(sskcookDetailsData.data.ingredients),
+      );
+      setPriceList(price);
+    }
+  }, [sskcookDetailsData]);
+
+  const handleArrayClick = () => {
+    if (sskcookDetailsData && sskcookDetailsData.data.ingredients) {
+      const newIngredientNames = sskcookDetailsData.data.ingredients.map(
+        (item) => item.name,
+      );
+
+      setOrderList(newIngredientNames);
+      const encodedOrderList = encodeURIComponent(
+        JSON.stringify(newIngredientNames),
+      );
+      const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${randomNumber}`;
+
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleItemClick = (item) => {
+    const itemIndex = orderList.indexOf(item);
+    const priceForItem = prices[itemIndex];
+    const encodedItem = encodeURIComponent(item);
+    window.open(
+      `http://localhost:3000/order?orderData=${encodedItem}&priceData=${priceForItem}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
+  };
+
+  useEffect(() => {
+    const newTotalPrice = prices.reduce((total, price) => total + price, 0);
+    setTotalPrice(newTotalPrice);
+
+    const discount = newTotalPrice - newTotalPrice * randomNumber * 0.01;
+    setDiscountPrice(discount);
+  }, [prices, randomNumber]);
 
   if (isLoading) {
     return (
@@ -624,7 +647,9 @@ const SskcookDetails = () => {
               : null}
           </TagContainer>
           <IngredientContainer>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2vw' }}>
+            <div
+              style={{ display: 'flex', alignItems: 'flex-end', gap: '2vw' }}
+            >
               <CustomText
                 text={'준비 재료'}
                 color={COLORS.BLACK}
@@ -638,37 +663,69 @@ const SskcookDetails = () => {
                   alignItems: 'center',
                 }}
               >
-                <div
-                  style={{
-                    position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <img src={SalesIcon} alt="Sales Icon" />
+                <div style={{ display: 'flex', alignItems: 'center' }}>
                   <div
                     style={{
-                      position: 'absolute',
                       display: 'flex',
-                      alignItems: 'center',
+                      flexDirection: 'column',
+                      alignItems: 'flex-end',
                       justifyContent: 'center',
+                      marginRight: '.3vw',
+                      gap: '.3vw',
                     }}
                   >
                     <CustomText
-                      text={randomNumber}
+                      text={`${totalPrice}원`}
                       fontFamily={'Happiness-Sans-Bold'}
-                      color={COLORS.SALES}
-                      fontSize={'.9vw'}
+                      fontSize={'.7vw'}
+                      color={COLORS.TAG}
+                      style={{
+                        textDecoration: 'line-through',
+                        textAlign: 'center',
+                        display: 'block',
+                      }}
                     />
                     <CustomText
-                      text={'%'}
+                      text={`${discountPrice}원`}
                       fontFamily={'Happiness-Sans-Bold'}
-                      color={COLORS.SALES}
                       fontSize={'.9vw'}
+                      color={COLORS.BLACK}
                     />
                   </div>
+                  <div
+                    style={{
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '1vh',
+                    }}
+                  >
+                    <img src={SalesIcon} alt="Sales Icon" />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <CustomText
+                        text={randomNumber}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        color={COLORS.SALES}
+                        fontSize={'.9vw'}
+                      />
+                      <CustomText
+                        text={'%'}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        color={COLORS.SALES}
+                        fontSize={'.9vw'}
+                      />
+                    </div>
+                  </div>
                 </div>
+
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <CustomButton
                     text={'한번에 구매'}
@@ -686,7 +743,7 @@ const SskcookDetails = () => {
                   <img
                     src={LeftArrow}
                     alt=""
-                    style={{ marginLeft: '-.5vw', cursor: 'pointer' }}
+                    style={{ cursor: 'pointer' }}
                     onClick={handleArrayClick}
                   />
                 </div>
@@ -715,7 +772,11 @@ const SskcookDetails = () => {
                   </IngredientSection>
                   <IngredientSection>
                     <CustomText
-                      text={INGREDIENTS[item.name] || randomPrice.toString()}
+                      text={
+                        INGREDIENTS[item.name]
+                          ? `${INGREDIENTS[item.name]}원`
+                          : `${(prices[index] || '').toString()}원`
+                      }
                       fontFamily={'Happiness-Sans-Regular'}
                       color={COLORS.BLACK}
                       fontSize={'1vw'}
