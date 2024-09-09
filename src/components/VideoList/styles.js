@@ -33,6 +33,15 @@ export const LongcookContainer = styled.div`
   gap: 16px;
   margin: 2vh 0;
   width: 100%;
+  & > div {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  & > div {
+    overflow: hidden;
+  }
 `;
 
 export const CardWrapper = styled.div`

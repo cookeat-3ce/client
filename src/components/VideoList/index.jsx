@@ -54,7 +54,7 @@ const CustomVideoList = ({
         </SskcookContainer>
       )}
       {type === 'longcook' && (
-        <LongcookContainer>
+        <LongcookContainer width={width} height={height}>
           {currentVideos &&
             currentVideos.map((video, index) => (
               <CardWrapper>
@@ -67,6 +67,8 @@ const CustomVideoList = ({
                   isInMyInfo={isInMyInfo}
                   deleteAPI={longcookAPI.longcookDeleteAPI}
                   queryKey="longcook"
+                  width={width}
+                  height={height}
                 />
                 <ProfileCard index={video} profile={false} />
               </CardWrapper>

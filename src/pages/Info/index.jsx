@@ -340,6 +340,8 @@ const Index = () => {
               type={selectedMenu}
               videos={longcookList || []}
               isInMyInfo={true}
+              width={'15vw'}
+              height={'12vw'}
             />
             {isLongcookFetching && <div>Loading more...</div>}
           </LongcookContainer>
