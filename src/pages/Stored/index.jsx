@@ -107,6 +107,7 @@ const Stored = () => {
                     color={COLORS.BLACK}
                     page={handleItemClick(item.sskcookId)}
                   />
+                  <ProfileCard profileImage={item.profileImage} index={item} />
                 </CardWrapper>
               </CardContainer>
             );

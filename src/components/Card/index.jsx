@@ -4,18 +4,6 @@ import { Container, Overlay } from './styles';
 import CustomImageButton from '../Button/Image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import TrashIcon from '../../assets/icons/trash_white.svg';
-
-const VideoPlayer = ({
-  type,
-  url,
-  id,
-  color,
-  isInMyInfo = false,
-  deleteAPI,
-  queryKey,
-  height,
-  width,
-}) => {
 import { useNavigate } from 'react-router-dom';
 const VideoPlayer = ({
   type,
@@ -28,6 +16,7 @@ const VideoPlayer = ({
   height,
   status,
   page,
+  width,
 }) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
@@ -73,16 +62,21 @@ const VideoPlayer = ({
     event.stopPropagation();
     console.log('id: ', id);
     // window.location.href = `/${type}/${id}`;
-    navigate(`/${type}/${id}`, { state: { key: { status, transformedPage } } });
+    navigate(`/${type}/${id}`, {
+      state: { key: { status, transformedPage } },
+    });
   };
 
   return (
     <Container
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      height={height}
-      width={width}
-      style={{ backgroundColor: color, position: 'relative' }}
+      style={{
+        backgroundColor: color,
+        position: 'relative',
+        width: width,
+        height: height,
+      }}
     >
       <ReactPlayer
         style={{ cursor: 'pointer' }}

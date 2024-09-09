@@ -47,7 +47,7 @@ import { memberAPI } from '../../apis/member';
 import CustomImageButton from '../../components/Button/Image';
 import { useCustomNavigate } from '../../hooks';
 import LeftArrow from '../../assets/icons/left_arrow.svg';
-import SalesIcon from '../../assets/icons/sales.svg';
+import SalesIcon from '../../assets/icons/sale.svg';
 import { INGREDIENTS } from '../../constants';
 import { useLocation } from 'react-router-dom';
 import instance from '../../apis';
