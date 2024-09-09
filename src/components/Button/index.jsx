@@ -16,6 +16,10 @@ const CustomButton = ({
   fontWeight,
 }) => {
   const style = {
+    // cneter 정렬
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     color: color,
     width: width,
     height: height,

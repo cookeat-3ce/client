@@ -53,13 +53,11 @@ const SubscriptionInfo = () => {
     }
   }, []);
 
-  // Fetch user information
   const myInfoQuery = useQuery({
     queryKey: ['myInfo', username],
     queryFn: () => memberAPI.myInfoAPI(username),
   });
 
-  // Fetch Sskcook list with pagination
   const {
     data: fetchedSskcookList,
     fetchNextPage: fetchSskcookNextPage,
@@ -80,7 +78,6 @@ const SubscriptionInfo = () => {
     },
   });
 
-  // Fetch Longcook list with pagination
   const {
     data: fetchedLongcookList,
     fetchNextPage: fetchLongcookNextPage,
@@ -101,7 +98,6 @@ const SubscriptionInfo = () => {
     },
   });
 
-  // Fetch Notice list with pagination
   const {
     data: fetchedNoticeList,
     fetchNextPage: fetchNoticeNextPage,
@@ -140,7 +136,6 @@ const SubscriptionInfo = () => {
     },
   });
 
-  // Handle scroll event
   const handleScroll = () => {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const windowHeight =
@@ -165,7 +160,6 @@ const SubscriptionInfo = () => {
     }
   };
 
-  // Handle menu click
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
   };
@@ -362,6 +356,7 @@ const SubscriptionInfo = () => {
               type={selectedMenu}
               videos={sskcookList || []}
               isInMyInfo={false}
+              status={`subscribe: ${myInfoQuery?.data?.data.username}`}
             />
             {isSskcookFetching && <div>Loading more...</div>}
           </SskcookContainer>

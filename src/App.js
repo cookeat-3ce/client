@@ -34,6 +34,7 @@ import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
+import SskcookDetailsLayout from './pages/Layout/Sskcook';
 import CreateLive from './pages/CreateLive';
 import ClassSession from './pages/ClassSession';
 import LiveSession from './pages/LiveSession';
@@ -41,6 +42,7 @@ import Subscription from './pages/Subscription';
 import SubscriptionInfo from './pages/SubscriptionInfo';
 import OrderDone from './pages/OrderDone';
 import CreateNotice from './pages/CreateNotice';
+import Fridge from './pages/Fridge';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -144,9 +146,9 @@ function App() {
         <Route
           path="/sskcook/:sskcookId"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <SskcookDetailsLayout isLogined={!!getCookie('accessToken')}>
               <SskcookDetails />
-            </CommonLayout>
+            </SskcookDetailsLayout>
           }
         />
 
@@ -306,6 +308,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <SubscriptionInfo />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/myfridge"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <Fridge />
             </CommonLayout>
           }
         />

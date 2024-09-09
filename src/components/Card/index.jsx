@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactPlayer from 'react-player/lazy';
 import { Container, Overlay } from './styles';
 import CustomImageButton from '../Button/Image';
@@ -16,9 +16,27 @@ const VideoPlayer = ({
   height,
   width,
 }) => {
+import { useNavigate } from 'react-router-dom';
+const VideoPlayer = ({
+  type,
+  url,
+  id,
+  color,
+  isInMyInfo = false,
+  deleteAPI,
+  queryKey,
+  height,
+  status,
+  page,
+}) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
   const playerRef = useRef(null);
+  const navigate = useNavigate();
+  const [transformedPage, setTransformedPage] = useState(page);
+  useEffect(() => {
+    setTransformedPage(Math.floor(page / 10) + 1);
+  }, [page]);
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -54,7 +72,8 @@ const VideoPlayer = ({
   const handleClick = (event) => {
     event.stopPropagation();
     console.log('id: ', id);
-    window.location.href = `/${type}/${id}`;
+    // window.location.href = `/${type}/${id}`;
+    navigate(`/${type}/${id}`, { state: { key: { status, transformedPage } } });
   };
 
   return (

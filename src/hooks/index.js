@@ -30,6 +30,20 @@ export const useScrollUp = () => {
   return null;
 };
 
+// 스크롤 가운데로 이동
+export const useScrollMiddle = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight / 2 - window.innerHeight / 2,
+      behavior: 'smooth',
+    });
+  }, [pathname]);
+
+  return null;
+};
+
 // 쿠키 설정
 export const setCookie = (accessToken) => {
   try {
