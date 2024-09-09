@@ -16,6 +16,7 @@ const VideoPlayer = ({
   height,
   status,
   page,
+  width,
 }) => {
   const [play, setPlay] = useState(false);
   const [hover, setHover] = useState(false);
@@ -37,7 +38,8 @@ const VideoPlayer = ({
     },
   });
 
-  const handleDeleteButtonClick = () => {
+  const handleDeleteButtonClick = (event) => {
+    event.stopPropagation();
     console.log(`delete ${type}: `, id);
     mutation.mutate(id);
   };
@@ -60,16 +62,21 @@ const VideoPlayer = ({
     event.stopPropagation();
     console.log('id: ', id);
     // window.location.href = `/${type}/${id}`;
-    navigate(`/${type}/${id}`, { state: { key: { status, transformedPage } } });
+    navigate(`/${type}/${id}`, {
+      state: { key: { status, transformedPage } },
+    });
   };
 
   return (
     <Container
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-      height={height}
-      style={{ backgroundColor: color }}
+      style={{
+        backgroundColor: color,
+        position: 'relative',
+        width: width,
+        height: height,
+      }}
     >
       <ReactPlayer
         style={{ cursor: 'pointer' }}
@@ -81,12 +88,26 @@ const VideoPlayer = ({
         muted={true}
         controls={false}
       />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'transparent',
+          zIndex: 1,
+          cursor: 'pointer',
+        }}
+        onClick={handleClick}
+      />
       {isInMyInfo && hover && (
         <Overlay onClick={(event) => event.stopPropagation()}>
           <CustomImageButton
             src={TrashIcon}
             width="2vw"
             onClick={handleDeleteButtonClick}
+            zIndex="3"
           />
         </Overlay>
       )}

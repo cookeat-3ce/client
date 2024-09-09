@@ -12,7 +12,14 @@ import { sskcookAPI } from '../../apis/sskcook';
 import { longcookAPI } from '../../apis/longcook';
 import VideoPlayer from '../Card';
 
-const CustomVideoList = ({ type, videos, isInMyInfo = false, status }) => {
+const CustomVideoList = ({
+  type,
+  videos,
+  isInMyInfo = false,
+  status,
+  width,
+  height,
+}) => {
   const [currentVideos, setCurrentVideos] = useState([]);
   useEffect(() => {
     if (!videos) return;
@@ -26,7 +33,7 @@ const CustomVideoList = ({ type, videos, isInMyInfo = false, status }) => {
   return (
     <Container>
       {type === 'sskcook' && (
-        <SskcookContainer>
+        <SskcookContainer width={width} height={height}>
           {currentVideos &&
             currentVideos.map((video, index) => (
               <VideoPlayer
@@ -40,6 +47,8 @@ const CustomVideoList = ({ type, videos, isInMyInfo = false, status }) => {
                 queryKey="sskcooks"
                 status={status}
                 page={handleItemClick(video.sskcookId)}
+                width={width}
+                height={height}
               />
             ))}
         </SskcookContainer>
