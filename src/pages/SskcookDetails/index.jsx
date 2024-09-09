@@ -937,7 +937,7 @@ const SskcookDetails = () => {
             ref={playerRef}
           />
         </VideoContainer>
-        {member.nickname !== sskcookDetailsData?.data.details[0]?.nickname && (
+        {member.nickname !== sskcookDetailsData?.data.details[0]?.nickname ? (
           <div
             style={{
               position: 'absolute',
@@ -1136,7 +1136,7 @@ const SskcookDetails = () => {
           </IngredientSection>
           <IngredientSection>
             {member.nickname !==
-              sskcookDetailsData?.data?.details[0]?.nickname && (
+            sskcookDetailsData?.data?.details[0]?.nickname ? (
               <CustomButton
                 text={'구독중'}
                 color={COLORS.BLACK}
