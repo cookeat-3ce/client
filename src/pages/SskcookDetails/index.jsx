@@ -608,8 +608,8 @@ const SskcookDetails = () => {
         const newData =
           pages?.data?.pages[pages?.data?.pages?.length - 1]?.data || [];
         console.log(newData);
-        allData((prevData) => [...prevData, ...newData]);
-        index = allData?.length - 1;
+        allData = [...allData, ...newData];
+        index = allData.length - 1;
 
         // 새로운 데이터의 인덱스 저장
         switch (flag) {
@@ -967,7 +967,10 @@ const SskcookDetails = () => {
         <StyledSwitch checked={member.audio} onChange={onChange} />
       </SwitchContainer>
       <DetailsContainer>
-        <VideoContainer onClick={() => setIsPlaying(!isPlaying)}>
+        <VideoContainer
+          onClick={() => setIsPlaying(!isPlaying)}
+          style={{ position: 'relative' }}
+        >
           <ReactPlayer
             url={sskcookDetailsData?.data?.details[0]?.sskcookUrl}
             width="100%"
@@ -993,15 +996,13 @@ const SskcookDetails = () => {
           <div
             style={{
               position: 'absolute',
-              top: 0,
-              left: 0,
               width: '100%',
               height: '100%',
               backgroundColor: 'transparent',
-              zIndex: 1,
+              zIndex: 3,
               cursor: 'pointer',
-              left: '53vw',
-              top: '55vh',
+              top: 0,
+              left: 0,
             }}
             onClick={() => setIsPlaying(!isPlaying)}
           />
