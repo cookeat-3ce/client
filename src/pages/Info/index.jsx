@@ -328,8 +328,8 @@ const Index = () => {
               type={selectedMenu}
               videos={sskcookList || []}
               isInMyInfo={true}
-              width={'10vw'}
-              height={'35vh'}
+              width={'12vw'}
+              height={'42vh'}
             />
             {isSskcookFetching && <div>Loading more...</div>}
           </SskcookContainer>

@@ -9,17 +9,22 @@ export const Container = styled.div`
 `;
 
 export const SskcookContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  margin-top: 16px;
-  width: 100%;
-  flex-wrap: wrap;
+  // display: flex;
+  // flex-wrap: wrap;
+  // gap: 25px;
+  // margin-top: 16px;
+  // width: 100%;
+  // flex-wrap: wrap;
 
-  > * {
-    width: 10vw;
-    height: 100%;
-  }
+  // > * {
+  //   width: 10vw;
+  //   height: 100%;
+  // }
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2vh;
+  margin: 2vh 0;
+  width: 100%;
 `;
 
 export const LongcookContainer = styled.div`
