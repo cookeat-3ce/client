@@ -25,17 +25,20 @@ import TooltipIcon from '../../assets/icons/tooltip.svg';
 import imageCompression from 'browser-image-compression';
 import CustomButton from '../../components/Button';
 import { CustomInput } from '../../components/Input';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { liveAPI } from '../../apis/live';
 import { useCustomNavigate } from '../../hooks';
 import { useRecoilState } from 'recoil';
 import { memberState } from '../../store';
 import axios from 'axios';
+import { memberAPI } from '../../apis/member';
+import VerifyModal from '../../components/VerifyModal';
 
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
 const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
 
 const CreateLive = () => {
+  const [verifiedStatus, setVerifiedStatus] = useState(null);
   const [member] = useRecoilState(memberState);
   const username = member.username;
   const [classType, setClassType] = useState('live');
@@ -52,7 +55,15 @@ const CreateLive = () => {
 
   const [sessionId, setSessionId] = useState(null);
 
-  const mutation = useMutation({
+  const [showVerifiedModal, setShowVerifiedModal] = useState(false);
+
+  const verifyCheckQuery = useQuery({
+    queryKey: ['verifyCheck'],
+    queryFn: () => memberAPI.verifyCheckAPI(username),
+    staleTime: Infinity,
+  });
+
+  const mutationLiveAdd = useMutation({
     mutationFn: async (data) => {
       await liveAPI.addLiveAPI(data);
     },
@@ -60,6 +71,19 @@ const CreateLive = () => {
       handleChangeUrl(
         `/live${classType === 'class' ? '/class' : ''}/${sessionId}`,
       );
+    },
+
+    onError: (error) => {
+      setBackError(true);
+    },
+  });
+
+  const mutationVerifyRequest = useMutation({
+    mutationFn: async () => {
+      await memberAPI.verifyRequestAPI(username);
+    },
+    onSuccess: (response) => {
+      console.log(response);
     },
 
     onError: (error) => {
@@ -82,7 +106,7 @@ const CreateLive = () => {
       type: classType === 'class' ? 0 : 1,
     };
 
-    mutation.mutate(addLiveData);
+    mutationLiveAdd.mutate(addLiveData);
   };
 
   const handleBack = () => {
@@ -126,6 +150,14 @@ const CreateLive = () => {
       setShowError(false);
       setClassName(value);
     }
+  };
+
+  const openVerifiedModal = () => {
+    setShowVerifiedModal(true);
+  };
+
+  const closeVerifiedModal = () => {
+    setShowVerifiedModal(false);
   };
 
   const uploadButton = (
@@ -183,6 +215,17 @@ const CreateLive = () => {
     setPreviewOpen(true);
   };
 
+  const handleSubmitVerify = () => {
+    mutationVerifyRequest.mutate();
+    handleChangeUrl('/');
+  };
+
+  useEffect(() => {
+    if (verifiedStatus && verifiedStatus !== 'VERIFIED') {
+      openVerifiedModal();
+    }
+  }, [verifiedStatus]);
+
   useEffect(() => {
     const updateThumbnail = async () => {
       if (fileList.length > 0) {
@@ -196,6 +239,13 @@ const CreateLive = () => {
 
     updateThumbnail();
   }, [fileList]);
+
+  useEffect(() => {
+    if (verifyCheckQuery.data) {
+      console.log(verifyCheckQuery.data.data);
+      setVerifiedStatus(verifyCheckQuery.data.data);
+    }
+  }, [verifyCheckQuery.data]);
 
   const onTypeChange = (e) => {
     console.log('radio checked', e.target.value);
@@ -212,186 +262,200 @@ const CreateLive = () => {
           color={COLORS.BLACK}
         />
       </PageTitleContainer>
-      <ContentContainer>
-        <LeftContainer>
-          <InputContainer>
-            <CustomText
-              text="요리 클래스명"
-              fontSize="1.2rem"
-              fontFamily="Happiness-Sans-Bold"
-              color={COLORS.BLACK}
-            />
-            <CustomInput
-              type={'text'}
-              width={'18vw'}
-              height={'6vh'}
-              fontSize={'.8vw'}
-              onChange={handleClassName}
-            />
-            {showError && (
-              <CustomText
-                text={'제목은 30자까지 작성 가능합니다.'}
-                fontSize=".8rem"
-                fontFamily="Happiness-Sans-Regular"
-                color={COLORS.DARKGRAPEFRUIT}
-              />
-            )}
-          </InputContainer>
-          <InputContainer>
-            <CustomText
-              text="클래스 종류"
-              fontSize="1.2rem"
-              fontFamily="Happiness-Sans-Bold"
-              color={COLORS.BLACK}
-            />
-            <RadioContainer>
-              <Radio.Group onChange={onTypeChange} value={classType}>
-                <RadioWrapper>
-                  <StyledRadio value="live">
-                    <RadioLabel>
-                      <CustomText
-                        text="요라(요리 라이브)"
-                        fontSize="1rem"
-                        fontFamily="Happiness-Sans-Regular"
-                        color={COLORS.BLACK}
-                      />
-                      <Tooltip
-                        title={
-                          <>
-                            인원 제한이 없지만
-                            <br />
-                            참여자는 카메라를 켤 수 없어요.
-                          </>
-                        }
-                        color={COLORS.ORANGE}
-                        overlayInnerStyle={{
-                          textAlign: 'center',
-                        }}
-                      >
-                        <TooltipIconWrapper src={TooltipIcon} />
-                      </Tooltip>
-                    </RadioLabel>
-                  </StyledRadio>
-                </RadioWrapper>
-                <RadioWrapper>
-                  <StyledRadio value="class">
-                    <RadioLabel>
-                      <CustomText
-                        text="온라인 클래스"
-                        fontSize="1rem"
-                        fontFamily="Happiness-Sans-Regular"
-                        color={COLORS.BLACK}
-                      />
-                      <Tooltip
-                        title={
-                          <>
-                            참여자 모두 카메라를 켤 수 있지만
-                            <br />
-                            인원 제한이 있어요.
-                          </>
-                        }
-                        color={COLORS.ORANGE}
-                        overlayInnerStyle={{
-                          textAlign: 'center',
-                        }}
-                      >
-                        <TooltipIconWrapper src={TooltipIcon} />
-                      </Tooltip>
-                    </RadioLabel>
-                  </StyledRadio>
-                </RadioWrapper>
-              </Radio.Group>
-            </RadioContainer>
-            {classType === 'class' && (
+      {verifiedStatus && verifiedStatus === 'VERIFIED' && (
+        <>
+          <ContentContainer>
+            <LeftContainer>
               <InputContainer>
-                <ParticipantTitleWrapper>
-                  <CustomText
-                    text="인원 수"
-                    fontSize="1.2rem"
-                    fontFamily="Happiness-Sans-Bold"
-                    color={COLORS.BLACK}
-                  />
-                  <Tooltip
-                    title="최대 10명까지 설정할 수 있어요."
-                    color={COLORS.ORANGE}
-                    overlayInnerStyle={{
-                      textAlign: 'center',
-                    }}
-                  >
-                    <TooltipIconWrapper src={TooltipIcon} />
-                  </Tooltip>
-                </ParticipantTitleWrapper>
-                <CustomInputNumber
-                  min={1}
-                  max={10}
-                  defaultValue={1}
-                  size="large"
-                  onChange={(value) => console.log(value)}
+                <CustomText
+                  text="요리 클래스명"
+                  fontSize="1.2rem"
+                  fontFamily="Happiness-Sans-Bold"
+                  color={COLORS.BLACK}
                 />
+                <CustomInput
+                  type={'text'}
+                  width={'18vw'}
+                  height={'6vh'}
+                  fontSize={'.8vw'}
+                  onChange={handleClassName}
+                />
+                {showError && (
+                  <CustomText
+                    text={'제목은 30자까지 작성 가능합니다.'}
+                    fontSize=".8rem"
+                    fontFamily="Happiness-Sans-Regular"
+                    color={COLORS.DARKGRAPEFRUIT}
+                  />
+                )}
               </InputContainer>
-            )}
-          </InputContainer>
-        </LeftContainer>
-        <RightContainer>
-          <CustomText
-            text="썸네일"
-            fontSize="1.2rem"
-            fontFamily="Happiness-Sans-Bold"
-            color={COLORS.BLACK}
-          />
-          <UploadContainer>
-            <StyledUpload
-              name="files"
-              listType="picture-card"
-              fileList={fileList}
-              onPreview={handlePreview}
-              onChange={handleFileChange}
-              beforeUpload={beforeUpload}
-              showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }} // Correct usage
-            >
-              {fileList.length >= 1 ? null : uploadButton}
-            </StyledUpload>
-            <Image
-              preview={{
-                visible: previewOpen,
-                onVisibleChange: (visible) => setPreviewOpen(visible),
-                afterOpenChange: (visible) => !visible && setPreviewImage(''),
+              <InputContainer>
+                <CustomText
+                  text="클래스 종류"
+                  fontSize="1.2rem"
+                  fontFamily="Happiness-Sans-Bold"
+                  color={COLORS.BLACK}
+                />
+                <RadioContainer>
+                  <Radio.Group onChange={onTypeChange} value={classType}>
+                    <RadioWrapper>
+                      <StyledRadio value="live">
+                        <RadioLabel>
+                          <CustomText
+                            text="요라(요리 라이브)"
+                            fontSize="1rem"
+                            fontFamily="Happiness-Sans-Regular"
+                            color={COLORS.BLACK}
+                          />
+                          <Tooltip
+                            title={
+                              <>
+                                인원 제한이 없지만
+                                <br />
+                                참여자는 카메라를 켤 수 없어요.
+                              </>
+                            }
+                            color={COLORS.ORANGE}
+                            overlayInnerStyle={{
+                              textAlign: 'center',
+                            }}
+                          >
+                            <TooltipIconWrapper src={TooltipIcon} />
+                          </Tooltip>
+                        </RadioLabel>
+                      </StyledRadio>
+                    </RadioWrapper>
+                    <RadioWrapper>
+                      <StyledRadio value="class">
+                        <RadioLabel>
+                          <CustomText
+                            text="온라인 클래스"
+                            fontSize="1rem"
+                            fontFamily="Happiness-Sans-Regular"
+                            color={COLORS.BLACK}
+                          />
+                          <Tooltip
+                            title={
+                              <>
+                                참여자 모두 카메라를 켤 수 있지만
+                                <br />
+                                인원 제한이 있어요.
+                              </>
+                            }
+                            color={COLORS.ORANGE}
+                            overlayInnerStyle={{
+                              textAlign: 'center',
+                            }}
+                          >
+                            <TooltipIconWrapper src={TooltipIcon} />
+                          </Tooltip>
+                        </RadioLabel>
+                      </StyledRadio>
+                    </RadioWrapper>
+                  </Radio.Group>
+                </RadioContainer>
+                {classType === 'class' && (
+                  <InputContainer>
+                    <ParticipantTitleWrapper>
+                      <CustomText
+                        text="인원 수"
+                        fontSize="1.2rem"
+                        fontFamily="Happiness-Sans-Bold"
+                        color={COLORS.BLACK}
+                      />
+                      <Tooltip
+                        title="최대 10명까지 설정할 수 있어요."
+                        color={COLORS.ORANGE}
+                        overlayInnerStyle={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        <TooltipIconWrapper src={TooltipIcon} />
+                      </Tooltip>
+                    </ParticipantTitleWrapper>
+                    <CustomInputNumber
+                      min={1}
+                      max={10}
+                      defaultValue={1}
+                      size="large"
+                      onChange={(value) => console.log(value)}
+                    />
+                  </InputContainer>
+                )}
+              </InputContainer>
+            </LeftContainer>
+            <RightContainer>
+              <CustomText
+                text="썸네일"
+                fontSize="1.2rem"
+                fontFamily="Happiness-Sans-Bold"
+                color={COLORS.BLACK}
+              />
+              <UploadContainer>
+                <StyledUpload
+                  name="files"
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={handlePreview}
+                  onChange={handleFileChange}
+                  beforeUpload={beforeUpload}
+                  showUploadList={{
+                    showPreviewIcon: true,
+                    showRemoveIcon: true,
+                  }} // Correct usage
+                >
+                  {fileList.length >= 1 ? null : uploadButton}
+                </StyledUpload>
+                <Image
+                  preview={{
+                    visible: previewOpen,
+                    onVisibleChange: (visible) => setPreviewOpen(visible),
+                    afterOpenChange: (visible) =>
+                      !visible && setPreviewImage(''),
+                  }}
+                  src={previewImage}
+                  style={{ display: 'none' }}
+                />
+              </UploadContainer>
+            </RightContainer>
+          </ContentContainer>
+          <ButtonContainer>
+            <CustomButton
+              text={'취소'}
+              color={COLORS.WHITE}
+              width={'4vw'}
+              height={'4vh'}
+              fontSize={'1rem'}
+              borderRadius={'100px'}
+              fontFamily={'Happiness-Sans-Bold'}
+              backgroundColor="#ADADAD"
+              borderColor="#ADADAD"
+              onClick={handleBack}
+            ></CustomButton>
+            <CustomButton
+              text={'시작'}
+              color={COLORS.WHITE}
+              width={'6vw'}
+              height={'4vh'}
+              fontSize={'1rem'}
+              borderRadius={'100px'}
+              fontFamily={'Happiness-Sans-Bold'}
+              backgroundColor={COLORS.ORANGE}
+              borderColor={COLORS.ORANGE}
+              onClick={(e) => {
+                e.preventDefault();
+                handleClickSubmitButton();
               }}
-              src={previewImage}
-              style={{ display: 'none' }}
-            />
-          </UploadContainer>
-        </RightContainer>
-      </ContentContainer>
-      <ButtonContainer>
-        <CustomButton
-          text={'취소'}
-          color={COLORS.WHITE}
-          width="4vw"
-          height="4vh"
-          fontSize="1rem"
-          borderRadius={'100px'}
-          fontFamily={'Happiness-Sans-Bold'}
-          backgroundColor="#ADADAD"
-          borderColor="#ADADAD"
-          onClick={handleBack}
-        ></CustomButton>
-        <CustomButton
-          text={'시작'}
-          color={COLORS.WHITE}
-          width="6vw"
-          height="4vh"
-          fontSize="1rem"
-          borderRadius={'100px'}
-          fontFamily={'Happiness-Sans-Bold'}
-          backgroundColor={COLORS.ORANGE}
-          borderColor={COLORS.ORANGE}
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickSubmitButton();
-          }}
-        ></CustomButton>
-      </ButtonContainer>
+            ></CustomButton>
+          </ButtonContainer>
+        </>
+      )}
+      <VerifyModal
+        show={showVerifiedModal}
+        verifiedStatus={verifiedStatus}
+        onClose={closeVerifiedModal}
+        onSubmit={handleSubmitVerify}
+      ></VerifyModal>
     </Container>
   );
 };
