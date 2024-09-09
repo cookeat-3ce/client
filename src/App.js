@@ -34,6 +34,7 @@ import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
+import SskcookDetailsLayout from './pages/Layout/Sskcook';
 import CreateLive from './pages/CreateLive';
 import ClassSession from './pages/ClassSession';
 import LiveSession from './pages/LiveSession';
@@ -145,9 +146,9 @@ function App() {
         <Route
           path="/sskcook/:sskcookId"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <SskcookDetailsLayout isLogined={!!getCookie('accessToken')}>
               <SskcookDetails />
-            </CommonLayout>
+            </SskcookDetailsLayout>
           }
         />
 
