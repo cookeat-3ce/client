@@ -51,7 +51,6 @@ const Index = () => {
   const myInfoQuery = useQuery({
     queryKey: ['myInfo'],
     queryFn: () => memberAPI.myInfoAPI(username),
-    staleTime: Infinity,
   });
 
   useEffect(() => {
@@ -71,7 +70,7 @@ const Index = () => {
     hasNextPage: hasSskcookNextPage,
     isFetchingNextPage: isSskcookFetching,
   } = useInfiniteQuery({
-    queryKey: ['userSskcookList'],
+    queryKey: ['userSskcookList', username],
     queryFn: ({ pageParam = 1 }) =>
       instance
         .get(`/sskcook/list/${username}?page=${pageParam}`)
@@ -90,7 +89,7 @@ const Index = () => {
     hasNextPage: hasLongcookNextPage,
     isFetchingNextPage: isLongcookFetching,
   } = useInfiniteQuery({
-    queryKey: ['userLongcookList'],
+    queryKey: ['userLongcookList', username],
     queryFn: ({ pageParam = 1 }) =>
       instance
         .get(`/longcook/list/${username}?page=${pageParam}`)
@@ -109,7 +108,7 @@ const Index = () => {
     hasNextPage: hasNoticeNextPage,
     isFetchingNextPage: isNoticeFetching,
   } = useInfiniteQuery({
-    queryKey: ['userNoticeList'],
+    queryKey: ['userNoticeList', username],
     queryFn: ({ pageParam = 1 }) =>
       instance
         .get(`/member/${username}/notice?page=${pageParam}`)
@@ -180,6 +179,10 @@ const Index = () => {
     }
   };
 
+  const handleClickFridgeButton = () => {
+    window.location.href = '/myfridge';
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
@@ -236,7 +239,7 @@ const Index = () => {
               width="6vw"
               height="6vw"
               borderRadius="50%"
-              onClick={() => console.log('image click')}
+              onClick={handleClickFridgeButton}
             ></CustomImageButton>
             <CustomText
               fontFamily="Happiness-Sans-Bold"

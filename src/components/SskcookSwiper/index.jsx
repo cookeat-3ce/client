@@ -19,7 +19,6 @@ import ProfileCard from '../ProfileCard';
 import CustomButton from '../Button';
 import { sskcookAPI } from '../../apis/sskcook';
 import { getCookie, useCustomNavigate } from '../../hooks';
-
 const CustomSwiper = ({
   firstText,
   secondText,
@@ -27,6 +26,7 @@ const CustomSwiper = ({
   arr,
   isLogined,
   now,
+  page,
 }) => {
   const swiperRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
@@ -127,6 +127,8 @@ const CustomSwiper = ({
                   height="35vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
+                  status={now}
+                  page={page}
                 />
                 <ProfileCard profileImage={slide.profileImage} index={slide} />
               </SwiperSlide>

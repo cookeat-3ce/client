@@ -26,7 +26,6 @@ const Index = () => {
   const month = today.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
   const formattedDate = `${year}-${formattedMonth}`;
-
   const recentSskcooksQuery = useQuery({
     queryKey: ['recentSskcooks'],
     queryFn: () => sskcookAPI.recentSskcookListAPI(1),
@@ -36,7 +35,7 @@ const Index = () => {
   const recentLongcooksQuery = useQuery({
     queryKey: ['recentLongcooks'],
     queryFn: () => longcookAPI.recentLongcookListAPI(1),
-    staleTime: Infinity, 
+    staleTime: Infinity,
   });
 
   const monthlyLikesSskcooksQuery = useQuery({
@@ -181,6 +180,7 @@ const Index = () => {
               thirdText={'>'}
               arr={monthlyLikesSskcooks}
               now={'month'}
+              page={1}
             />
           ) : (
             <SskcookSwiper firstText={'이번달 슥쿡'} now={'month'} />
@@ -198,6 +198,7 @@ const Index = () => {
               thirdText={'>'}
               arr={monthlyLikesSskcooks}
               now={'fridge'}
+              page={1}
             />
           ) : (
             <SskcookSwiper firstText={'냉장고를 털어보자'} now={'fridge'} />
@@ -210,6 +211,7 @@ const Index = () => {
               thirdText={'>'}
               arr={recentSskcooks}
               now={'recent'}
+              page={1}
             />
           ) : (
             <SskcookSwiper firstText={'최신순'} now={'recent'} />
