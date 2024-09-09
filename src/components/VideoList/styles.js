@@ -30,9 +30,18 @@ export const SskcookContainer = styled.div`
 export const LongcookContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 2vh;
   margin: 2vh 0;
   width: 100%;
+  & > div {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  & > div {
+    overflow: hidden;
+  }
 `;
 
 export const CardWrapper = styled.div`

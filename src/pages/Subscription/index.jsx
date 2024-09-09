@@ -426,8 +426,8 @@ const Subscription = () => {
                     videos={sskcookList || []}
                     isInMyInfo={false}
                     status={`subscribe: ${currentSubscription.username}`}
-                    width={'10vw'}
-                    height={'35vh'}
+                    width={'12vw'}
+                    height={'42vh'}
                   />
                   {isSskcookFetching && <div>Loading more...</div>}
                 </SskcookContainer>
@@ -438,6 +438,8 @@ const Subscription = () => {
                     type={selectedMenu}
                     videos={longcookList || []}
                     isInMyInfo={false}
+                    width={'15vw'}
+                    height={'12vw'}
                   />
                   {isLongcookFetching && <div>Loading more...</div>}
                 </LongcookContainer>
