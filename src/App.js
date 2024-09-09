@@ -44,6 +44,7 @@ import SubscriptionInfo from './pages/SubscriptionInfo';
 import OrderDone from './pages/OrderDone';
 import CreateNotice from './pages/CreateNotice';
 import Fridge from './pages/Fridge';
+import RecipeRecommend from './pages/RecipeRecommend';
 import Event from './pages/Event';
 import EventDetail from './pages/EventDetail';
 const queryClient = new QueryClient();
@@ -343,6 +344,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <Fridge />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/recommends"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <RecipeRecommend />
             </CommonLayout>
           }
         />
