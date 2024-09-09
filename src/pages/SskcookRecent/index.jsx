@@ -49,6 +49,11 @@ const SskcookRecent = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetching]);
 
+  console.log(allData);
+  const handleItemClick = (itemId) => {
+    const index = allData.findIndex((item) => item.sskcookId === itemId);
+    return index;
+  };
   return (
     <Container>
       <TextContainer>
@@ -102,7 +107,9 @@ const SskcookRecent = () => {
                   color={COLORS.BLACK}
                   height="35vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
-                  queryKey="sskcook"
+                  queryKey="sskcooks"
+                  status={'recent'}
+                  page={handleItemClick(item.sskcookId)}
                 />
                 <ProfileCard profileImage={item.profileImage} index={item} />
               </CardWrapper>

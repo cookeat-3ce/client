@@ -27,13 +27,12 @@ export const DetailsContainer = styled.div`
   height: 80vh;
   margin-left: 7vw;
   border: 1px solid ${COLORS.TAG};
-  border-radius: 20px;
+  border-radius: 20px !important;
 `;
 
 export const VideoContainer = styled.div`
   position: relative;
   width: 50%;
-  height: 80vh;
   border-right: 1px solid ${COLORS.BLACK};
   background: ${COLORS.BLACK};
   cursor: pointer;
@@ -114,7 +113,7 @@ export const SubscriptionContainer = styled.div`
   align-items: center;
   position: absolute;
   z-index: 1;
-  bottom: 5vw;
+  bottom: -25vh;
   left: 28vw;
   gap: 0.5vw;
 `;
@@ -128,4 +127,22 @@ export const StyledSkeleton = styled(Skeleton.Button)`
 export const SwitchSkeleton = styled(Skeleton.Button)`
   width: 100%;
   height: 100%;
+`;
+
+export const HeaderSkeleton = styled(Skeleton.Button)`
+  width: 60vw !important;
+  height: 40vh !important;
+  position: absolute !important;
+  top: 0 !important;
+  border-radius: 20px !important;
+  margin-left: 3.5vw !important;
+`;
+
+export const FooterSkeletion = styled(Skeleton.Button)`
+  width: 60vw !important;
+  height: 30vh !important;
+  position: absolute !important;
+  bottom: -40vh !important;
+  border-radius: 20px 20px 0 0 !important;
+  margin-left: 3.5vw !important;
 `;

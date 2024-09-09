@@ -44,6 +44,7 @@ const CustomSideBar = () => {
   ];
   const resetMemberState = useResetRecoilState(memberState);
   const isSskcookLocation = window.location.href.includes('/sskcook');
+  const isLongcookLocation = window.location.href.includes('/longcook');
   const isSubscriptionLocation = window.location.href.includes('/subscription');
 
   // 예시
@@ -99,6 +100,8 @@ const CustomSideBar = () => {
           const isActive = location === item.path;
           const isSskcookLookActive =
             item.label === '슥쿡 둘러보기' && isSskcookLocation;
+          const isLongcookLookActive =
+            item.label === '스-윽쿡' && isLongcookLocation;
           const isSubscriptionActive =
             item.label === '구독' && isSubscriptionLocation;
           return (
@@ -110,6 +113,8 @@ const CustomSideBar = () => {
               isActive={
                 isActive ||
                 isSskcookLookActive ||
+                isActive ||
+                isLongcookLookActive ||
                 isActive ||
                 isSubscriptionActive
               }

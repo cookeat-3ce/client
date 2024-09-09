@@ -20,6 +20,7 @@ import SskcookMonthly from './pages/SskcookMonthly';
 import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
+import LongcookDetails from './pages/LongcookDetails';
 import Tag from './pages/Tag';
 import LongcookList from './pages/LongcookList';
 import SskcookUpload from './pages/SskcookUpload';
@@ -34,6 +35,7 @@ import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
+import SskcookDetailsLayout from './pages/Layout/Sskcook';
 import CreateLive from './pages/CreateLive';
 import ClassSession from './pages/ClassSession';
 import LiveSession from './pages/LiveSession';
@@ -43,6 +45,8 @@ import OrderDone from './pages/OrderDone';
 import CreateNotice from './pages/CreateNotice';
 import Fridge from './pages/Fridge';
 import RecipeRecommend from './pages/RecipeRecommend';
+import Event from './pages/Event';
+import EventDetail from './pages/EventDetail';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -111,6 +115,22 @@ function App() {
             )
           }
         />
+        <Route
+          path={'/notice'}
+          element={
+            <CommonLayout>
+              <Event />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path={'/notice/:eventId'}
+          element={
+            <CommonLayout>
+              <EventDetail />
+            </CommonLayout>
+          }
+        />
 
         <Route
           path="/"
@@ -146,8 +166,16 @@ function App() {
         <Route
           path="/sskcook/:sskcookId"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
+            <SskcookDetailsLayout isLogined={!!getCookie('accessToken')}>
               <SskcookDetails />
+            </SskcookDetailsLayout>
+          }
+        />
+        <Route
+          path="/longcook/:id"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <LongcookDetails />
             </CommonLayout>
           }
         />

@@ -51,7 +51,6 @@ const Index = () => {
   const myInfoQuery = useQuery({
     queryKey: ['myInfo'],
     queryFn: () => memberAPI.myInfoAPI(username),
-    staleTime: Infinity,
   });
 
   useEffect(() => {
@@ -71,7 +70,7 @@ const Index = () => {
     hasNextPage: hasSskcookNextPage,
     isFetchingNextPage: isSskcookFetching,
   } = useInfiniteQuery({
-    queryKey: ['userSskcookList'],
+    queryKey: ['userSskcookList', username],
     queryFn: ({ pageParam = 1 }) =>
       instance
         .get(`/sskcook/list/${username}?page=${pageParam}`)
@@ -90,7 +89,7 @@ const Index = () => {
     hasNextPage: hasLongcookNextPage,
     isFetchingNextPage: isLongcookFetching,
   } = useInfiniteQuery({
-    queryKey: ['userLongcookList'],
+    queryKey: ['userLongcookList', username],
     queryFn: ({ pageParam = 1 }) =>
       instance
         .get(`/longcook/list/${username}?page=${pageParam}`)
@@ -109,7 +108,7 @@ const Index = () => {
     hasNextPage: hasNoticeNextPage,
     isFetchingNextPage: isNoticeFetching,
   } = useInfiniteQuery({
-    queryKey: ['userNoticeList'],
+    queryKey: ['userNoticeList', username],
     queryFn: ({ pageParam = 1 }) =>
       instance
         .get(`/member/${username}/notice?page=${pageParam}`)
@@ -329,6 +328,8 @@ const Index = () => {
               type={selectedMenu}
               videos={sskcookList || []}
               isInMyInfo={true}
+              width={'10vw'}
+              height={'35vh'}
             />
             {isSskcookFetching && <div>Loading more...</div>}
           </SskcookContainer>

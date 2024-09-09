@@ -15,6 +15,7 @@ export const COLORS = {
   LIGHTORANGE: '#FFE7E2',
   STROKE: '#CECECE',
   SUCCESS: '#79DEB4',
+  SALES: '#FFD800',
   한식: '#C93A40',
   일식: '#2E3A59',
   양식: '#4A7A8C',
@@ -47,7 +48,18 @@ export const TAGS = {
   RUDIMENTS: '초보',
   LIGHT: '가벼운',
 };
+
+export const INGREDIENTS = {
+  계란: '5000',
+  감자: '3000',
+  당근: '2000',
+  콩나물: '2500',
+  소고기: '10000',
+  닭고기: '10000',
+};
+
 export const TAG_VALUES = Object.values(TAGS);
+
 export const TAG_COLOR_MAPPING = Object.fromEntries(
   Object.entries(TAGS).map(([key, tagValue]) => [tagValue, COLORS[tagValue]]),
 );

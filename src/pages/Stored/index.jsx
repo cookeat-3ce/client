@@ -47,7 +47,11 @@ const Stored = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetching]);
-  // console.log(data.pages[0].total);
+  console.log(allData);
+  const handleItemClick = (itemId) => {
+    const index = allData.findIndex((item) => item.sskcookId === itemId);
+    return index;
+  };
   return (
     <Container>
       <TextContainer>
@@ -91,28 +95,23 @@ const Stored = () => {
             <StyledSskcookSkeleton />
           </>
         ) : (
-          allData.map((item) => (
-            <CardContainer key={item.sskcookId}>
-              <CardWrapper>
+          allData.map((item) => {
+            return (
+              <CardContainer key={item.sskcookId}>
                 <CardWrapper>
                   <Card
-                    key={item}
-                    type={'sskcook'}
                     url={item.sskcookUrl}
                     id={item.sskcookId}
+                    type={'sskcook'}
+                    status={'stored'}
                     color={COLORS.BLACK}
-                    deleteAPI={sskcookAPI.sskcookDeleteAPI}
-                    queryKey="sskcooks"
+                    page={handleItemClick(item.sskcookId)}
                   />
-                  <ProfileCard
-                    profileImage={item.profileImage}
-                    index={item}
-                    profile={false}
-                  />
+                  <ProfileCard profileImage={item.profileImage} index={item} />
                 </CardWrapper>
-              </CardWrapper>
-            </CardContainer>
-          ))
+              </CardContainer>
+            );
+          })
         )}
         {isLoading && (
           <>
