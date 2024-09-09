@@ -999,7 +999,7 @@ const SskcookDetails = () => {
               width: '100%',
               height: '100%',
               backgroundColor: 'transparent',
-              zIndex: 3,
+              zIndex: 1,
               cursor: 'pointer',
               top: 0,
               left: 0,
@@ -1218,7 +1218,7 @@ const SskcookDetails = () => {
                   }
                 }}
               />
-            )}
+            ) : null}
           </IngredientSection>
         </SubscriptionContainer>
         <WriteContainer>
