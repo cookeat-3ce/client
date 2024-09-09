@@ -14,8 +14,13 @@ const CustomButton = ({
   fontFamily,
   borderRadius,
   marginTop,
+  fontWeight,
 }) => {
   const style = {
+    // cneter 정렬
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     color: color,
     width: width,
     height: height,
@@ -25,6 +30,7 @@ const CustomButton = ({
     fontFamily: fontFamily,
     borderRadius: borderRadius,
     marginTop: marginTop,
+    fontWeight: fontWeight,
   };
 
   return (

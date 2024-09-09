@@ -425,6 +425,7 @@ const Subscription = () => {
                     type={selectedMenu}
                     videos={sskcookList || []}
                     isInMyInfo={false}
+                    status={`subscribe: ${currentSubscription.username}`}
                   />
                   {isSskcookFetching && <div>Loading more...</div>}
                 </SskcookContainer>

@@ -14,6 +14,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
+import ProfileCard from '../../components/ProfileCard';
 const SskcookMonthly = () => {
   const location = window.location.search;
   const parsed = queryString.parse(location);
@@ -34,7 +35,10 @@ const SskcookMonthly = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const allData = data?.pages.flatMap((page) => page.data) || [];
-
+  const handleItemClick = (itemId) => {
+    const index = allData.findIndex((item) => item.sskcookId === itemId);
+    return index;
+  };
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -102,13 +106,17 @@ const SskcookMonthly = () => {
             <CardContainer key={item.sskcookId}>
               <CardWrapper>
                 <Card
+                  type="sskcook"
                   url={item.sskcookUrl}
-                  type={'sskcook'}
                   id={item.sskcookId}
                   color={COLORS.BLACK}
+                  height="35vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
+                  status="month"
+                  page={handleItemClick(item.sskcookId)}
                 />
+                <ProfileCard profileImage={item.profileImage} index={item} />
               </CardWrapper>
             </CardContainer>
           ))

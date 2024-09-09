@@ -4,18 +4,16 @@ import { COLORS } from '../../constants';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
 `;
 
 export const TextContainer = styled.div`
   display: flex;
   gap: 0.5vw;
-  margin-bottom : 3vh;
+  margin-bottom: 3vh;
 `;
 
 export const SkeletonContainer = styled.div`
   display: flex;
-  width: 90vw;
   gap: 50px;
   flex-wrap: wrap;
 `;
@@ -23,14 +21,14 @@ export const SkeletonContainer = styled.div`
 export const CardGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 28vh;
+  margin-bottom: 24vh;
 `;
 
 export const InputContainer = styled.div`
-  margin-top : 1vh;
-  margin-bottom : 5vh;
+  margin-top: 1vh;
+  margin-bottom: 5vh;
   margin-left: 48vw;
-`
+`;
 
 export const CardContainer = styled.div`
   display: flex;
@@ -39,9 +37,8 @@ export const CardContainer = styled.div`
 
 export const CardWrapper = styled.div`
   width: 20vw;
-  height : 10vh;
+  height: 10vh;
 `;
-
 
 export const TitleContainer = styled.div`
   margin-top: 1vh;
@@ -49,7 +46,7 @@ export const TitleContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  gap : 10px;
+  gap: 10px;
 `;
 
 export const ProfileContainer = styled.div`
@@ -57,8 +54,8 @@ export const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  gap : 10px;
-`
+  gap: 10px;
+`;
 
 export const TitleText = styled.div`
   font-family: 'Happiness-Sans-Bold';

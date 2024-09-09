@@ -10,6 +10,7 @@ import { COLORS } from '../../constants';
 import { Pagination, Navigation } from 'swiper';
 import { longcookAPI } from '../../apis/longcook';
 import Card from '../Card';
+import ProfileCard from '../ProfileCard';
 const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
   const swiperRef = useRef(null);
   return (
@@ -37,7 +38,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
             justifyContent: 'center',
           }}
           onClick={() => {
-            window.location.href = `/longcook?keyword=&page=1`
+            window.location.href = `/longcook?keyword=&page=1`;
           }}
         >
           <CustomText
@@ -69,12 +70,15 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
             {arr.map((slide, index) => (
               <SwiperSlide key={index} className={'longcook'}>
                 <Card
+                  type="longcook"
                   url={slide.longcookUrl}
-                  type={'longcook'}
                   id={slide.longcookId}
+                  color={COLORS.BLACK}
+                  height="30vh"
                   deleteAPI={longcookAPI.longcookDeleteAPI}
                   queryKey="longcook"
                 />
+                <ProfileCard profileImage={slide.profileImage} index={slide} />
               </SwiperSlide>
             ))}
           </Swiper>
