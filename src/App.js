@@ -20,6 +20,7 @@ import SskcookMonthly from './pages/SskcookMonthly';
 import SskcookRecent from './pages/SskcookRecent';
 import Admin from './pages/Admin';
 import SskcookDetails from './pages/SskcookDetails';
+import LongcookDetails from './pages/LongcookDetails';
 import Tag from './pages/Tag';
 import LongcookList from './pages/LongcookList';
 import SskcookUpload from './pages/SskcookUpload';
@@ -43,6 +44,9 @@ import SubscriptionInfo from './pages/SubscriptionInfo';
 import OrderDone from './pages/OrderDone';
 import CreateNotice from './pages/CreateNotice';
 import Fridge from './pages/Fridge';
+import RecipeRecommend from './pages/RecipeRecommend';
+import Event from './pages/Event';
+import EventDetail from './pages/EventDetail';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -111,6 +115,22 @@ function App() {
             )
           }
         />
+        <Route
+          path={'/notice'}
+          element={
+            <CommonLayout>
+              <Event />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path={'/notice/:eventId'}
+          element={
+            <CommonLayout>
+              <EventDetail />
+            </CommonLayout>
+          }
+        />
 
         <Route
           path="/"
@@ -149,6 +169,14 @@ function App() {
             <SskcookDetailsLayout isLogined={!!getCookie('accessToken')}>
               <SskcookDetails />
             </SskcookDetailsLayout>
+          }
+        />
+        <Route
+          path="/longcook/:id"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <LongcookDetails />
+            </CommonLayout>
           }
         />
 
@@ -316,6 +344,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <Fridge />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/recommends"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <RecipeRecommend />
             </CommonLayout>
           }
         />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   SwitchContainer,
   StyledSwitch,
@@ -47,10 +47,11 @@ import { memberAPI } from '../../apis/member';
 import CustomImageButton from '../../components/Button/Image';
 import { useCustomNavigate } from '../../hooks';
 import LeftArrow from '../../assets/icons/left_arrow.svg';
+import SalesIcon from '../../assets/icons/sale.svg';
+import { INGREDIENTS } from '../../constants';
 import { useLocation } from 'react-router-dom';
 import instance from '../../apis';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import SalesIcon from '../../assets/icons/sale.svg';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
@@ -61,6 +62,8 @@ const SskcookDetails = () => {
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
   const [isSubscriptionClicked, setIsSubscriptionClicked] = useState(false);
   const [orderList, setOrderList] = useState([]);
+  const [priceList, setPriceList] = useState([]);
+  const [randomNumber, setRandomNumber] = useState(null);
   const { Kakao } = window;
   const playerRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
@@ -75,6 +78,16 @@ const SskcookDetails = () => {
   console.log('State 값:', state);
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
+
+  const getProductPriceRandom = useCallback(() => {
+    const prices = [10, 20, 30, 40, 50];
+    return prices[Math.floor(Math.random() * prices.length)];
+  }, []);
+
+  const getRandomNumber = useCallback((min, max) => {
+    const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.round(randomNum / 100) * 100;
+  }, []);
   const [keyword, setKeyword] = useState('');
   const [flag, setFlag] = useState('');
   const [page, setPage] = useState('');
@@ -117,7 +130,8 @@ const SskcookDetails = () => {
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_KAKAO_INIT_KEY);
-  }, []);
+    setRandomNumber(getProductPriceRandom());
+  }, [Kakao, getProductPriceRandom]);
 
   const {
     data: recentData,
@@ -594,8 +608,8 @@ const SskcookDetails = () => {
         const newData =
           pages?.data?.pages[pages?.data?.pages?.length - 1]?.data || [];
         console.log(newData);
-        allData((prevData) => [...prevData, ...newData]);
-        index = allData?.length - 1;
+        allData = [...allData, ...newData];
+        index = allData.length - 1;
 
         // 새로운 데이터의 인덱스 저장
         switch (flag) {
@@ -780,56 +794,84 @@ const SskcookDetails = () => {
   const { data: sskcookDetailsData, isLoading } = useQuery({
     queryKey: ['sskccokDetails', sskcookId],
     queryFn: () => sskcookAPI.sskcookDetailsAPI(sskcookId),
+    staleTime: Infinity,
   });
 
-  const handleArrayClick = useCallback(() => {
+  useEffect(() => {
+    if (!sskcookDetailsData) return;
+
+    const details = sskcookDetailsData.data.details[0];
+
+    const newIsSubscriptionClicked = details.followStatus === 'Following';
+    const newIsLikeClicked = details.likeStatus === 'Liked';
+    const newIsBookmarkClicked = details.storeStatus === 'Saved';
+    const newIsSirenClicked = details.reportStatus === 'Reported';
+
+    setIsSubscriptionClicked((prev) =>
+      prev !== newIsSubscriptionClicked ? newIsSubscriptionClicked : prev,
+    );
+    setIsLikeClicked((prev) =>
+      prev !== newIsLikeClicked ? newIsLikeClicked : prev,
+    );
+    setIsBookmarkClicked((prev) =>
+      prev !== newIsBookmarkClicked ? newIsBookmarkClicked : prev,
+    );
+    setIsSirenClicked((prev) =>
+      prev !== newIsSirenClicked ? newIsSirenClicked : prev,
+    );
+  }, [sskcookDetailsData]);
+
+  const generateRandomPrices = (items) => {
+    return items.map(() => getRandomNumber(1000, 20000));
+  };
+
+  const [prices, setPrices] = useState([]);
+  const [totalPrice, setTotalPrice] = useState('');
+  const [discountPrice, setDiscountPrice] = useState('');
+
+  useEffect(() => {
+    if (sskcookDetailsData?.data?.ingredients) {
+      const price = setPrices(
+        generateRandomPrices(sskcookDetailsData.data.ingredients),
+      );
+      setPriceList(price);
+    }
+  }, [sskcookDetailsData]);
+
+  const handleArrayClick = () => {
     if (sskcookDetailsData && sskcookDetailsData.data.ingredients) {
       const newIngredientNames = sskcookDetailsData.data.ingredients.map(
         (item) => item.name,
       );
 
       setOrderList(newIngredientNames);
-
-      const encodedData = encodeURIComponent(
+      const encodedOrderList = encodeURIComponent(
         JSON.stringify(newIngredientNames),
       );
+      const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${randomNumber}`;
 
-      window.open(
-        `http://localhost:3000/order?data=${encodedData}`,
-        '_blank',
-        'noopener,noreferrer',
-      );
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
-  }, [sskcookDetailsData, setOrderList]);
+  };
 
   const handleItemClick = (item) => {
+    const itemIndex = orderList.indexOf(item);
+    const priceForItem = prices[itemIndex];
     const encodedItem = encodeURIComponent(item);
     window.open(
-      `http://localhost:3000/order?data=${encodedItem}`,
+      `http://localhost:3000/order?orderData=${encodedItem}&priceData=${priceForItem}`,
       '_blank',
       'noopener,noreferrer',
     );
   };
 
   useEffect(() => {
-    if (!sskcookDetailsData) return;
+    const newTotalPrice = prices.reduce((total, price) => total + price, 0);
+    setTotalPrice(newTotalPrice);
 
-    if (sskcookDetailsData?.data?.details[0]?.followStatus === 'Following')
-      setIsSubscriptionClicked(true);
-    else setIsSubscriptionClicked(false);
-
-    if (sskcookDetailsData?.data?.details[0]?.likeStatus === 'Liked')
-      setIsLikeClicked(true);
-    else setIsLikeClicked(false);
-
-    if (sskcookDetailsData?.data?.details[0]?.storeStatus === 'Saved')
-      setIsBookmarkClicked(true);
-    else setIsBookmarkClicked(false);
-
-    if (sskcookDetailsData?.data?.details[0]?.reportStatus === 'Reported')
-      setIsSirenClicked(true);
-    else setIsSirenClicked(false);
-  }, [sskcookDetailsData]);
+    const discount = newTotalPrice - newTotalPrice * randomNumber * 0.01;
+    setDiscountPrice(discount);
+  }, [prices, randomNumber]);
 
   if (isLoading) {
     return (
@@ -925,7 +967,10 @@ const SskcookDetails = () => {
         <StyledSwitch checked={member.audio} onChange={onChange} />
       </SwitchContainer>
       <DetailsContainer>
-        <VideoContainer onClick={() => setIsPlaying(!isPlaying)}>
+        <VideoContainer
+          onClick={() => setIsPlaying(!isPlaying)}
+          style={{ position: 'relative' }}
+        >
           <ReactPlayer
             url={sskcookDetailsData?.data?.details[0]?.sskcookUrl}
             width="100%"
@@ -935,9 +980,35 @@ const SskcookDetails = () => {
             playing={isPlaying}
             loop={true}
             ref={playerRef}
+            config={{
+              youtube: {
+                playerVars: {
+                  autoplay: 1,
+                  controls: 0,
+                  disablekb: 1,
+                  modestbranding: 1,
+                  rel: 0,
+                  loop: 1,
+                },
+              },
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'transparent',
+              zIndex: 3,
+              cursor: 'pointer',
+              top: 0,
+              left: 0,
+            }}
+            onClick={() => setIsPlaying(!isPlaying)}
           />
         </VideoContainer>
-        {member.nickname !== sskcookDetailsData?.data.details[0]?.nickname ? (
+
+        {member.nickname !== sskcookDetailsData?.data.details[0]?.nickname && (
           <div
             style={{
               position: 'absolute',
@@ -955,27 +1026,10 @@ const SskcookDetails = () => {
               }
             }}
           >
-            <img src={ClickedSiren} alt="ClickedSiren Icon" />
-          </div>
-        ) : (
-          <div
-            style={{
-              position: 'absolute',
-              zIndex: '1',
-              cursor: 'pointer',
-              left: '53vw',
-              top: '55vh',
-            }}
-            onClick={() => {
-              if (accessToken) {
-                setIsSirenClicked(!isSirenClicked);
-                reportMutation.mutate(sskcookId);
-              } else {
-                message.warning('로그인이 필요한 서비스예요!', 5);
-              }
-            }}
-          >
-            <img src={Siren} alt="Siren Icon" />
+            <img
+              src={isSirenClicked ? ClickedSiren : Siren}
+              alt={isSirenClicked ? 'ClickedSiren Icon' : 'Siren Icon'}
+            />
           </div>
         )}
 
@@ -1138,34 +1192,14 @@ const SskcookDetails = () => {
             {member.nickname !==
             sskcookDetailsData?.data?.details[0]?.nickname ? (
               <CustomButton
-                text={'구독중'}
-                color={COLORS.BLACK}
-                backgroundColor={COLORS.WHITE}
-                borderColor={COLORS.BLACK}
-                fontFamily={'Happiness-Sans-Bold'}
-                borderRadius={'100px'}
-                width={'4vw'}
-                height={'4vh'}
-                fontSize={'.8vw'}
-                onClick={() => {
-                  if (accessToken) {
-                    setIsSubscriptionClicked(!isSubscriptionClicked);
-                    subscriptionMutation.mutate({
-                      followingUsername:
-                        sskcookDetailsData?.data?.details[0]?.username,
-                      followerUsername: member.username,
-                    });
-                  } else {
-                    message.warning('로그인이 필요한 서비스예요!', 5);
-                  }
-                }}
-              />
-            ) : (
-              <CustomButton
-                text={'구독'}
-                color={COLORS.WHITE}
-                backgroundColor={COLORS.BLACK}
-                borderColor={COLORS.WHITE}
+                text={isSubscriptionClicked ? '구독중' : '구독'}
+                color={isSubscriptionClicked ? COLORS.BLACK : COLORS.WHITE}
+                backgroundColor={
+                  isSubscriptionClicked ? COLORS.WHITE : COLORS.BLACK
+                }
+                borderColor={
+                  isSubscriptionClicked ? COLORS.BLACK : COLORS.WHITE
+                }
                 fontFamily={'Happiness-Sans-Bold'}
                 borderRadius={'100px'}
                 width={'4vw'}
@@ -1215,7 +1249,9 @@ const SskcookDetails = () => {
               : null}
           </TagContainer>
           <IngredientContainer>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2vw' }}>
+            <div
+              style={{ display: 'flex', alignItems: 'flex-end', gap: '2vw' }}
+            >
               <CustomText
                 text={'준비 재료'}
                 color={COLORS.BLACK}
@@ -1229,7 +1265,69 @@ const SskcookDetails = () => {
                   alignItems: 'center',
                 }}
               >
-                <img src={SalesIcon} alt="Sales Icon" />
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      marginRight: '.3vw',
+                      gap: '.3vw',
+                    }}
+                  >
+                    <CustomText
+                      text={`${totalPrice}원`}
+                      fontFamily={'Happiness-Sans-Bold'}
+                      fontSize={'.7vw'}
+                      color={COLORS.TAG}
+                      style={{
+                        textDecoration: 'line-through',
+                        textAlign: 'center',
+                        display: 'block',
+                      }}
+                    />
+                    <CustomText
+                      text={`${discountPrice}원`}
+                      fontFamily={'Happiness-Sans-Bold'}
+                      fontSize={'.9vw'}
+                      color={COLORS.BLACK}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '1vh',
+                    }}
+                  >
+                    <img src={SalesIcon} alt="Sales Icon" />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <CustomText
+                        text={randomNumber}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        color={COLORS.SALES}
+                        fontSize={'.9vw'}
+                      />
+                      <CustomText
+                        text={'%'}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        color={COLORS.SALES}
+                        fontSize={'.9vw'}
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <CustomButton
                     text={'한번에 구매'}
@@ -1247,7 +1345,7 @@ const SskcookDetails = () => {
                   <img
                     src={LeftArrow}
                     alt=""
-                    style={{ marginLeft: '-.5vw', cursor: 'pointer' }}
+                    style={{ cursor: 'pointer' }}
                     onClick={handleArrayClick}
                   />
                 </div>
@@ -1275,13 +1373,25 @@ const SskcookDetails = () => {
                     />
                   </IngredientSection>
                   <IngredientSection>
+                    <CustomText
+                      text={
+                        INGREDIENTS[item.name]
+                          ? `${INGREDIENTS[item.name]}원`
+                          : `${(prices[index] || '').toString()}원`
+                      }
+                      fontFamily={'Happiness-Sans-Regular'}
+                      color={COLORS.BLACK}
+                      fontSize={'1vw'}
+                    />
+                  </IngredientSection>
+                  <IngredientSection>
                     <CustomButton
                       text={'구매'}
                       fontSize={'.7vw'}
                       borderRadius={'100px'}
-                      color={COLORS.WHITE}
-                      backgroundColor={COLORS.ORANGE}
-                      borderColor={COLORS.ORANGE}
+                      color={COLORS.BLACK}
+                      backgroundColor={COLORS.WHITE}
+                      borderColor={COLORS.BLACK}
                       width={'3vw'}
                       height={'3vh'}
                       fontFamily={'Happiness-Sans-Bold'}

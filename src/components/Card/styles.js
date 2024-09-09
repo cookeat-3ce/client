@@ -8,8 +8,8 @@ export const Container = styled.div`
 
 export const Overlay = styled.div`
   position: absolute;
-  width: 91%;
-  height: 95%;
+  width: 88%;
+  height: 94%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -18,4 +18,5 @@ export const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 3;
 `;

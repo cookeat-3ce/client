@@ -357,6 +357,8 @@ const SubscriptionInfo = () => {
               videos={sskcookList || []}
               isInMyInfo={false}
               status={`subscribe: ${myInfoQuery?.data?.data.username}`}
+              width={'10vw'}
+              height={'35vh'}
             />
             {isSskcookFetching && <div>Loading more...</div>}
           </SskcookContainer>

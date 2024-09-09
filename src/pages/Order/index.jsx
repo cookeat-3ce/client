@@ -41,9 +41,6 @@ import CustomText from '../../components/Text';
 const Order = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const resetMemberState = useResetRecoilState(memberState);
-  const urlParams = new URLSearchParams(window.location.search);
-  const data = urlParams.get('data');
-  const decodedData = decodeURIComponent(data);
   const [checked, setChecked] = useState(true);
   const [isArrowClicked, setIsArrowClicked] = useState(true);
   const [randomNumbers, setRandomNumbers] = useState([]);
@@ -96,23 +93,37 @@ const Order = () => {
     }, 300),
     [],
   );
+  const decodeAndParseData = (encodedData) => {
+    const decodedData = decodeURIComponent(encodedData);
 
-  let initialArrayData = [];
-
-  if (
-    decodedData !== null &&
-    (decodedData.includes(' ') ||
-      decodedData.startsWith('[') ||
-      decodedData.startsWith('{'))
-  ) {
+    let parsedData;
     try {
-      initialArrayData = JSON.parse(decodedData);
+      if (
+        decodedData.includes(' ') ||
+        decodedData.startsWith('[') ||
+        decodedData.startsWith('{')
+      ) {
+        parsedData = JSON.parse(decodedData);
+      } else {
+        parsedData = [decodedData];
+      }
     } catch (error) {
-      initialArrayData = [decodedData];
+      parsedData = [decodedData];
     }
-  } else initialArrayData = [decodedData];
 
-  const [arrayData, setArrayData] = useState(initialArrayData);
+    return parsedData;
+  };
+
+  const queryParams = new URLSearchParams(window.location.search);
+
+  const orderData = decodeAndParseData(queryParams.get('orderData'));
+  const priceData = queryParams.get('priceData')
+    ? queryParams.get('priceData').split(',')
+    : [];
+  const discount = parseInt(queryParams.get('discount'), 10) || 0;
+
+  const [arrayData, setArrayData] = useState(orderData);
+  const [prices, setPrices] = useState(priceData);
 
   const [checkedItems, setCheckedItems] = useState(() =>
     randomNumbers.map((num) => num !== 0),
@@ -174,13 +185,20 @@ const Order = () => {
     const filteredRandomNumbers = randomNumbers.filter(
       (_, index) => !checkedItems[index] && randomNumbers[index] !== 0,
     );
+    const filteredPrices = prices.filter(
+      (_, index) => !checkedItems[index] && randomNumbers[index] !== 0,
+    );
 
     setArrayData(filteredData);
     setCheckedItems(new Array(filteredData.length).fill(true));
     setRandomNumbers(filteredRandomNumbers);
+    setPrices(filteredPrices);
 
     const encodedData = encodeURIComponent(JSON.stringify(filteredData));
-    handleChangeUrl(`/order?data=${encodedData}`);
+    const encodedPrices = encodeURIComponent(filteredPrices.join(','));
+    handleChangeUrl(
+      `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
+    );
   };
 
   const handleDeleteItem = (index) => {
@@ -189,13 +207,18 @@ const Order = () => {
     const updatedData = arrayData.filter((_, i) => i !== index);
     const updatedRandomNumbers = randomNumbers.filter((_, i) => i !== index);
     const updatedCheckedItems = checkedItems.filter((_, i) => i !== index);
+    const updatedPrices = prices.filter((_, i) => i !== index);
 
     setArrayData(updatedData);
     setRandomNumbers(updatedRandomNumbers);
     setCheckedItems(updatedCheckedItems);
+    setPrices(updatedPrices);
 
     const encodedData = encodeURIComponent(JSON.stringify(updatedData));
-    handleChangeUrl(`/order?data=${encodedData}`);
+    const encodedPrices = encodeURIComponent(updatedPrices.join(','));
+    handleChangeUrl(
+      `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
+    );
   };
 
   const handleDeleteOutOfStockItems = () => {
@@ -205,19 +228,26 @@ const Order = () => {
     const filteredRandomNumbers = randomNumbers.filter(
       (number) => number !== 0,
     );
+    const filteredPrices = prices.filter(
+      (_, index) => randomNumbers[index] !== 0,
+    );
 
     setArrayData(filteredData);
     setRandomNumbers(filteredRandomNumbers);
     setCheckedItems(new Array(filteredData.length).fill(true));
+    setPrices(filteredPrices);
 
     const encodedData = encodeURIComponent(JSON.stringify(filteredData));
-    handleChangeUrl(`/order?data=${encodedData}`);
+    const encodedPrices = encodeURIComponent(filteredPrices.join(','));
+    handleChangeUrl(
+      `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
+    );
   };
 
   const getTotal = (field) => {
     return arrayData.reduce((total, item, index) => {
       if (checkedItems[index] && randomNumbers[index] !== 0) {
-        return total + randomPrice[index] * values[index];
+        return total + prices[index] * values[index];
       }
       return total;
     }, 0);
@@ -228,6 +258,12 @@ const Order = () => {
   }, [arrayData, randomNumbers]);
 
   const totalPrice = getTotal('price');
+  const calculateDiscountedPrice = (totalPrice, discount) => {
+    const discountRate = discount / 100;
+    return totalPrice * (1 - discountRate);
+  };
+
+  const [discountedPrice, setDiscountedPrice] = useState(0);
 
   const [shippingPrice, setShippingPrice] = useState(3500);
   useEffect(() => {
@@ -241,11 +277,15 @@ const Order = () => {
     }
   }, [checkedItems, totalPrice]);
 
-  let totalExpectedPayment =
-    totalPrice < 50000
-      ? Number(totalPrice) + shippingPrice
-      : Number(totalPrice);
+  useEffect(() => {
+    const priceAfterDiscount = calculateDiscountedPrice(totalPrice, discount);
+    const finalPrice =
+      totalPrice < 50000
+        ? priceAfterDiscount + shippingPrice
+        : priceAfterDiscount;
 
+    setDiscountedPrice(finalPrice);
+  }, [totalPrice, discount, shippingPrice]);
   useEffect(() => {
     const allUnchecked = checkedItems.every((item) => !item);
 
@@ -1305,7 +1345,7 @@ const Order = () => {
                                 fontSize: '1.3vw',
                               }}
                             >
-                              {randomPrice[index] * values[index]}
+                              {prices[index] * values[index]}
                             </div>
                             <div
                               style={{
@@ -1928,7 +1968,7 @@ const Order = () => {
                         marginTop: '1.5vw',
                       }}
                     >
-                      <div>0</div>
+                      <div>{totalPrice * discount * 0.01}</div>
                       <div>원</div>
                     </div>
                   </div>
@@ -2002,7 +2042,7 @@ const Order = () => {
                               color: '#ff6913',
                             }}
                           >
-                            {totalExpectedPayment}
+                            {discountedPrice}
                           </div>
                           <div
                             style={{
@@ -2096,7 +2136,7 @@ const Order = () => {
                         marginTop: '1.5vw',
                       }}
                     >
-                      <div>0</div>
+                      <div>{totalPrice * discount * 0.01}</div>
                       <div>원</div>
                     </div>
                   </div>
@@ -2170,7 +2210,7 @@ const Order = () => {
                               color: '#ff6913',
                             }}
                           >
-                            {totalExpectedPayment}
+                            {discountedPrice}
                           </div>
                           <div
                             style={{
