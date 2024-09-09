@@ -42,6 +42,7 @@ import SubscriptionInfo from './pages/SubscriptionInfo';
 import OrderDone from './pages/OrderDone';
 import CreateNotice from './pages/CreateNotice';
 import Fridge from './pages/Fridge';
+import RecipeRecommend from './pages/RecipeRecommend';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -315,6 +316,14 @@ function App() {
           element={
             <CommonLayout isLogined={!!getCookie('accessToken')}>
               <Fridge />
+            </CommonLayout>
+          }
+        />
+        <Route
+          path="/recommends"
+          element={
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
+              <RecipeRecommend />
             </CommonLayout>
           }
         />

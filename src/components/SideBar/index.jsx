@@ -40,7 +40,7 @@ const CustomSideBar = () => {
     { icon: Storage, label: '보관함', path: '/stored' },
     { icon: Event, label: '이벤트', path: '/' },
     { icon: MyInfo, label: '내 정보', path: '/info' },
-    { icon: Refrigerator, label: '냉장고 파헤치기', path: '/' },
+    { icon: Refrigerator, label: '냉장고 파헤치기', path: '/recommends' },
   ];
   const resetMemberState = useResetRecoilState(memberState);
   const isSskcookLocation = window.location.href.includes('/sskcook');

@@ -45,5 +45,8 @@ export const sskcookAPI = {
   },
   sskcookDeleteAPI: (id) => {
     return instance.delete(`/sskcook/${id}`);
-  }
+  },
+  getSskcookRecommendsAPI: () => {
+    return instance.get(`/sskcook/fridge`);
+  },
 };
