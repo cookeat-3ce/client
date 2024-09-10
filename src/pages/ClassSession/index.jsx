@@ -71,10 +71,6 @@ const ClassSession = () => {
         if (event.stream.connection.data === managerUsername) {
           handleManagerStreamDisconnected();
         }
-
-        if (remainingSubscribers.length === 0) {
-          endSession();
-        }
       });
 
       getToken(sessionId).then((token) => {
