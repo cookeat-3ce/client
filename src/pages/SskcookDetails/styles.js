@@ -146,3 +146,9 @@ export const FooterSkeletion = styled(Skeleton.Button)`
   border-radius: 20px 20px 0 0 !important;
   margin-left: 3.5vw !important;
 `;
+
+export const LineContainer2 = styled.div`
+  width: 27vw;
+  height: 2px;
+  background: ${COLORS.BLACK};
+`;

@@ -17,13 +17,14 @@ import {
   SubscriptionContainer,
   StyledSkeleton,
   SwitchSkeleton,
+  LineContainer2,
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { sskcookAPI } from '../../apis/sskcook';
-import { memberState } from '../../store';
-import { useRecoilState } from 'recoil';
+import { memberState, ingredientState } from '../../store';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import CustomButton from '../../components/Button';
 import ReactPlayer from 'react-player/lazy';
 import SpeechRecognition, {
@@ -57,14 +58,13 @@ import MikeIcon from '../../assets/icons/mike.svg';
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
   const [member, setMember] = useRecoilState(memberState);
+  const ingredient = useRecoilValue(ingredientState);
   const [isSirenClicked, setIsSirenClicked] = useState(false);
   const [isLikeClicked, setIsLikeClicked] = useState(false);
   const [isShareClicked, setIsShareClicked] = useState(false);
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
   const [isSubscriptionClicked, setIsSubscriptionClicked] = useState(false);
   const [orderList, setOrderList] = useState([]);
-  const [priceList, setPriceList] = useState([]);
-  const [randomNumber, setRandomNumber] = useState(null);
   const { Kakao } = window;
   const playerRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
@@ -102,7 +102,6 @@ const SskcookDetails = () => {
 
     const stateValue = state.key;
     const stateString = state.key.status;
-    console.log(stateString);
 
     if (stateString === 'recent') {
       setFlag(1);
@@ -394,7 +393,7 @@ const SskcookDetails = () => {
   };
 
   const handleWheel = (event) => {
-    if (event.deltaY === 0) {
+    if (event.deltaY < 0) {
       handleScroll('ArrowUp');
     } else {
       handleScroll('ArrowDown');
@@ -416,7 +415,6 @@ const SskcookDetails = () => {
           }
         } else if (recentHasPrevPage && !recentIsFetching) {
           const page = await recentFetchPrevPage();
-          console.log(page);
           index1 = recentAllData?.length - 1;
           const currentItem = recentAllData[index1];
           if (currentItem) {
@@ -612,7 +610,6 @@ const SskcookDetails = () => {
           return;
       }
 
-      console.log(allData);
       if (index < allData?.length) {
         index++;
         console.log(index);
@@ -879,19 +876,57 @@ const SskcookDetails = () => {
     return items.map(() => getRandomNumber(1000, 20000));
   };
 
+  // 모든 금액
   const [prices, setPrices] = useState([]);
+
+  // 없는 재료 구매
+  const [notHaveProducts, setNotHaveProducts] = useState([]);
+
+  // 없는 재료 가격
+
   const [totalPrice, setTotalPrice] = useState('');
-  const [discountAllPrice, setDiscountAllPrice] = useState('');
+  const [discountTotalPrice, setDiscountTotalPrice] = useState('');
+  const [selectivePrice, setSelectivePrice] = useState('');
   const [discountSelectivePrice, setDiscountSelectivePrice] = useState('');
 
   useEffect(() => {
     if (sskcookDetailsData?.data?.ingredients) {
-      const price = setPrices(
-        generateRandomPrices(sskcookDetailsData.data.ingredients),
+      const newPrice = generateRandomPrices(
+        sskcookDetailsData.data.ingredients,
       );
-      setPriceList(price);
+      const leng = newPrice.length;
+      setPrices(newPrice);
+
+      const totalSum1 = newPrice.reduce((sum, price) => sum + price, 0);
+      setTotalPrice(totalSum1);
+      setDiscountTotalPrice(totalSum1 * 0.8);
+
+      const filteredItems = sskcookDetailsData.data.ingredients.filter(
+        (item) => !ingredient.some((ing) => item.name.includes(ing.name)),
+      );
+      setNotHaveProducts(filteredItems.map((item) => item.name));
+
+      const priceMap = filteredItems.reduce((acc, item, index) => {
+        acc[item.name] =
+          newPrice[
+            sskcookDetailsData.data.ingredients.findIndex(
+              (ing) => ing.name === item.name,
+            )
+          ] || 0;
+        return acc;
+      }, {});
+      console.log('Price Map:', priceMap);
+
+      const leng2 = Object.keys(priceMap).length;
+      const startIdx = leng - leng2;
+      console.log(leng, leng2);
+      const partialSum = newPrice
+        .slice(startIdx)
+        .reduce((sum, price) => sum + price, 0);
+      setSelectivePrice(partialSum);
+      setDiscountSelectivePrice(partialSum * 0.73);
     }
-  }, [sskcookDetailsData]);
+  }, [sskcookDetailsData, ingredient]);
 
   const handleArrayClick = () => {
     if (sskcookDetailsData && sskcookDetailsData.data.ingredients) {
@@ -903,7 +938,7 @@ const SskcookDetails = () => {
       const encodedOrderList = encodeURIComponent(
         JSON.stringify(newIngredientNames),
       );
-      const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${randomNumber}`;
+      const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${20}`;
 
       window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -919,17 +954,6 @@ const SskcookDetails = () => {
       'noopener,noreferrer',
     );
   };
-
-  useEffect(() => {
-    const newTotalPrice = prices.reduce((total, price) => total + price, 0);
-    setTotalPrice(newTotalPrice);
-
-    const discountAll = newTotalPrice - newTotalPrice * 20 * 0.01;
-    setDiscountAllPrice(discountAll);
-
-    const discountSelective = newTotalPrice - newTotalPrice * 17 * 0.01;
-    setDiscountSelectivePrice(discountSelective);
-  }, [prices]);
 
   if (isLoading) {
     return (
@@ -1356,7 +1380,7 @@ const SskcookDetails = () => {
                       }}
                     />
                     <CustomText
-                      text={`${discountAllPrice}원`}
+                      text={`${discountTotalPrice}원`}
                       fontFamily={'Happiness-Sans-Bold'}
                       fontSize={'.9vw'}
                       color={COLORS.BLACK}
@@ -1433,7 +1457,7 @@ const SskcookDetails = () => {
                       }}
                     >
                       <CustomText
-                        text={`${totalPrice}원`}
+                        text={`${selectivePrice}원`}
                         fontFamily={'Happiness-Sans-Bold'}
                         fontSize={'.7vw'}
                         color={COLORS.TAG}
@@ -1502,55 +1526,72 @@ const SskcookDetails = () => {
                 </div>
               </div>
             </div>
-
             <IngredientInner>
-              {sskcookDetailsData?.data?.ingredients.map((item, index) => (
-                <IngredientWrapper key={index}>
-                  <IngredientSection>
-                    <CustomText
-                      text={item.name}
-                      fontFamily={'Happiness-Sans-Regular'}
-                      color={COLORS.BLACK}
-                      fontSize={'1vw'}
-                    />
-                  </IngredientSection>
-                  <IngredientSection>
-                    <CustomText
-                      text={item.amount}
-                      fontFamily={'Happiness-Sans-Regular'}
-                      color={COLORS.BLACK}
-                      fontSize={'1vw'}
-                      style={{ textDecoration: 'underline' }}
-                    />
-                  </IngredientSection>
-                  <IngredientSection>
-                    <CustomText
-                      text={
-                        INGREDIENTS[item.name]
-                          ? `${INGREDIENTS[item.name]}원`
-                          : `${(prices[index] || '').toString()}원`
-                      }
-                      fontFamily={'Happiness-Sans-Regular'}
-                      color={COLORS.BLACK}
-                      fontSize={'1vw'}
-                    />
-                  </IngredientSection>
-                  <IngredientSection>
-                    <CustomButton
-                      text={'구매'}
-                      fontSize={'.7vw'}
-                      borderRadius={'100px'}
-                      color={COLORS.BLACK}
-                      backgroundColor={COLORS.WHITE}
-                      borderColor={COLORS.BLACK}
-                      width={'3vw'}
-                      height={'3vh'}
-                      fontFamily={'Happiness-Sans-Bold'}
-                      onClick={() => handleItemClick(item.name)}
-                    />
-                  </IngredientSection>
-                </IngredientWrapper>
-              ))}
+              {getCookie('accessToken') && (
+                <>
+                  {[
+                    ...sskcookDetailsData?.data?.ingredients.filter((item) =>
+                      ingredient.some((ing) => item.name.includes(ing.name)),
+                    ),
+                    ...sskcookDetailsData?.data?.ingredients.filter(
+                      (item) =>
+                        !ingredient.some((ing) => item.name.includes(ing.name)),
+                    ),
+                  ].map((item, index) => (
+                    <IngredientWrapper key={index}>
+                      <IngredientSection>
+                        <CustomText
+                          text={item.name}
+                          fontFamily={'Happiness-Sans-Regular'}
+                          color={
+                            ingredient.some((ing) =>
+                              item.name.includes(ing.name),
+                            )
+                              ? COLORS.ORANGE
+                              : COLORS.BLACK
+                          }
+                          fontSize={'1vw'}
+                        />
+                      </IngredientSection>
+                      <IngredientSection>
+                        <CustomText
+                          text={item.amount}
+                          fontFamily={'Happiness-Sans-Regular'}
+                          color={COLORS.BLACK}
+                          fontSize={'1vw'}
+                          style={{ textDecoration: 'underline' }}
+                        />
+                      </IngredientSection>
+                      <IngredientSection>
+                        <CustomText
+                          text={
+                            INGREDIENTS[item.name]
+                              ? `${INGREDIENTS[item.name]}원`
+                              : `${(prices[index] || '').toString()}원`
+                          }
+                          fontFamily={'Happiness-Sans-Regular'}
+                          color={COLORS.BLACK}
+                          fontSize={'1vw'}
+                        />
+                      </IngredientSection>
+                      <IngredientSection>
+                        <CustomButton
+                          text={'구매'}
+                          fontSize={'.7vw'}
+                          borderRadius={'100px'}
+                          color={COLORS.BLACK}
+                          backgroundColor={COLORS.WHITE}
+                          borderColor={COLORS.BLACK}
+                          width={'3vw'}
+                          height={'3vh'}
+                          fontFamily={'Happiness-Sans-Bold'}
+                          onClick={() => handleItemClick(item.name)}
+                        />
+                      </IngredientSection>
+                    </IngredientWrapper>
+                  ))}
+                </>
+              )}
             </IngredientInner>
             <LineContainer />
           </IngredientContainer>
