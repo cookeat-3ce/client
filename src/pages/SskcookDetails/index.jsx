@@ -42,16 +42,17 @@ import Play from '../../assets/icons/play.svg';
 import Link from '../../assets/icons/link.svg';
 import KakaoIcon from '../../assets/icons/kakao.svg';
 import { getCookie } from '../../hooks';
-import { message, Menu, Dropdown } from 'antd';
+import { message, Menu, Dropdown, Tooltip } from 'antd';
 import { memberAPI } from '../../apis/member';
 import CustomImageButton from '../../components/Button/Image';
 import { useCustomNavigate } from '../../hooks';
-import LeftArrow from '../../assets/icons/left_arrow.svg';
 import SalesIcon from '../../assets/icons/sale.svg';
 import { INGREDIENTS } from '../../constants';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import instance from '../../apis';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import SalesNavyIcon from '../../assets/icons/sale_navy.svg';
+import MikeIcon from '../../assets/icons/mike.svg';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
@@ -75,14 +76,14 @@ const SskcookDetails = () => {
   const month = today.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
   const formattedDate = `${year}-${formattedMonth}`;
-  console.log('State 값:', state);
+  // console.log('State 값:', state);
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
+  const navigate = useNavigate();
 
-  const getProductPriceRandom = useCallback(() => {
-    const prices = [10, 20, 30, 40, 50];
-    return prices[Math.floor(Math.random() * prices.length)];
-  }, []);
+  useEffect(() => {
+    setIsPlaying(true);
+  }, [location.pathname]);
 
   const getRandomNumber = useCallback((min, max) => {
     const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -92,8 +93,16 @@ const SskcookDetails = () => {
   const [flag, setFlag] = useState('');
   const [page, setPage] = useState('');
   useEffect(() => {
+    if (!state?.key || !state.key?.status) {
+      setFlag(0);
+      setPage(null);
+      setKeyword('');
+      return;
+    }
+
     const stateValue = state.key;
     const stateString = state.key.status;
+    console.log(stateString);
 
     if (stateString === 'recent') {
       setFlag(1);
@@ -121,7 +130,7 @@ const SskcookDetails = () => {
       setKeyword(stateString.substring(14, stateString.length));
       setPage(stateValue.transformedPage);
     }
-  }, []);
+  }, [state]);
 
   // console.log(flag, keyword);
 
@@ -130,8 +139,7 @@ const SskcookDetails = () => {
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_KAKAO_INIT_KEY);
-    setRandomNumber(getProductPriceRandom());
-  }, [Kakao, getProductPriceRandom]);
+  }, []);
 
   const {
     data: recentData,
@@ -154,7 +162,6 @@ const SskcookDetails = () => {
     },
     enabled: flag === 1,
   });
-
   const {
     data: dateData,
     fetchNextPage: dateFetchNextPage,
@@ -380,19 +387,32 @@ const SskcookDetails = () => {
     };
   };
 
-  const handleScroll = async () => {
-    const scrollTop = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const bodyHeight = document.body.scrollHeight;
+  const handleKeyDown = async (event) => {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+      await handleScroll(event.key);
+    }
+  };
 
-    if (scrollTop === 0) {
+  const handleWheel = (event) => {
+    if (event.deltaY === 0) {
+      handleScroll('ArrowUp');
+    } else {
+      handleScroll('ArrowDown');
+    }
+  };
+
+  const handleScroll = async (key) => {
+    if (flag === 0) return;
+    if (key === 'ArrowUp') {
       if (flag === 1 && recentAllData?.length > 0) {
         index1--;
         if (index1 < -1) index1 = -1;
         if (index1 >= 0) {
           const currentItem = recentAllData[index1];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (recentHasPrevPage && !recentIsFetching) {
           const page = await recentFetchPrevPage();
@@ -400,7 +420,9 @@ const SskcookDetails = () => {
           index1 = recentAllData?.length - 1;
           const currentItem = recentAllData[index1];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 2 && dateAllData?.length > 0) {
@@ -409,7 +431,9 @@ const SskcookDetails = () => {
         if (index2 >= 0) {
           const currentItem = dateAllData[index2];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (dateHasPrevPage && !dateIsFetching) {
           const page = await dateFetchPrevPage();
@@ -417,7 +441,9 @@ const SskcookDetails = () => {
           index2 = dateAllData?.length - 1;
           const currentItem = dateAllData[index2];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 3 && storeAllData?.length > 0) {
@@ -427,7 +453,9 @@ const SskcookDetails = () => {
         if (index3 >= 0) {
           const currentItem = storeAllData[index3];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (storeHasPreviousPage && !storeIsFetching) {
           const page = await storeFetchPreviousPage();
@@ -435,7 +463,9 @@ const SskcookDetails = () => {
           index3 = storeAllData?.length - 1;
           const currentItem = storeAllData[index3];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 4 && fetchSskcookAllData?.length > 0) {
@@ -444,7 +474,9 @@ const SskcookDetails = () => {
         if (index4 >= 0) {
           const currentItem = fetchSskcookAllData[index4];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (fetchHasPrevPage && !isSskcookFetching) {
           const page = await fetchSskcookPrevPage();
@@ -452,7 +484,9 @@ const SskcookDetails = () => {
           index4 = fetchSskcookAllData?.length - 1;
           const currentItem = fetchSskcookAllData[index4];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 5 && recentSearchAllData?.length > 0) {
@@ -461,7 +495,9 @@ const SskcookDetails = () => {
         if (index5 >= 0) {
           const currentItem = recentSearchAllData[index5];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (recentSearchHasPrevPage && !isFetchingRecent) {
           const page = await recentSearchFetchPrev();
@@ -469,7 +505,9 @@ const SskcookDetails = () => {
           index5 = recentSearchAllData?.length - 1;
           const currentItem = recentSearchAllData[index5];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 6 && tagAllData?.length > 0) {
@@ -478,7 +516,9 @@ const SskcookDetails = () => {
         if (index6 >= 0) {
           const currentItem = tagAllData[index6];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (tagHasPrevPage && !tagIsFetching) {
           const page = await tagFetchPrevPage();
@@ -486,7 +526,9 @@ const SskcookDetails = () => {
           index6 = tagAllData?.length - 1;
           const currentItem = tagAllData[index6];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 7 && likeSearchAllData?.length > 0) {
@@ -495,7 +537,9 @@ const SskcookDetails = () => {
         if (index7 >= 0) {
           const currentItem = likeSearchAllData[index7];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (likeHasPrevPage && !isFetchingLike) {
           const page = await likeFetchPrevPage();
@@ -503,13 +547,15 @@ const SskcookDetails = () => {
           index7 = likeSearchAllData?.length - 1;
           const currentItem = likeSearchAllData[index7];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       }
     }
     // 맨 아래
-    else if (scrollTop + windowHeight >= bodyHeight - 1) {
+    else if (key === 'ArrowDown') {
       let allData, fetchNextPage, hasNextPage, isFetching, index;
 
       switch (flag) {
@@ -600,7 +646,9 @@ const SskcookDetails = () => {
 
         const currentItem = allData[index];
         if (currentItem) {
-          handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          navigate(`/sskcook/${currentItem?.sskcookId}`, {
+            state,
+          });
         }
       } else if (index >= allData?.length && hasNextPage && !isFetching) {
         const pages = await fetchNextPage();
@@ -641,10 +689,16 @@ const SskcookDetails = () => {
     }
   };
   useEffect(() => {
-    const debouncedHandleScroll = debounce(handleScroll, 400);
+    const debouncedHandleScroll = debounce(() => handleScroll(null), 400);
     window.addEventListener('scroll', debouncedHandleScroll);
+    window.addEventListener('wheel', handleWheel);
+    window.addEventListener('keydown', handleKeyDown);
 
-    return () => window.removeEventListener('scroll', debouncedHandleScroll);
+    return () => {
+      window.removeEventListener('scroll', debouncedHandleScroll);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [
     flag,
     recentAllData,
@@ -827,7 +881,8 @@ const SskcookDetails = () => {
 
   const [prices, setPrices] = useState([]);
   const [totalPrice, setTotalPrice] = useState('');
-  const [discountPrice, setDiscountPrice] = useState('');
+  const [discountAllPrice, setDiscountAllPrice] = useState('');
+  const [discountSelectivePrice, setDiscountSelectivePrice] = useState('');
 
   useEffect(() => {
     if (sskcookDetailsData?.data?.ingredients) {
@@ -869,9 +924,12 @@ const SskcookDetails = () => {
     const newTotalPrice = prices.reduce((total, price) => total + price, 0);
     setTotalPrice(newTotalPrice);
 
-    const discount = newTotalPrice - newTotalPrice * randomNumber * 0.01;
-    setDiscountPrice(discount);
-  }, [prices, randomNumber]);
+    const discountAll = newTotalPrice - newTotalPrice * 20 * 0.01;
+    setDiscountAllPrice(discountAll);
+
+    const discountSelective = newTotalPrice - newTotalPrice * 17 * 0.01;
+    setDiscountSelectivePrice(discountSelective);
+  }, [prices]);
 
   if (isLoading) {
     return (
@@ -958,12 +1016,21 @@ const SskcookDetails = () => {
   return (
     <>
       <SwitchContainer>
-        <CustomText
-          text={'멈춰!'}
-          fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1vw'}
-          color={COLORS.BLACK}
-        />
+        <Tooltip
+          title={
+            <>
+              멈춰: 중지
+              <br />
+              실행: 재생
+              <br />
+              뒤로: 5초 뒤로 감기
+            </>
+          }
+          color={COLORS.ORANGE}
+          key={COLORS.ORANGE}
+        >
+          <img src={MikeIcon} alt="Mike Icon" />
+        </Tooltip>
         <StyledSwitch checked={member.audio} onChange={onChange} />
       </SwitchContainer>
       <DetailsContainer>
@@ -1015,7 +1082,7 @@ const SskcookDetails = () => {
               zIndex: '1',
               cursor: 'pointer',
               left: '53vw',
-              top: '55vh',
+              top: '25vh',
             }}
             onClick={() => {
               if (accessToken) {
@@ -1039,7 +1106,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '-10vh',
+              bottom: '15vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -1059,7 +1126,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '-10vh',
+              bottom: '15vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -1086,7 +1153,7 @@ const SskcookDetails = () => {
                 position: 'absolute',
                 zIndex: '1',
                 cursor: 'pointer',
-                bottom: '-17vh',
+                bottom: '9vh',
                 left: '53vw',
               }}
             >
@@ -1103,7 +1170,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '-24vh',
+              bottom: '3vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -1123,7 +1190,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '-24vh',
+              bottom: '3vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -1144,7 +1211,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              top: '55vh',
+              top: '25vh',
               left: '30vw',
             }}
             onClick={() => setIsPlaying(!isPlaying)}
@@ -1157,7 +1224,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              top: '55vh',
+              top: '25vh',
               left: '30vw',
             }}
             onClick={() => {
@@ -1270,10 +1337,11 @@ const SskcookDetails = () => {
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      alignItems: 'flex-end',
+                      alignItems: 'flex-start',
                       justifyContent: 'center',
                       marginRight: '.3vw',
                       gap: '.3vw',
+                      marginBottom: '1vh',
                     }}
                   >
                     <CustomText
@@ -1288,7 +1356,7 @@ const SskcookDetails = () => {
                       }}
                     />
                     <CustomText
-                      text={`${discountPrice}원`}
+                      text={`${discountAllPrice}원`}
                       fontFamily={'Happiness-Sans-Bold'}
                       fontSize={'.9vw'}
                       color={COLORS.BLACK}
@@ -1300,7 +1368,7 @@ const SskcookDetails = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      marginBottom: '1vh',
+                      marginBottom: '-1vh',
                     }}
                   >
                     <img src={SalesIcon} alt="Sales Icon" />
@@ -1313,7 +1381,7 @@ const SskcookDetails = () => {
                       }}
                     >
                       <CustomText
-                        text={randomNumber}
+                        text={'20'}
                         fontFamily={'Happiness-Sans-Bold'}
                         color={COLORS.SALES}
                         fontSize={'.9vw'}
@@ -1330,24 +1398,107 @@ const SskcookDetails = () => {
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <CustomButton
-                    text={'한번에 구매'}
-                    color={COLORS.ORANGE}
-                    backgroundColor={COLORS.WHITE}
+                    text={'모든 재료 한번에 구매'}
+                    color={COLORS.WHITE}
+                    backgroundColor={COLORS.ORANGE}
                     borderColor={COLORS.ORANGE}
                     fontFamily={'Happiness-Sans-Bold'}
-                    width={'5vw'}
+                    width={'8vw'}
                     height={'4vh'}
                     fontSize={'.7vw'}
                     borderRadius={'100px'}
                     onClick={handleArrayClick}
                     style={{ position: 'relative' }}
                   />
-                  <img
-                    src={LeftArrow}
-                    alt=""
-                    style={{ cursor: 'pointer' }}
-                    onClick={handleArrayClick}
-                  />
+                </div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        justifyContent: 'center',
+                        marginRight: '.3vw',
+                        marginBottom: '1vh',
+                        gap: '.3vw',
+                      }}
+                    >
+                      <CustomText
+                        text={`${totalPrice}원`}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        fontSize={'.7vw'}
+                        color={COLORS.TAG}
+                        style={{
+                          textDecoration: 'line-through',
+                          textAlign: 'center',
+                          display: 'block',
+                        }}
+                      />
+                      <CustomText
+                        text={`${discountSelectivePrice}원`}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        fontSize={'.9vw'}
+                        color={COLORS.BLACK}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        position: 'relative',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '-1vh',
+                      }}
+                    >
+                      <img src={SalesNavyIcon} alt="Sales Icon" />
+                      <div
+                        style={{
+                          position: 'absolute',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <CustomText
+                          text={'17'}
+                          fontFamily={'Happiness-Sans-Bold'}
+                          color={COLORS.SALES}
+                          fontSize={'.9vw'}
+                        />
+                        <CustomText
+                          text={'%'}
+                          fontFamily={'Happiness-Sans-Bold'}
+                          color={COLORS.SALES}
+                          fontSize={'.9vw'}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <CustomButton
+                      text={'없는 재료 한번에 구매'}
+                      color={COLORS.WHITE}
+                      backgroundColor={COLORS.LIGHTBLUE}
+                      borderColor={COLORS.LIGHTBLUE}
+                      fontFamily={'Happiness-Sans-Bold'}
+                      width={'8vw'}
+                      height={'4vh'}
+                      fontSize={'.7vw'}
+                      borderRadius={'100px'}
+                      onClick={handleArrayClick}
+                      style={{ position: 'relative' }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

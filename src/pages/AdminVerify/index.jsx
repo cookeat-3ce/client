@@ -59,7 +59,7 @@ const AdminVerify = () => {
     debounce((username) => {
       mutation.mutate({ username });
     }, 100),
-    [mutation],
+    [],
   );
 
   return (

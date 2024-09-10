@@ -34,13 +34,14 @@ import ArrowUpIcon from '../../assets/icons/arrow_up.svg';
 import ArrowDownIcon from '../../assets/icons/arrow_down.svg';
 import ErrorIcon from '../../assets/icons/error.svg';
 import CloseIcon from '../../assets/icons/close.svg';
-import { memberState } from '../../store';
+import { memberState, ingredientState } from '../../store';
 import CustomButton from '../../components/Button';
 import CustomText from '../../components/Text';
 
 const Order = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const resetMemberState = useResetRecoilState(memberState);
+  const resetIngredientState = useResetRecoilState(ingredientState);
   const [checked, setChecked] = useState(true);
   const [isArrowClicked, setIsArrowClicked] = useState(true);
   const [randomNumbers, setRandomNumbers] = useState([]);
@@ -79,6 +80,7 @@ const Order = () => {
     },
     onSuccess: () => {
       resetMemberState();
+      resetIngredientState();
       deleteAllCookies();
       handleChangeUrl('/');
     },

@@ -85,31 +85,3 @@ export const deleteAllCookies = () => {
     console.error(e);
   }
 };
-
-// 로그아웃
-export const useLogout = () => {
-  const { handleChangeUrl } = useCustomNavigate();
-  const resetMemberState = useResetRecoilState(memberState);
-  const mutation = useMutation({
-    mutationFn: async () => {
-      await memberAPI.logoutAPI();
-    },
-    onSuccess: () => {
-      resetMemberState();
-      deleteAllCookies();
-      handleChangeUrl('/');
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
-  const debouncedLogout = useCallback(
-    debounce(() => {
-      mutation.mutate();
-    }, 300),
-    [],
-  );
-
-  return debouncedLogout;
-};

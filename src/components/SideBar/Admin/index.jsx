@@ -24,7 +24,6 @@ const AdminSidebar = () => {
       console.log(error);
     },
   });
-
   const debouncedLogout = useCallback(
     debounce(() => {
       mutation.mutate();
@@ -33,6 +32,7 @@ const AdminSidebar = () => {
   );
   return (
     <Container>
+      e
       <CustomTextButton
         text={'메인'}
         onClick={() => handleChangeUrl('/admin')}

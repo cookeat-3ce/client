@@ -113,7 +113,7 @@ export const SubscriptionContainer = styled.div`
   align-items: center;
   position: absolute;
   z-index: 1;
-  bottom: -25vh;
+  bottom: 4vh;
   left: 28vw;
   gap: 0.5vw;
 `;
