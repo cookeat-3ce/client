@@ -378,7 +378,7 @@ const CreateLive = () => {
                       max={10}
                       defaultValue={1}
                       size="large"
-                      onChange={(value) => console.log(value)}
+                      onChange={(value) => handleMaxParticipant(value)}
                     />
                   </InputContainer>
                 )}
