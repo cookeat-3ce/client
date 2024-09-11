@@ -33,7 +33,7 @@ jobs:
       # 4. Build Docker image for React client
       - name: Build Docker image for React client
         run: |
-          docker build --build-arg REACT_ENV="${{ secrets.REACT_ENV }}" -t ${{ secrets.DOCKER_USERNAME }}/cookeat-client:latest .
+          docker build --build-arg REACT_ENV="${{ secrets.REACT_ENV }}" -t hd3ce/cookeat-client:latest .
 
       # 5. Log in to Docker Hub
       - name: Log in to Docker Hub
@@ -51,6 +51,6 @@ jobs:
       - name: Invoke Lambda for deployment
         run: |
           curl -X POST https://mpila4kyx5.execute-api.ap-northeast-2.amazonaws.com/2024-09-11/cookeat-deploy-client \
-          -H "x-api-key: ${{ secrets.X_API_KEY_CLIENT }}" \
+          -H "x-api-key: ${{ secrets.X_API_KEY }}" \
           -H "Content-Type: application/json" \
           -d '{}'
