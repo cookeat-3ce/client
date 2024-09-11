@@ -8,7 +8,10 @@ import { memberState } from '../../../store';
 import { useResetRecoilState } from 'recoil';
 import { debounce } from 'lodash';
 import CustomTextButton from '../../Button/Text';
+import { useLocation } from 'react-router-dom';
+import { COLORS } from '../../../constants';
 const AdminSidebar = () => {
+  const location = useLocation();
   const resetMemberState = useResetRecoilState(memberState);
   const { handleChangeUrl } = useCustomNavigate();
   const mutation = useMutation({
@@ -32,22 +35,31 @@ const AdminSidebar = () => {
   );
   return (
     <Container>
-      e
       <CustomTextButton
         text={'메인'}
         onClick={() => handleChangeUrl('/admin')}
+        color={location.pathname === '/admin' ? COLORS.ORANGE : COLORS.BLACK}
       ></CustomTextButton>
       <CustomTextButton
         text={'밀키트 선정'}
         onClick={() => handleChangeUrl('/admin/alarm')}
+        color={
+          location.pathname === '/admin/alarm' ? COLORS.ORANGE : COLORS.BLACK
+        }
       ></CustomTextButton>
       <CustomTextButton
         text={'신고'}
         onClick={() => handleChangeUrl('/admin/report')}
+        color={
+          location.pathname === '/admin/report' ? COLORS.ORANGE : COLORS.BLACK
+        }
       ></CustomTextButton>
       <CustomTextButton
         text={'크리에이터 인증 요청'}
         onClick={() => handleChangeUrl('/admin/verify')}
+        color={
+          location.pathname === '/admin/verify' ? COLORS.ORANGE : COLORS.BLACK
+        }
       ></CustomTextButton>
       <CustomTextButton text={'로그아웃'} onClick={debouncedLogout} />
     </Container>

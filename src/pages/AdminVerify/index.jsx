@@ -41,7 +41,7 @@ const AdminVerify = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetching]);
 
-  const mutation = useMutation({
+  const mutation1 = useMutation({
     mutationFn: async (data) => {
       try {
         const response = await AdminAPI.verifyAPI(data);
@@ -55,72 +55,108 @@ const AdminVerify = () => {
     },
   });
 
+  const mutation2 = useMutation({
+    mutationFn: async (data) => {
+      try {
+        const response = await AdminAPI.deleteVerifyAPI(data);
+        return response;
+      } catch (error) {
+        throw new Error('error');
+      }
+    },
+    onSuccess: (response) => {
+      message.success('취소했습니다..', 5);
+    },
+  });
+
   const debouncedVerify = useCallback(
     debounce((username) => {
-      mutation.mutate({ username });
+      mutation1.mutate({ username });
+    }, 100),
+    [],
+  );
+
+  const debouncedDeleteVerify = useCallback(
+    debounce((username) => {
+      mutation2.mutate(username);
     }, 100),
     [],
   );
 
   return (
-    <div
-      style={{
-        width: '70vw',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        gap: '2vw',
-      }}
-    >
-      {allData.map((item) => (
-        <div
-          key={item.sskcookId}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '70vw',
-            height: '20vh',
-            borderTop: `1px solid ${COLORS.TAG}`,
-            borderBottom: `1px solid ${COLORS.TAG}`,
-          }}
-        >
+    <>
+      <CustomText
+        text={'크리에이터 인증 요청'}
+        fontFamily={'Happiness-Sans-Bold'}
+        fontSize={'1.5vw'}
+      />
+      <div
+        style={{
+          width: '70vw',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          gap: '2vw',
+          marginTop: '5vh',
+        }}
+      >
+        {allData.map((item) => (
           <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '1.2vw' }}
-          >
-            <CustomText
-              text={item.username}
-              fontFamily={'Happiness-Sans-Bold'}
-              fontSize={'2vw'}
-            />
-            <CustomText
-              text={`${item.followerCount} | ${item.sskcookCount}`}
-              fontFamily={'Happiness-Sans-Regular'}
-              color={COLORS.TAG}
-            />
-          </div>
-          <div
+            key={item.sskcookId}
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: '3vw',
+              justifyContent: 'space-between',
+              width: '70vw',
+              height: '20vh',
+              borderTop: `1px solid ${COLORS.TAG}`,
+              borderBottom: `1px solid ${COLORS.TAG}`,
             }}
           >
-            <CustomTextButton
-              text={'선정'}
-              onClick={(e) => {
-                e.preventDefault();
-                debouncedVerify(item.username);
+            <div
+              style={{ display: 'flex', flexDirection: 'column', gap: '1.2vw' }}
+            >
+              <CustomText
+                text={item.username}
+                fontFamily={'Happiness-Sans-Bold'}
+                fontSize={'2vw'}
+              />
+              <CustomText
+                text={`${item.followerCount} | ${item.sskcookCount}`}
+                fontFamily={'Happiness-Sans-Regular'}
+                color={COLORS.TAG}
+              />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '3vw',
               }}
-            />
-            <CustomTextButton text={'취소'} />
+            >
+              <CustomTextButton
+                text={'선정'}
+                onClick={(e) => {
+                  e.preventDefault();
+                  debouncedVerify(item.username);
+                }}
+              />
+              <CustomTextButton
+                text={'취소'}
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log(item.username);
+                  debouncedDeleteVerify(item.username);
+                }}
+              />
+            </div>
           </div>
-        </div>
-      ))}
-      {isFetching && <p>Loading more data...</p>}
-    </div>
+        ))}
+        {isFetching && <p>Loading more data...</p>}
+      </div>
+    </>
   );
 };
 
