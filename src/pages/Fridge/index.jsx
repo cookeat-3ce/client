@@ -114,7 +114,7 @@ const Fridge = () => {
         ></CustomButton>
       </PageTitleContainer>
       <ContentContainer>
-        {ingredients.length == 0 ? (
+        {ingredients.length === 0 ? (
           <NoIngredientAlertContainer>
             <FridgeImageWrapper src={fridge_opened}></FridgeImageWrapper>
             <CustomText

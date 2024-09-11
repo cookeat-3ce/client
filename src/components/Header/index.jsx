@@ -115,7 +115,7 @@ const CustomHeader = () => {
                 onClick={toggleAlertDropdown}
               />
               <NotificationDropdown show={showAlertDropdown}>
-                {notifications.length == 0 ? (
+                {notifications.length === 0 ? (
                   <NoNotifications>새로운 알림이 없습니다.</NoNotifications>
                 ) : (
                   notifications.map((noti) => (

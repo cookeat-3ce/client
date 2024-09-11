@@ -20,9 +20,6 @@ export const sskcookAPI = {
   sskcookDetailsAPI: (sskcookId) => {
     return instance.get(`/sskcook/${sskcookId}`);
   },
-  sskcookDeleteAPI: (sskcookId) => {
-    return instance.delete(`/sskcook/${sskcookId}`);
-  },
   sskcookUploadAPI: (formData) => {
     return instance.post('/sskcook', formData, {
       headers: {

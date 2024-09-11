@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from '../../constants';
-import { InputNumber, Upload, Radio } from 'antd';
+import { InputNumber, Radio } from 'antd';
 
 export const Container = styled.div`
   width: 72vw;

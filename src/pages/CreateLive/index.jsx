@@ -15,13 +15,11 @@ import {
   ButtonContainer,
   CustomInputNumber,
   ParticipantTitleWrapper,
-  ThumbnailButton,
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { Tooltip, Radio } from 'antd';
 import TooltipIcon from '../../assets/icons/tooltip.svg';
-import imageCompression from 'browser-image-compression';
 import CustomButton from '../../components/Button';
 import { CustomInput } from '../../components/Input';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -44,7 +42,6 @@ const CreateLive = () => {
   const [maxParticipant, setMaxParticipant] = useState(1);
   const [className, setClassName] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
-  const [fileList, setFileList] = useState([]);
   const { handleChangeUrl } = useCustomNavigate();
   const [backError, setBackError] = useState(false);
   const [showError, setShowError] = useState(false);
