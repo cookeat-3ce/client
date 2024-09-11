@@ -883,6 +883,7 @@ const SskcookDetails = () => {
   const [notHaveProducts, setNotHaveProducts] = useState([]);
 
   // 없는 재료 가격
+  const [notHavePrices, setNotHavePrices] = useState([]);
 
   const [totalPrice, setTotalPrice] = useState('');
   const [discountTotalPrice, setDiscountTotalPrice] = useState('');
@@ -918,6 +919,7 @@ const SskcookDetails = () => {
       console.log('Price Map:', priceMap);
 
       const leng2 = Object.keys(priceMap).length;
+      setNotHavePrices(Object.values(priceMap));
       const startIdx = leng - leng2;
       console.log(leng, leng2);
       const partialSum = newPrice
@@ -942,6 +944,15 @@ const SskcookDetails = () => {
 
       window.open(url, '_blank', 'noopener,noreferrer');
     }
+  };
+
+  const handleNotHaveClick = () => {
+    const encodedOrderList = encodeURIComponent(
+      JSON.stringify(notHaveProducts),
+    );
+    const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${notHavePrices}&discount=${17}`;
+
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const handleItemClick = (item) => {
@@ -1519,7 +1530,7 @@ const SskcookDetails = () => {
                       height={'4vh'}
                       fontSize={'.7vw'}
                       borderRadius={'100px'}
-                      onClick={handleArrayClick}
+                      onClick={handleNotHaveClick}
                       style={{ position: 'relative' }}
                     />
                   </div>
@@ -1527,23 +1538,29 @@ const SskcookDetails = () => {
               </div>
             </div>
             <IngredientInner>
-              {getCookie('accessToken') && (
-                <>
-                  {[
-                    ...sskcookDetailsData?.data?.ingredients.filter((item) =>
-                      ingredient.some((ing) => item.name.includes(ing.name)),
-                    ),
-                    ...sskcookDetailsData?.data?.ingredients.filter(
-                      (item) =>
-                        !ingredient.some((ing) => item.name.includes(ing.name)),
-                    ),
-                  ].map((item, index) => (
+              <>
+                {(getCookie('accessToken')
+                  ? [
+                      ...sskcookDetailsData?.data?.ingredients.filter((item) =>
+                        ingredient.some((ing) => item.name.includes(ing.name)),
+                      ),
+                      ...sskcookDetailsData?.data?.ingredients.filter(
+                        (item) =>
+                          !ingredient.some((ing) =>
+                            item.name.includes(ing.name),
+                          ),
+                      ),
+                    ]
+                  : sskcookDetailsData?.data?.ingredients
+                ) // 로그인하지 않았을 때 모든 재료를 보여줌
+                  .map((item, index) => (
                     <IngredientWrapper key={index}>
                       <IngredientSection>
                         <CustomText
                           text={item.name}
                           fontFamily={'Happiness-Sans-Regular'}
                           color={
+                            getCookie('accessToken') &&
                             ingredient.some((ing) =>
                               item.name.includes(ing.name),
                             )
@@ -1590,9 +1607,9 @@ const SskcookDetails = () => {
                       </IngredientSection>
                     </IngredientWrapper>
                   ))}
-                </>
-              )}
+              </>
             </IngredientInner>
+
             <LineContainer />
           </IngredientContainer>
           <RecipeContainer>
