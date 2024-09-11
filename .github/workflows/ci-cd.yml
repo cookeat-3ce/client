@@ -28,7 +28,7 @@ jobs:
       # 4. Build React client
       - name: Build React client
         run: |
-          npm install
+          npm install --force
           npm run build
 
       # 5. Build Docker image for React client
