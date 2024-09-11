@@ -1,5 +1,5 @@
 # Step 1: Use Node.js image to build the React app
-FROM node:18 AS build
+FROM node:22 AS build
 
 # Set working directory
 WORKDIR /app
@@ -22,8 +22,8 @@ FROM nginx:alpine
 # Copy built files from the build stage
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 80
+EXPOSE 80
 
 # Default command
 CMD ["nginx", "-g", "daemon off;"]
