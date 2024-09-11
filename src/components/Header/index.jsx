@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './styles';
 import {
   ButtonContainer,
@@ -6,6 +6,10 @@ import {
   CenterWrapper,
   LogoContainer,
   Header,
+  NotificationDropdown,
+  NoNotifications,
+  NotificationItem,
+  NotificationContainer,
 } from './styles';
 import AlarmIcon from '../../assets/icons/alarm.svg';
 import CustomTextButton from '../Button/Text';
@@ -15,14 +19,81 @@ import { getCookie, useCustomNavigate } from '../../hooks';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { memberState } from '../../store';
+import { EventSourcePolyfill } from 'event-source-polyfill';
+import CustomText from '../Text';
 const CustomHeader = () => {
-  // 예시
-  const handleClick = () => console.log(1);
+  const [showAlertDropdown, setShowAlertDropdown] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [slideNoti, setSlideNoti] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   const accessToken = getCookie('accessToken');
   const { handleChangeUrl } = useCustomNavigate();
   const location = useLocation().pathname;
   const persist = useRecoilValue(memberState);
+
+  const toggleAlertDropdown = () => {
+    setShowAlertDropdown(!showAlertDropdown);
+  };
+
+  const handleNewNotice = useCallback((event) => {
+    console.log('event data new notice: ', event.data);
+    const notificationData = event.data;
+    setSlideNoti(notificationData);
+    setIsVisible(true);
+
+    // 5초 후 슬라이드 아웃 애니메이션
+    setTimeout(() => {
+      setIsVisible(false);
+      // 애니메이션 종료 후 알림 상태 초기화
+      setTimeout(() => {
+        setSlideNoti(null);
+      }, 500); // 슬라이드 아웃 애니메이션 시간과 일치
+    }, 5000);
+
+    setNotifications((prevNotifications) => [
+      notificationData,
+      ...prevNotifications,
+    ]);
+  }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      // SSE 연결 객체
+      const eventSource = new EventSourcePolyfill(
+        `http://localhost:8080/api/alert/sse`,
+        {
+          headers: {
+            Authorization: `${accessToken}`,
+            Accept: 'text/event-stream',
+          },
+          heartbeatTimeout: 60000,
+        },
+      );
+
+      eventSource.addEventListener('newNotice', handleNewNotice);
+
+      // SSE 연결 중 에러
+      eventSource.onerror = (error) => {
+        console.error('SSE error:', error.message);
+        eventSource.close(); // Close connection on error
+      };
+
+      // SSE 연결 시작 시
+      eventSource.onopen = () => {
+        console.log('SSE connection opened');
+      };
+
+      // SSE 연결 종료
+      return () => {
+        if (eventSource) {
+          eventSource.removeEventListener('newNotice', handleNewNotice);
+          eventSource.close();
+        }
+      };
+    }
+  }, [accessToken, handleNewNotice]);
+
   return (
     <Header>
       <Container>
@@ -41,8 +112,30 @@ const CustomHeader = () => {
                 src={AlarmIcon}
                 width="3vh"
                 height="3vh"
-                onClick={handleClick}
+                onClick={toggleAlertDropdown}
               />
+              <NotificationDropdown show={showAlertDropdown}>
+                {notifications.length == 0 ? (
+                  <NoNotifications>새로운 알림이 없습니다.</NoNotifications>
+                ) : (
+                  notifications.map((noti) => (
+                    <NotificationItem>
+                      <CustomText
+                        text={'✨ 밀키트 선정 안내'}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        fontSize={'1rem'}
+                        color={COLORS.ORANGE}
+                      />
+                      <CustomText
+                        text={noti}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        fontSize={'.8rem'}
+                        color={COLORS.BLACK}
+                      />
+                    </NotificationItem>
+                  ))
+                )}
+              </NotificationDropdown>
               <CustomImageButton
                 src={persist.profileImage}
                 width="5vh"
@@ -99,6 +192,23 @@ const CustomHeader = () => {
           )}
         </ButtonContainer>
       </Container>
+
+      {isVisible && (
+        <NotificationContainer isVisible={isVisible}>
+          <CustomText
+            text={'✨ 밀키트 선정 안내'}
+            fontFamily={'Happiness-Sans-Bold'}
+            fontSize={'1.2rem'}
+            color={COLORS.ORANGE}
+          />
+          <CustomText
+            text={slideNoti}
+            fontFamily={'Happiness-Sans-Bold'}
+            fontSize={'1rem'}
+            color={COLORS.BLACK}
+          />
+        </NotificationContainer>
+      )}
     </Header>
   );
 };
