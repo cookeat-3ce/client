@@ -22,6 +22,10 @@ RUN npm run build
 # Step 2: Use Nginx to serve the built React app
 FROM nginx:alpine
 
+# nginx의 기본 설정을 삭제하고 앱에서 설정한 파일을 복사
+RUN rm -rf /etc/nginx/conf.d
+COPY conf /etc/nginx
+
 # Copy built files from the build stage
 COPY --from=build /app/build /usr/share/nginx/html
 
