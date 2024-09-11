@@ -98,7 +98,7 @@ const SskcookUpload = () => {
     {
       onSuccess: () => {
         console.log('업로드 성공');
-        navigate('/info');
+        openUploadModal();
       },
       onError: (error) => {
         console.error();
@@ -129,7 +129,6 @@ const SskcookUpload = () => {
     formData.append('file', file.fileObject);
     formData.append('sskcook', sskcookData);
     mutation.mutate(formData);
-    openUploadModal();
   };
 
   return (
@@ -303,7 +302,7 @@ const SskcookUpload = () => {
       <CheckModal
         show={showUploadModal}
         onClose={closeUploadModal}
-        info={'df'}
+        info={'슥쿡이 정상적으로 업로드 되었어요!'}
       />
     </Container>
   );
