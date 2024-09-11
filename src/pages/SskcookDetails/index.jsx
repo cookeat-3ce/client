@@ -17,13 +17,14 @@ import {
   SubscriptionContainer,
   StyledSkeleton,
   SwitchSkeleton,
+  LineContainer2,
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { sskcookAPI } from '../../apis/sskcook';
-import { memberState } from '../../store';
-import { useRecoilState } from 'recoil';
+import { memberState, ingredientState } from '../../store';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import CustomButton from '../../components/Button';
 import ReactPlayer from 'react-player/lazy';
 import SpeechRecognition, {
@@ -42,28 +43,28 @@ import Play from '../../assets/icons/play.svg';
 import Link from '../../assets/icons/link.svg';
 import KakaoIcon from '../../assets/icons/kakao.svg';
 import { getCookie } from '../../hooks';
-import { message, Menu, Dropdown } from 'antd';
+import { message, Menu, Dropdown, Tooltip } from 'antd';
 import { memberAPI } from '../../apis/member';
 import CustomImageButton from '../../components/Button/Image';
 import { useCustomNavigate } from '../../hooks';
-import LeftArrow from '../../assets/icons/left_arrow.svg';
 import SalesIcon from '../../assets/icons/sale.svg';
 import { INGREDIENTS } from '../../constants';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import instance from '../../apis';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import SalesNavyIcon from '../../assets/icons/sale_navy.svg';
+import MikeIcon from '../../assets/icons/mike.svg';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
   const [member, setMember] = useRecoilState(memberState);
+  const ingredient = useRecoilValue(ingredientState);
   const [isSirenClicked, setIsSirenClicked] = useState(false);
   const [isLikeClicked, setIsLikeClicked] = useState(false);
   const [isShareClicked, setIsShareClicked] = useState(false);
   const [isBookmarkClicked, setIsBookmarkClicked] = useState(false);
   const [isSubscriptionClicked, setIsSubscriptionClicked] = useState(false);
   const [orderList, setOrderList] = useState([]);
-  const [priceList, setPriceList] = useState([]);
-  const [randomNumber, setRandomNumber] = useState(null);
   const { Kakao } = window;
   const playerRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
@@ -75,14 +76,14 @@ const SskcookDetails = () => {
   const month = today.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
   const formattedDate = `${year}-${formattedMonth}`;
-  console.log('State 값:', state);
+  // console.log('State 값:', state);
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
+  const navigate = useNavigate();
 
-  const getProductPriceRandom = useCallback(() => {
-    const prices = [10, 20, 30, 40, 50];
-    return prices[Math.floor(Math.random() * prices.length)];
-  }, []);
+  useEffect(() => {
+    setIsPlaying(true);
+  }, [location.pathname]);
 
   const getRandomNumber = useCallback((min, max) => {
     const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -92,6 +93,13 @@ const SskcookDetails = () => {
   const [flag, setFlag] = useState('');
   const [page, setPage] = useState('');
   useEffect(() => {
+    if (!state?.key || !state.key?.status) {
+      setFlag(0);
+      setPage(null);
+      setKeyword('');
+      return;
+    }
+
     const stateValue = state.key;
     const stateString = state.key.status;
 
@@ -121,7 +129,7 @@ const SskcookDetails = () => {
       setKeyword(stateString.substring(14, stateString.length));
       setPage(stateValue.transformedPage);
     }
-  }, []);
+  }, [state]);
 
   // console.log(flag, keyword);
 
@@ -130,8 +138,7 @@ const SskcookDetails = () => {
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_KAKAO_INIT_KEY);
-    setRandomNumber(getProductPriceRandom());
-  }, [Kakao, getProductPriceRandom]);
+  }, []);
 
   const {
     data: recentData,
@@ -154,7 +161,6 @@ const SskcookDetails = () => {
     },
     enabled: flag === 1,
   });
-
   const {
     data: dateData,
     fetchNextPage: dateFetchNextPage,
@@ -380,27 +386,41 @@ const SskcookDetails = () => {
     };
   };
 
-  const handleScroll = async () => {
-    const scrollTop = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const bodyHeight = document.body.scrollHeight;
+  const handleKeyDown = async (event) => {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+      await handleScroll(event.key);
+    }
+  };
 
-    if (scrollTop === 0) {
+  const handleWheel = (event) => {
+    if (event.deltaY < 0) {
+      handleScroll('ArrowUp');
+    } else {
+      handleScroll('ArrowDown');
+    }
+  };
+
+  const handleScroll = async (key) => {
+    if (flag === 0) return;
+    if (key === 'ArrowUp') {
       if (flag === 1 && recentAllData?.length > 0) {
         index1--;
         if (index1 < -1) index1 = -1;
         if (index1 >= 0) {
           const currentItem = recentAllData[index1];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (recentHasPrevPage && !recentIsFetching) {
           const page = await recentFetchPrevPage();
-          console.log(page);
           index1 = recentAllData?.length - 1;
           const currentItem = recentAllData[index1];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 2 && dateAllData?.length > 0) {
@@ -409,7 +429,9 @@ const SskcookDetails = () => {
         if (index2 >= 0) {
           const currentItem = dateAllData[index2];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (dateHasPrevPage && !dateIsFetching) {
           const page = await dateFetchPrevPage();
@@ -417,7 +439,9 @@ const SskcookDetails = () => {
           index2 = dateAllData?.length - 1;
           const currentItem = dateAllData[index2];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 3 && storeAllData?.length > 0) {
@@ -427,7 +451,9 @@ const SskcookDetails = () => {
         if (index3 >= 0) {
           const currentItem = storeAllData[index3];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (storeHasPreviousPage && !storeIsFetching) {
           const page = await storeFetchPreviousPage();
@@ -435,7 +461,9 @@ const SskcookDetails = () => {
           index3 = storeAllData?.length - 1;
           const currentItem = storeAllData[index3];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 4 && fetchSskcookAllData?.length > 0) {
@@ -444,7 +472,9 @@ const SskcookDetails = () => {
         if (index4 >= 0) {
           const currentItem = fetchSskcookAllData[index4];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (fetchHasPrevPage && !isSskcookFetching) {
           const page = await fetchSskcookPrevPage();
@@ -452,7 +482,9 @@ const SskcookDetails = () => {
           index4 = fetchSskcookAllData?.length - 1;
           const currentItem = fetchSskcookAllData[index4];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 5 && recentSearchAllData?.length > 0) {
@@ -461,7 +493,9 @@ const SskcookDetails = () => {
         if (index5 >= 0) {
           const currentItem = recentSearchAllData[index5];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (recentSearchHasPrevPage && !isFetchingRecent) {
           const page = await recentSearchFetchPrev();
@@ -469,7 +503,9 @@ const SskcookDetails = () => {
           index5 = recentSearchAllData?.length - 1;
           const currentItem = recentSearchAllData[index5];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 6 && tagAllData?.length > 0) {
@@ -478,7 +514,9 @@ const SskcookDetails = () => {
         if (index6 >= 0) {
           const currentItem = tagAllData[index6];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (tagHasPrevPage && !tagIsFetching) {
           const page = await tagFetchPrevPage();
@@ -486,7 +524,9 @@ const SskcookDetails = () => {
           index6 = tagAllData?.length - 1;
           const currentItem = tagAllData[index6];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       } else if (flag === 7 && likeSearchAllData?.length > 0) {
@@ -495,7 +535,9 @@ const SskcookDetails = () => {
         if (index7 >= 0) {
           const currentItem = likeSearchAllData[index7];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         } else if (likeHasPrevPage && !isFetchingLike) {
           const page = await likeFetchPrevPage();
@@ -503,13 +545,15 @@ const SskcookDetails = () => {
           index7 = likeSearchAllData?.length - 1;
           const currentItem = likeSearchAllData[index7];
           if (currentItem) {
-            handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
           }
         }
       }
     }
     // 맨 아래
-    else if (scrollTop + windowHeight >= bodyHeight - 1) {
+    else if (key === 'ArrowDown') {
       let allData, fetchNextPage, hasNextPage, isFetching, index;
 
       switch (flag) {
@@ -566,7 +610,6 @@ const SskcookDetails = () => {
           return;
       }
 
-      console.log(allData);
       if (index < allData?.length) {
         index++;
         console.log(index);
@@ -600,7 +643,9 @@ const SskcookDetails = () => {
 
         const currentItem = allData[index];
         if (currentItem) {
-          handleChangeUrl(`/sskcook/${currentItem?.sskcookId}`);
+          navigate(`/sskcook/${currentItem?.sskcookId}`, {
+            state,
+          });
         }
       } else if (index >= allData?.length && hasNextPage && !isFetching) {
         const pages = await fetchNextPage();
@@ -641,10 +686,16 @@ const SskcookDetails = () => {
     }
   };
   useEffect(() => {
-    const debouncedHandleScroll = debounce(handleScroll, 400);
+    const debouncedHandleScroll = debounce(() => handleScroll(null), 400);
     window.addEventListener('scroll', debouncedHandleScroll);
+    window.addEventListener('wheel', handleWheel);
+    window.addEventListener('keydown', handleKeyDown);
 
-    return () => window.removeEventListener('scroll', debouncedHandleScroll);
+    return () => {
+      window.removeEventListener('scroll', debouncedHandleScroll);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [
     flag,
     recentAllData,
@@ -825,18 +876,59 @@ const SskcookDetails = () => {
     return items.map(() => getRandomNumber(1000, 20000));
   };
 
+  // 모든 금액
   const [prices, setPrices] = useState([]);
+
+  // 없는 재료 구매
+  const [notHaveProducts, setNotHaveProducts] = useState([]);
+
+  // 없는 재료 가격
+  const [notHavePrices, setNotHavePrices] = useState([]);
+
   const [totalPrice, setTotalPrice] = useState('');
-  const [discountPrice, setDiscountPrice] = useState('');
+  const [discountTotalPrice, setDiscountTotalPrice] = useState('');
+  const [selectivePrice, setSelectivePrice] = useState('');
+  const [discountSelectivePrice, setDiscountSelectivePrice] = useState('');
 
   useEffect(() => {
     if (sskcookDetailsData?.data?.ingredients) {
-      const price = setPrices(
-        generateRandomPrices(sskcookDetailsData.data.ingredients),
+      const newPrice = generateRandomPrices(
+        sskcookDetailsData.data.ingredients,
       );
-      setPriceList(price);
+      const leng = newPrice.length;
+      setPrices(newPrice);
+
+      const totalSum1 = newPrice.reduce((sum, price) => sum + price, 0);
+      setTotalPrice(totalSum1);
+      setDiscountTotalPrice(totalSum1 * 0.8);
+
+      const filteredItems = sskcookDetailsData.data.ingredients.filter(
+        (item) => !ingredient.some((ing) => item.name.includes(ing.name)),
+      );
+      setNotHaveProducts(filteredItems.map((item) => item.name));
+
+      const priceMap = filteredItems.reduce((acc, item, index) => {
+        acc[item.name] =
+          newPrice[
+            sskcookDetailsData.data.ingredients.findIndex(
+              (ing) => ing.name === item.name,
+            )
+          ] || 0;
+        return acc;
+      }, {});
+      console.log('Price Map:', priceMap);
+
+      const leng2 = Object.keys(priceMap).length;
+      setNotHavePrices(Object.values(priceMap));
+      const startIdx = leng - leng2;
+      console.log(leng, leng2);
+      const partialSum = newPrice
+        .slice(startIdx)
+        .reduce((sum, price) => sum + price, 0);
+      setSelectivePrice(partialSum);
+      setDiscountSelectivePrice(partialSum * 0.73);
     }
-  }, [sskcookDetailsData]);
+  }, [sskcookDetailsData, ingredient]);
 
   const handleArrayClick = () => {
     if (sskcookDetailsData && sskcookDetailsData.data.ingredients) {
@@ -848,10 +940,19 @@ const SskcookDetails = () => {
       const encodedOrderList = encodeURIComponent(
         JSON.stringify(newIngredientNames),
       );
-      const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${randomNumber}`;
+      const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${20}`;
 
       window.open(url, '_blank', 'noopener,noreferrer');
     }
+  };
+
+  const handleNotHaveClick = () => {
+    const encodedOrderList = encodeURIComponent(
+      JSON.stringify(notHaveProducts),
+    );
+    const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${notHavePrices}&discount=${17}`;
+
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const handleItemClick = (item) => {
@@ -864,14 +965,6 @@ const SskcookDetails = () => {
       'noopener,noreferrer',
     );
   };
-
-  useEffect(() => {
-    const newTotalPrice = prices.reduce((total, price) => total + price, 0);
-    setTotalPrice(newTotalPrice);
-
-    const discount = newTotalPrice - newTotalPrice * randomNumber * 0.01;
-    setDiscountPrice(discount);
-  }, [prices, randomNumber]);
 
   if (isLoading) {
     return (
@@ -958,12 +1051,21 @@ const SskcookDetails = () => {
   return (
     <>
       <SwitchContainer>
-        <CustomText
-          text={'멈춰!'}
-          fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1vw'}
-          color={COLORS.BLACK}
-        />
+        <Tooltip
+          title={
+            <>
+              멈춰: 중지
+              <br />
+              실행: 재생
+              <br />
+              뒤로: 5초 뒤로 감기
+            </>
+          }
+          color={COLORS.ORANGE}
+          key={COLORS.ORANGE}
+        >
+          <img src={MikeIcon} alt="Mike Icon" />
+        </Tooltip>
         <StyledSwitch checked={member.audio} onChange={onChange} />
       </SwitchContainer>
       <DetailsContainer>
@@ -1015,7 +1117,7 @@ const SskcookDetails = () => {
               zIndex: '1',
               cursor: 'pointer',
               left: '53vw',
-              top: '55vh',
+              top: '25vh',
             }}
             onClick={() => {
               if (accessToken) {
@@ -1039,7 +1141,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '-10vh',
+              bottom: '15vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -1059,7 +1161,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '-10vh',
+              bottom: '15vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -1086,7 +1188,7 @@ const SskcookDetails = () => {
                 position: 'absolute',
                 zIndex: '1',
                 cursor: 'pointer',
-                bottom: '-17vh',
+                bottom: '9vh',
                 left: '53vw',
               }}
             >
@@ -1103,7 +1205,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '-24vh',
+              bottom: '3vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -1123,7 +1225,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              bottom: '-24vh',
+              bottom: '3vh',
               left: '53vw',
             }}
             onClick={() => {
@@ -1144,7 +1246,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              top: '55vh',
+              top: '25vh',
               left: '30vw',
             }}
             onClick={() => setIsPlaying(!isPlaying)}
@@ -1157,7 +1259,7 @@ const SskcookDetails = () => {
               position: 'absolute',
               zIndex: '1',
               cursor: 'pointer',
-              top: '55vh',
+              top: '25vh',
               left: '30vw',
             }}
             onClick={() => {
@@ -1270,10 +1372,11 @@ const SskcookDetails = () => {
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      alignItems: 'flex-end',
+                      alignItems: 'flex-start',
                       justifyContent: 'center',
                       marginRight: '.3vw',
                       gap: '.3vw',
+                      marginBottom: '1vh',
                     }}
                   >
                     <CustomText
@@ -1288,7 +1391,7 @@ const SskcookDetails = () => {
                       }}
                     />
                     <CustomText
-                      text={`${discountPrice}원`}
+                      text={`${discountTotalPrice}원`}
                       fontFamily={'Happiness-Sans-Bold'}
                       fontSize={'.9vw'}
                       color={COLORS.BLACK}
@@ -1300,7 +1403,7 @@ const SskcookDetails = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      marginBottom: '1vh',
+                      marginBottom: '-1vh',
                     }}
                   >
                     <img src={SalesIcon} alt="Sales Icon" />
@@ -1313,7 +1416,7 @@ const SskcookDetails = () => {
                       }}
                     >
                       <CustomText
-                        text={randomNumber}
+                        text={'20'}
                         fontFamily={'Happiness-Sans-Bold'}
                         color={COLORS.SALES}
                         fontSize={'.9vw'}
@@ -1330,77 +1433,183 @@ const SskcookDetails = () => {
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <CustomButton
-                    text={'한번에 구매'}
-                    color={COLORS.ORANGE}
-                    backgroundColor={COLORS.WHITE}
+                    text={'모든 재료 한번에 구매'}
+                    color={COLORS.WHITE}
+                    backgroundColor={COLORS.ORANGE}
                     borderColor={COLORS.ORANGE}
                     fontFamily={'Happiness-Sans-Bold'}
-                    width={'5vw'}
+                    width={'8vw'}
                     height={'4vh'}
                     fontSize={'.7vw'}
                     borderRadius={'100px'}
                     onClick={handleArrayClick}
                     style={{ position: 'relative' }}
                   />
-                  <img
-                    src={LeftArrow}
-                    alt=""
-                    style={{ cursor: 'pointer' }}
-                    onClick={handleArrayClick}
-                  />
+                </div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        justifyContent: 'center',
+                        marginRight: '.3vw',
+                        marginBottom: '1vh',
+                        gap: '.3vw',
+                      }}
+                    >
+                      <CustomText
+                        text={`${selectivePrice}원`}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        fontSize={'.7vw'}
+                        color={COLORS.TAG}
+                        style={{
+                          textDecoration: 'line-through',
+                          textAlign: 'center',
+                          display: 'block',
+                        }}
+                      />
+                      <CustomText
+                        text={`${discountSelectivePrice}원`}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        fontSize={'.9vw'}
+                        color={COLORS.BLACK}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        position: 'relative',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '-1vh',
+                      }}
+                    >
+                      <img src={SalesNavyIcon} alt="Sales Icon" />
+                      <div
+                        style={{
+                          position: 'absolute',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <CustomText
+                          text={'17'}
+                          fontFamily={'Happiness-Sans-Bold'}
+                          color={COLORS.SALES}
+                          fontSize={'.9vw'}
+                        />
+                        <CustomText
+                          text={'%'}
+                          fontFamily={'Happiness-Sans-Bold'}
+                          color={COLORS.SALES}
+                          fontSize={'.9vw'}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <CustomButton
+                      text={'없는 재료 한번에 구매'}
+                      color={COLORS.WHITE}
+                      backgroundColor={COLORS.LIGHTBLUE}
+                      borderColor={COLORS.LIGHTBLUE}
+                      fontFamily={'Happiness-Sans-Bold'}
+                      width={'8vw'}
+                      height={'4vh'}
+                      fontSize={'.7vw'}
+                      borderRadius={'100px'}
+                      onClick={handleNotHaveClick}
+                      style={{ position: 'relative' }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-
             <IngredientInner>
-              {sskcookDetailsData?.data?.ingredients.map((item, index) => (
-                <IngredientWrapper key={index}>
-                  <IngredientSection>
-                    <CustomText
-                      text={item.name}
-                      fontFamily={'Happiness-Sans-Regular'}
-                      color={COLORS.BLACK}
-                      fontSize={'1vw'}
-                    />
-                  </IngredientSection>
-                  <IngredientSection>
-                    <CustomText
-                      text={item.amount}
-                      fontFamily={'Happiness-Sans-Regular'}
-                      color={COLORS.BLACK}
-                      fontSize={'1vw'}
-                      style={{ textDecoration: 'underline' }}
-                    />
-                  </IngredientSection>
-                  <IngredientSection>
-                    <CustomText
-                      text={
-                        INGREDIENTS[item.name]
-                          ? `${INGREDIENTS[item.name]}원`
-                          : `${(prices[index] || '').toString()}원`
-                      }
-                      fontFamily={'Happiness-Sans-Regular'}
-                      color={COLORS.BLACK}
-                      fontSize={'1vw'}
-                    />
-                  </IngredientSection>
-                  <IngredientSection>
-                    <CustomButton
-                      text={'구매'}
-                      fontSize={'.7vw'}
-                      borderRadius={'100px'}
-                      color={COLORS.BLACK}
-                      backgroundColor={COLORS.WHITE}
-                      borderColor={COLORS.BLACK}
-                      width={'3vw'}
-                      height={'3vh'}
-                      fontFamily={'Happiness-Sans-Bold'}
-                      onClick={() => handleItemClick(item.name)}
-                    />
-                  </IngredientSection>
-                </IngredientWrapper>
-              ))}
+              <>
+                {(getCookie('accessToken')
+                  ? [
+                      ...sskcookDetailsData?.data?.ingredients.filter((item) =>
+                        ingredient.some((ing) => item.name.includes(ing.name)),
+                      ),
+                      ...sskcookDetailsData?.data?.ingredients.filter(
+                        (item) =>
+                          !ingredient.some((ing) =>
+                            item.name.includes(ing.name),
+                          ),
+                      ),
+                    ]
+                  : sskcookDetailsData?.data?.ingredients
+                ) // 로그인하지 않았을 때 모든 재료를 보여줌
+                  .map((item, index) => (
+                    <IngredientWrapper key={index}>
+                      <IngredientSection>
+                        <CustomText
+                          text={item.name}
+                          fontFamily={'Happiness-Sans-Regular'}
+                          color={
+                            getCookie('accessToken') &&
+                            ingredient.some((ing) =>
+                              item.name.includes(ing.name),
+                            )
+                              ? COLORS.ORANGE
+                              : COLORS.BLACK
+                          }
+                          fontSize={'1vw'}
+                        />
+                      </IngredientSection>
+                      <IngredientSection>
+                        <CustomText
+                          text={item.amount}
+                          fontFamily={'Happiness-Sans-Regular'}
+                          color={COLORS.BLACK}
+                          fontSize={'1vw'}
+                          style={{ textDecoration: 'underline' }}
+                        />
+                      </IngredientSection>
+                      <IngredientSection>
+                        <CustomText
+                          text={
+                            INGREDIENTS[item.name]
+                              ? `${INGREDIENTS[item.name]}원`
+                              : `${(prices[index] || '').toString()}원`
+                          }
+                          fontFamily={'Happiness-Sans-Regular'}
+                          color={COLORS.BLACK}
+                          fontSize={'1vw'}
+                        />
+                      </IngredientSection>
+                      <IngredientSection>
+                        <CustomButton
+                          text={'구매'}
+                          fontSize={'.7vw'}
+                          borderRadius={'100px'}
+                          color={COLORS.BLACK}
+                          backgroundColor={COLORS.WHITE}
+                          borderColor={COLORS.BLACK}
+                          width={'3vw'}
+                          height={'3vh'}
+                          fontFamily={'Happiness-Sans-Bold'}
+                          onClick={() => handleItemClick(item.name)}
+                        />
+                      </IngredientSection>
+                    </IngredientWrapper>
+                  ))}
+              </>
             </IngredientInner>
+
             <LineContainer />
           </IngredientContainer>
           <RecipeContainer>

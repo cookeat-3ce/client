@@ -54,8 +54,6 @@ export const StyledTabs = styled(Tabs)`
   .ant-tabs-nav {
     position: sticky;
     top: 0;
-    background: white;
-    z-index: 1;
   }
   .ant-tabs-tab-btn {
     font-family: 'Noto Sans KR', sans-serif;
@@ -96,8 +94,6 @@ export const StyledTabs1 = styled(Tabs)`
   .ant-tabs-nav {
     position: sticky;
     top: 0;
-    background: white;
-    z-index: 1;
   }
   .ant-tabs-tab-btn {
     font-family: 'Noto Sans KR', sans-serif;
@@ -170,6 +166,11 @@ export const ProductContainer = styled.div`
 export const DeliveryTitle = styled.p`
   font-family: 'Noto Sans KR';
   font-size: 1.5vw;
+`;
+
+export const RadioTitle = styled.p`
+  font-family: 'Noto Sans KR';
+  font-size: 1vw;
 `;
 
 export const NumberText = styled.p`

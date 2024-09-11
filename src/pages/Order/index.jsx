@@ -11,6 +11,7 @@ import {
   CheckBoxText,
   CheckBoxBar,
   Line,
+  RadioTitle,
   ProductContainer,
   DeliveryTitle,
   NumberText,
@@ -27,45 +28,52 @@ import Logo from '../../assets/icons/hyundai_logo.png';
 import { getCookie, useCustomNavigate } from '../../hooks';
 import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../../apis/member';
-import { debounce } from 'lodash';
+import { debounce, wrap } from 'lodash';
 import { useResetRecoilState } from 'recoil';
 import { deleteAllCookies } from '../../hooks';
 import ArrowUpIcon from '../../assets/icons/arrow_up.svg';
 import ArrowDownIcon from '../../assets/icons/arrow_down.svg';
 import ErrorIcon from '../../assets/icons/error.svg';
 import CloseIcon from '../../assets/icons/close.svg';
-import { memberState } from '../../store';
+import NaverPayIcon from '../../assets/icons/naverpay.svg';
+import PaycoIcon from '../../assets/icons/payco.svg';
+import KakaoPayIcon from '../../assets/icons/kakaopay.svg';
+import CreditCardIcon from '../../assets/icons/credit_card.svg';
+import PassbookIcon from '../../assets/icons/passbook.svg';
+import PhoneIcon from '../../assets/icons/phone.svg';
+import { memberState, ingredientState } from '../../store';
 import CustomButton from '../../components/Button';
 import CustomText from '../../components/Text';
 
 const Order = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const resetMemberState = useResetRecoilState(memberState);
-  const [checked, setChecked] = useState(true);
+  const resetIngredientState = useResetRecoilState(ingredientState);
+  // const [checked, setChecked] = useState(true);
   const [isArrowClicked, setIsArrowClicked] = useState(true);
-  const [randomNumbers, setRandomNumbers] = useState([]);
-  const [randomPrice, setRandomPrice] = useState([]);
-  const [isChecked, setIsChecked] = useState(true);
+  // const [randomNumbers, setRandomNumbers] = useState([]);
+  // const [randomPrice, setRandomPrice] = useState([]);
+  // const [isChecked, setIsChecked] = useState(true);
   const [spinning, setSpinning] = useState(false);
   const [percent, setPercent] = useState(0);
 
-  const handleIncrement = (index) => {
-    setValues((prevValues) =>
-      prevValues.map((value, i) =>
-        i === index && randomNumbers[i] !== 0 && value < randomNumbers[i]
-          ? value + 1
-          : value,
-      ),
-    );
-  };
+  // const handleIncrement = (index) => {
+  //   setValues((prevValues) =>
+  //     prevValues.map((value, i) =>
+  //       i === index && randomNumbers[i] !== 0 && value < randomNumbers[i]
+  //         ? value + 1
+  //         : value,
+  //     ),
+  //   );
+  // };
 
-  const handleDecrement = (index) => {
-    setValues((prevValues) =>
-      prevValues.map((value, i) =>
-        i === index && randomNumbers[i] !== 0 && value > 1 ? value - 1 : value,
-      ),
-    );
-  };
+  // const handleDecrement = (index) => {
+  //   setValues((prevValues) =>
+  //     prevValues.map((value, i) =>
+  //       i === index && randomNumbers[i] !== 0 && value > 1 ? value - 1 : value,
+  //     ),
+  //   );
+  // };
 
   const accessToken = getCookie('accessToken');
 
@@ -79,6 +87,7 @@ const Order = () => {
     },
     onSuccess: () => {
       resetMemberState();
+      resetIngredientState();
       deleteAllCookies();
       handleChangeUrl('/');
     },
@@ -118,179 +127,196 @@ const Order = () => {
 
   const orderData = decodeAndParseData(queryParams.get('orderData'));
   const priceData = queryParams.get('priceData')
-    ? queryParams.get('priceData').split(',')
+    ? queryParams.get('priceData').split(',').map(Number)
     : [];
-  const discount = parseInt(queryParams.get('discount'), 10) || 0;
+
+  const totalPrice = priceData.reduce((acc, curr) => acc + curr, 0);
+
+  const discount = parseInt(queryParams.get('discount'), 0) || 0;
+
+  const discountPrice = (totalPrice * discount) / 100;
+
+  const [shippingPrice, setShippingPrice] = useState('');
+  useEffect(() => {
+    if (totalPrice - discountPrice >= 50000) setShippingPrice(0);
+    else setShippingPrice(3500);
+  }, []);
+
+  const totalDiscountPrice = totalPrice - discountPrice - shippingPrice;
 
   const [arrayData, setArrayData] = useState(orderData);
-  const [prices, setPrices] = useState(priceData);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState('credit-card');
 
-  const [checkedItems, setCheckedItems] = useState(() =>
-    randomNumbers.map((num) => num !== 0),
-  );
-  const isAllChecked = useMemo(() => {
-    return checkedItems.every((checked, index) => {
-      return randomNumbers[index] === 0 || checked;
-    });
-  }, [checkedItems, randomNumbers]);
-
-  useEffect(() => {
-    setCheckedItems((prevCheckedItems) =>
-      prevCheckedItems.map((_, index) =>
-        randomNumbers[index] === 0 ? false : true,
-      ),
-    );
-  }, [randomNumbers]);
-
-  const handleCheckboxChange = (index) => {
-    setCheckedItems((prev) => {
-      const newCheckedItems = [...prev];
-      newCheckedItems[index] = !newCheckedItems[index];
-      return newCheckedItems;
-    });
+  const handlePaymentMethodChange = (event) => {
+    setSelectedPaymentMethod(event.target.value);
   };
+  // const [checkedItems, setCheckedItems] = useState(() =>
+  //   randomNumbers.map((num) => num !== 0),
+  // );
+  // const isAllChecked = useMemo(() => {
+  //   return checkedItems.every((checked, index) => {
+  //     return randomNumbers[index] === 0 || checked;
+  //   });
+  // }, [checkedItems, randomNumbers]);
 
-  const handleSelectAllChange = () => {
-    const shouldCheck = !checked;
-    const updatedCheckedItems = arrayData.map((item, index) => {
-      if (randomNumbers[index] !== 0) {
-        return shouldCheck;
-      }
-      return checkedItems[index];
-    });
+  // useEffect(() => {
+  //   setCheckedItems((prevCheckedItems) =>
+  //     prevCheckedItems.map((_, index) =>
+  //       randomNumbers[index] === 0 ? false : true,
+  //     ),
+  //   );
+  // }, [randomNumbers]);
 
-    setCheckedItems(updatedCheckedItems);
-    setChecked(shouldCheck);
-  };
-  const getRandomNumber = () => Math.floor(Math.random() * 11);
-  const [values, setValues] = useState(randomNumbers.map(() => 1));
-  useEffect(() => {
-    setValues(randomNumbers.map(() => 1));
-  }, [randomNumbers]);
-  const getProductPriceRandom = () => Math.floor(Math.random() * 10000) + 1;
+  // const handleCheckboxChange = (index) => {
+  //   setCheckedItems((prev) => {
+  //     const newCheckedItems = [...prev];
+  //     newCheckedItems[index] = !newCheckedItems[index];
+  //     return newCheckedItems;
+  //   });
+  // };
 
-  useEffect(() => {
-    if (arrayData.length > 0) {
-      const newRandomNumbers = arrayData.map(() => getRandomNumber());
-      setRandomNumbers(newRandomNumbers);
-      const newPrice = arrayData.map(() => getProductPriceRandom());
-      setRandomPrice(newPrice);
-    }
-  }, [arrayData]);
+  // const handleSelectAllChange = () => {
+  //   const shouldCheck = !checked;
+  //   const updatedCheckedItems = arrayData.map((item, index) => {
+  //     if (randomNumbers[index] !== 0) {
+  //       return shouldCheck;
+  //     }
+  //     return checkedItems[index];
+  //   });
 
-  const handleDeleteCheckedItems = () => {
-    const filteredData = arrayData.filter(
-      (_, index) => !checkedItems[index] && randomNumbers[index] !== 0,
-    );
-    const filteredRandomNumbers = randomNumbers.filter(
-      (_, index) => !checkedItems[index] && randomNumbers[index] !== 0,
-    );
-    const filteredPrices = prices.filter(
-      (_, index) => !checkedItems[index] && randomNumbers[index] !== 0,
-    );
+  //   setCheckedItems(updatedCheckedItems);
+  //   setChecked(shouldCheck);
+  // };
+  // const getRandomNumber = () => Math.floor(Math.random() * 11);
+  // const [values, setValues] = useState(randomNumbers.map(() => 1));
+  // useEffect(() => {
+  //   setValues(randomNumbers.map(() => 1));
+  // }, [randomNumbers]);
+  // const getProductPriceRandom = () => Math.floor(Math.random() * 10000) + 1;
 
-    setArrayData(filteredData);
-    setCheckedItems(new Array(filteredData.length).fill(true));
-    setRandomNumbers(filteredRandomNumbers);
-    setPrices(filteredPrices);
+  // useEffect(() => {
+  //   if (arrayData.length > 0) {
+  //     const newRandomNumbers = arrayData.map(() => getRandomNumber());
+  //     setRandomNumbers(newRandomNumbers);
+  //     const newPrice = arrayData.map(() => getProductPriceRandom());
+  //     setRandomPrice(newPrice);
+  //   }
+  // }, [arrayData]);
 
-    const encodedData = encodeURIComponent(JSON.stringify(filteredData));
-    const encodedPrices = encodeURIComponent(filteredPrices.join(','));
-    handleChangeUrl(
-      `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
-    );
-  };
+  // const handleDeleteCheckedItems = () => {
+  //   const filteredData = arrayData.filter(
+  //     (_, index) => !checkedItems[index] && randomNumbers[index] !== 0,
+  //   );
+  //   const filteredRandomNumbers = randomNumbers.filter(
+  //     (_, index) => !checkedItems[index] && randomNumbers[index] !== 0,
+  //   );
+  //   const filteredPrices = prices.filter(
+  //     (_, index) => !checkedItems[index] && randomNumbers[index] !== 0,
+  //   );
 
-  const handleDeleteItem = (index) => {
-    if (randomNumbers[index] === 0) return;
+  //   setArrayData(filteredData);
+  //   setCheckedItems(new Array(filteredData.length).fill(true));
+  //   setRandomNumbers(filteredRandomNumbers);
+  //   setPrices(filteredPrices);
 
-    const updatedData = arrayData.filter((_, i) => i !== index);
-    const updatedRandomNumbers = randomNumbers.filter((_, i) => i !== index);
-    const updatedCheckedItems = checkedItems.filter((_, i) => i !== index);
-    const updatedPrices = prices.filter((_, i) => i !== index);
+  //   const encodedData = encodeURIComponent(JSON.stringify(filteredData));
+  //   const encodedPrices = encodeURIComponent(filteredPrices.join(','));
+  //   handleChangeUrl(
+  //     `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
+  //   );
+  // };
 
-    setArrayData(updatedData);
-    setRandomNumbers(updatedRandomNumbers);
-    setCheckedItems(updatedCheckedItems);
-    setPrices(updatedPrices);
+  // const handleDeleteItem = (index) => {
+  //   if (randomNumbers[index] === 0) return;
 
-    const encodedData = encodeURIComponent(JSON.stringify(updatedData));
-    const encodedPrices = encodeURIComponent(updatedPrices.join(','));
-    handleChangeUrl(
-      `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
-    );
-  };
+  //   const updatedData = arrayData.filter((_, i) => i !== index);
+  //   const updatedRandomNumbers = randomNumbers.filter((_, i) => i !== index);
+  //   const updatedCheckedItems = checkedItems.filter((_, i) => i !== index);
+  //   const updatedPrices = prices.filter((_, i) => i !== index);
 
-  const handleDeleteOutOfStockItems = () => {
-    const filteredData = arrayData.filter(
-      (_, index) => randomNumbers[index] !== 0,
-    );
-    const filteredRandomNumbers = randomNumbers.filter(
-      (number) => number !== 0,
-    );
-    const filteredPrices = prices.filter(
-      (_, index) => randomNumbers[index] !== 0,
-    );
+  //   setArrayData(updatedData);
+  //   setRandomNumbers(updatedRandomNumbers);
+  //   setCheckedItems(updatedCheckedItems);
+  //   setPrices(updatedPrices);
 
-    setArrayData(filteredData);
-    setRandomNumbers(filteredRandomNumbers);
-    setCheckedItems(new Array(filteredData.length).fill(true));
-    setPrices(filteredPrices);
+  //   const encodedData = encodeURIComponent(JSON.stringify(updatedData));
+  //   const encodedPrices = encodeURIComponent(updatedPrices.join(','));
+  //   handleChangeUrl(
+  //     `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
+  //   );
+  // };
 
-    const encodedData = encodeURIComponent(JSON.stringify(filteredData));
-    const encodedPrices = encodeURIComponent(filteredPrices.join(','));
-    handleChangeUrl(
-      `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
-    );
-  };
+  // const handleDeleteOutOfStockItems = () => {
+  //   const filteredData = arrayData.filter(
+  //     (_, index) => randomNumbers[index] !== 0,
+  //   );
+  //   const filteredRandomNumbers = randomNumbers.filter(
+  //     (number) => number !== 0,
+  //   );
+  //   const filteredPrices = prices.filter(
+  //     (_, index) => randomNumbers[index] !== 0,
+  //   );
 
-  const getTotal = (field) => {
-    return arrayData.reduce((total, item, index) => {
-      if (checkedItems[index] && randomNumbers[index] !== 0) {
-        return total + prices[index] * values[index];
-      }
-      return total;
-    }, 0);
-  };
+  //   setArrayData(filteredData);
+  //   setRandomNumbers(filteredRandomNumbers);
+  //   setCheckedItems(new Array(filteredData.length).fill(true));
+  //   setPrices(filteredPrices);
 
-  useEffect(() => {
-    setCheckedItems(arrayData.map((_, index) => randomNumbers[index] !== 0));
-  }, [arrayData, randomNumbers]);
+  //   const encodedData = encodeURIComponent(JSON.stringify(filteredData));
+  //   const encodedPrices = encodeURIComponent(filteredPrices.join(','));
+  //   handleChangeUrl(
+  //     `/order?orderData=${encodedData}&priceData=${encodedPrices}`,
+  //   );
+  // };
 
-  const totalPrice = getTotal('price');
-  const calculateDiscountedPrice = (totalPrice, discount) => {
-    const discountRate = discount / 100;
-    return totalPrice * (1 - discountRate);
-  };
+  // const getTotal = (field) => {
+  //   return arrayData.reduce((total, item, index) => {
+  //     if (checkedItems[index] && randomNumbers[index] !== 0) {
+  //       return total + prices[index] * values[index];
+  //     }
+  //     return total;
+  //   }, 0);
+  // };
 
-  const [discountedPrice, setDiscountedPrice] = useState(0);
+  // useEffect(() => {
+  //   setCheckedItems(arrayData.map((_, index) => randomNumbers[index] !== 0));
+  // }, [arrayData, randomNumbers]);
 
-  const [shippingPrice, setShippingPrice] = useState(3500);
-  useEffect(() => {
-    const allFalse = checkedItems.every((item) => !item);
+  // const totalPrice = getTotal('price');
+  // const calculateDiscountedPrice = (totalPrice, discount) => {
+  //   const discountRate = discount / 100;
+  //   return totalPrice * (1 - discountRate);
+  // };
 
-    if (allFalse) {
-      setShippingPrice(0);
-    } else {
-      if (totalPrice > 50000) setShippingPrice(0);
-      else setShippingPrice(3500);
-    }
-  }, [checkedItems, totalPrice]);
+  // const [discountedPrice, setDiscountedPrice] = useState(0);
 
-  useEffect(() => {
-    const priceAfterDiscount = calculateDiscountedPrice(totalPrice, discount);
-    const finalPrice =
-      totalPrice < 50000
-        ? priceAfterDiscount + shippingPrice
-        : priceAfterDiscount;
+  // const [shippingPrice, setShippingPrice] = useState(3500);
+  // useEffect(() => {
+  //   const allFalse = checkedItems.every((item) => !item);
 
-    setDiscountedPrice(finalPrice);
-  }, [totalPrice, discount, shippingPrice]);
-  useEffect(() => {
-    const allUnchecked = checkedItems.every((item) => !item);
+  //   if (allFalse) {
+  //     setShippingPrice(0);
+  //   } else {
+  //     if (totalPrice > 50000) setShippingPrice(0);
+  //     else setShippingPrice(3500);
+  //   }
+  // }, [checkedItems, totalPrice]);
 
-    setIsChecked(!allUnchecked);
-  }, [checkedItems]);
+  // useEffect(() => {
+  //   const priceAfterDiscount = calculateDiscountedPrice(totalPrice, discount);
+  //   const finalPrice =
+  //     totalPrice < 50000
+  //       ? priceAfterDiscount + shippingPrice
+  //       : priceAfterDiscount;
+
+  //   setDiscountedPrice(finalPrice);
+  // }, [totalPrice, discount, shippingPrice]);
+  // useEffect(() => {
+  //   const allUnchecked = checkedItems.every((item) => !item);
+
+  //   setIsChecked(!allUnchecked);
+  // }, [checkedItems]);
 
   const showLoader = () => {
     setSpinning(true);
@@ -309,21 +335,21 @@ const Order = () => {
     }, 100);
   };
 
-  const handleClick = () => {
-    if (isChecked) {
-      showLoader();
-    } else {
-      message.warning('결제할 상품을 선택해주세요!', 3);
-    }
-  };
+  // const handleClick = () => {
+  //   if (isChecked) {
+  //     showLoader();
+  //   } else {
+  //     message.warning('결제할 상품을 선택해주세요!', 3);
+  //   }
+  // };
 
-  const handleDirectClick = (index) => {
-    if (checkedItems[index]) {
-      showLoader();
-    } else {
-      message.warning('결제할 상품을 선택해주세요!', 3);
-    }
-  };
+  // const handleDirectClick = (index) => {
+  //   if (checkedItems[index]) {
+  //     showLoader();
+  //   } else {
+  //     message.warning('결제할 상품을 선택해주세요!', 3);
+  //   }
+  // };
 
   const items = [
     {
@@ -331,7 +357,7 @@ const Order = () => {
       label: `새벽배송 ${arrayData.length}`,
       children: (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -372,7 +398,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <ProductContainer onClick={toggleArrow}>
             <div
               style={{
@@ -394,7 +420,7 @@ const Order = () => {
                   <>
                     <ItemContainer key={index}>
                       <Item1>
-                        {randomNumbers[index] !== 0 && (
+                        {/* {randomNumbers[index] !== 0 && (
                           <input
                             type="checkbox"
                             checked={checkedItems[index] || false}
@@ -405,7 +431,7 @@ const Order = () => {
                               height: '1.3vw',
                             }}
                           ></input>
-                        )}
+                        )} */}
                       </Item1>
                       <Item2>
                         <div
@@ -421,7 +447,7 @@ const Order = () => {
                             fontFamily={'Noto Sans KR'}
                             fontSize={'1.3vw'}
                           />
-                          {randomNumbers[index] !== 0 && (
+                          {/* {randomNumbers[index] !== 0 && (
                             <div
                               style={{
                                 color: '#ff6913',
@@ -431,11 +457,12 @@ const Order = () => {
                             >
                               남은 수량 : {randomNumbers[index]}개
                             </div>
-                          )}
+                          )} */}
                           <div
                             style={{ display: 'flex', alignItems: 'flex-end' }}
                           >
-                            {randomNumbers[index] !== 0 && (
+                            {
+                              /* {randomNumbers[index] !== 0 && (
                               <div
                                 key={index}
                                 style={{
@@ -463,23 +490,27 @@ const Order = () => {
                                   height="2vw"
                                 />
                               </div>
-                            )}
-                            <div
-                              style={{
-                                fontFamily: 'Roboto',
-                                fontWeight: '700',
-                                fontSize: '1.3vw',
-                              }}
-                            >
-                              {randomPrice[index] * values[index]}
-                            </div>
-                            <div
-                              style={{
-                                fontFamily: 'Noto Sans KR',
-                              }}
-                            >
-                              원
-                            </div>
+                            )}*/
+                              <>
+                                <div
+                                  style={{
+                                    fontFamily: 'Roboto',
+                                    fontWeight: '700',
+                                    fontSize: '1.3vw',
+                                  }}
+                                >
+                                  {/* {randomPrice[index] * values[index]} */}
+                                  {priceData[index]}
+                                </div>
+                                <div
+                                  style={{
+                                    fontFamily: 'Noto Sans KR',
+                                  }}
+                                >
+                                  원
+                                </div>
+                              </>
+                            }
                           </div>
                         </div>
                       </Item2>
@@ -493,7 +524,7 @@ const Order = () => {
                             height: '100%',
                           }}
                         >
-                          <div>
+                          {/* <div>
                             <img
                               src={CloseIcon}
                               alt="Close Icon"
@@ -502,11 +533,11 @@ const Order = () => {
                                 width: '24px',
                                 height: '24px',
                               }}
-                              onClick={() => handleDeleteItem(index)}
+                              // onClick={() => handleDeleteItem(index)}
                             />
-                          </div>
+                          </div> */}
 
-                          {randomNumbers[index] !== 0 && (
+                          {/* {randomNumbers[index] !== 0 && (
                             <div
                               style={{
                                 marginBottom: '1vw',
@@ -523,7 +554,7 @@ const Order = () => {
                                 onClick={() => handleDirectClick(index)}
                               />
                             </div>
-                          )}
+                          )} */}
                         </div>
                       </Item3>
                     </ItemContainer>
@@ -613,6 +644,188 @@ const Order = () => {
           >
             <div
               style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                marginTop: '3vh',
+                width: '52vw',
+                gap: '1vw',
+                paddingBottom: '3vh',
+                borderBottom: '1px solid black',
+              }}
+            >
+              <DeliveryTitle>결제수단 선택</DeliveryTitle>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  gap: '1vw',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="credit-card"
+                    checked={selectedPaymentMethod === 'credit-card'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={CreditCardIcon} alt="CreditCard Icon" />
+                    <RadioTitle>신용카드</RadioTitle>
+                  </div>
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="payco"
+                    checked={selectedPaymentMethod === 'payco'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={PaycoIcon} alt="Payco Icon" />
+                    <RadioTitle>PAYCO</RadioTitle>
+                  </div>
+                </label>
+
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="kakaopay"
+                    checked={selectedPaymentMethod === 'kakaopay'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={KakaoPayIcon} alt="KakaoPay Icon" />
+                    <RadioTitle>카카오페이</RadioTitle>
+                  </div>
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="naverpay"
+                    checked={selectedPaymentMethod === 'naverpay'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={NaverPayIcon} alt="NaverPay Icon" />
+                    <RadioTitle>네이버페이</RadioTitle>
+                  </div>
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="phone"
+                    checked={selectedPaymentMethod === 'phone'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={PhoneIcon} alt="Phone Icon" />
+                    <RadioTitle>휴대폰결제</RadioTitle>
+                  </div>
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="passbook"
+                    checked={selectedPaymentMethod === 'passbook'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={PassbookIcon} alt="Passbook Icon" />
+                    <RadioTitle> 무통장입금</RadioTitle>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div
+              style={{
                 color: '#454545',
                 fontWeight: '600',
                 fontSize: '.8vw',
@@ -643,7 +856,7 @@ const Order = () => {
       label: '정기배송 0',
       children: (
         <>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -680,7 +893,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <div
             style={{
               display: 'flex',
@@ -758,7 +971,7 @@ const Order = () => {
       label: '선물하기 0',
       children: (
         <>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -795,7 +1008,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <div
             style={{
               display: 'flex',
@@ -869,7 +1082,7 @@ const Order = () => {
       label: '명절선물 0',
       children: (
         <>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -906,7 +1119,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <div
             style={{
               display: 'flex',
@@ -980,7 +1193,7 @@ const Order = () => {
       label: '브랜드직송 0',
       children: (
         <>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -1017,7 +1230,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <div
             style={{
               display: 'flex',
@@ -1091,7 +1304,7 @@ const Order = () => {
       label: 'e슈퍼마켓 0',
       children: (
         <>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -1128,7 +1341,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <div
             style={{
               display: 'flex',
@@ -1205,7 +1418,7 @@ const Order = () => {
       label: `새벽배송 ${arrayData.length}`,
       children: (
         <div>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -1246,7 +1459,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <ProductContainer onClick={toggleArrow}>
             <div
               style={{
@@ -1268,7 +1481,7 @@ const Order = () => {
                   <>
                     <ItemContainer key={index}>
                       <Item1>
-                        {randomNumbers[index] !== 0 && (
+                        {/* {randomNumbers[index] !== 0 && (
                           <input
                             type="checkbox"
                             checked={checkedItems[index] || false}
@@ -1279,7 +1492,7 @@ const Order = () => {
                               height: '1.3vw',
                             }}
                           ></input>
-                        )}
+                        )} */}
                       </Item1>
                       <Item2>
                         <div
@@ -1295,7 +1508,7 @@ const Order = () => {
                             fontFamily={'Noto Sans KR'}
                             fontSize={'1.3vw'}
                           />
-                          {randomNumbers[index] !== 0 && (
+                          {/* {randomNumbers[index] !== 0 && (
                             <div
                               style={{
                                 color: '#ff6913',
@@ -1305,11 +1518,11 @@ const Order = () => {
                             >
                               남은 수량 : {randomNumbers[index]}개
                             </div>
-                          )}
+                          )} */}
                           <div
                             style={{ display: 'flex', alignItems: 'flex-end' }}
                           >
-                            {randomNumbers[index] !== 0 && (
+                            {/* {randomNumbers[index] !== 0 && (
                               <div
                                 key={index}
                                 style={{
@@ -1337,7 +1550,8 @@ const Order = () => {
                                   height="2vw"
                                 />
                               </div>
-                            )}
+                            )} */}
+
                             <div
                               style={{
                                 fontFamily: 'Roboto',
@@ -1345,7 +1559,7 @@ const Order = () => {
                                 fontSize: '1.3vw',
                               }}
                             >
-                              {prices[index] * values[index]}
+                              {priceData[index]}
                             </div>
                             <div
                               style={{
@@ -1367,7 +1581,7 @@ const Order = () => {
                             height: '100%',
                           }}
                         >
-                          <div>
+                          {/* <div>
                             <img
                               src={CloseIcon}
                               alt="Close Icon"
@@ -1376,11 +1590,11 @@ const Order = () => {
                                 width: '24px',
                                 height: '24px',
                               }}
-                              onClick={() => handleDeleteItem(index)}
+                              // onClick={() => handleDeleteItem(index)}
                             />
-                          </div>
+                          </div> */}
 
-                          {randomNumbers[index] !== 0 && (
+                          {/* {randomNumbers[index] !== 0 && (
                             <div
                               style={{
                                 marginBottom: '1vw',
@@ -1397,7 +1611,7 @@ const Order = () => {
                                 onClick={() => handleDirectClick(index)}
                               />
                             </div>
-                          )}
+                          )} */}
                         </div>
                       </Item3>
                     </ItemContainer>
@@ -1478,6 +1692,188 @@ const Order = () => {
           <div
             style={{
               display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              marginTop: '3vh',
+              width: '52vw',
+              gap: '1vw',
+              paddingBottom: '3vh',
+              borderBottom: '1px solid black',
+            }}
+          >
+            <DeliveryTitle>결제수단 선택</DeliveryTitle>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                gap: '1vw',
+                flexWrap: 'wrap',
+              }}
+            >
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="credit-card"
+                  checked={selectedPaymentMethod === 'credit-card'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={CreditCardIcon} alt="CreditCard Icon" />
+                  <RadioTitle>신용카드</RadioTitle>
+                </div>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="payco"
+                  checked={selectedPaymentMethod === 'payco'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={PaycoIcon} alt="Payco Icon" />
+                  <RadioTitle>PAYCO</RadioTitle>
+                </div>
+              </label>
+
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="kakaopay"
+                  checked={selectedPaymentMethod === 'kakaopay'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={KakaoPayIcon} alt="KakaoPay Icon" />
+                  <RadioTitle>카카오페이</RadioTitle>
+                </div>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="naverpay"
+                  checked={selectedPaymentMethod === 'naverpay'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={NaverPayIcon} alt="NaverPay Icon" />
+                  <RadioTitle>네이버페이</RadioTitle>
+                </div>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="phone"
+                  checked={selectedPaymentMethod === 'phone'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={PhoneIcon} alt="Phone Icon" />
+                  <RadioTitle>휴대폰결제</RadioTitle>
+                </div>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="passbook"
+                  checked={selectedPaymentMethod === 'passbook'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={PassbookIcon} alt="Passbook Icon" />
+                  <RadioTitle> 무통장입금</RadioTitle>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
               marginTop: '9vh',
               flexDirection: 'column',
               justifyContent: 'center',
@@ -1518,7 +1914,7 @@ const Order = () => {
       label: '선물하기 0',
       children: (
         <>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -1527,7 +1923,7 @@ const Order = () => {
                 justifyContent: 'center',
                 cursor: 'pointer',
               }}
-              onClick={handleSelectAllChange}
+              // onClick={handleSelectAllChange}
             >
               <input
                 type="checkbox"
@@ -1550,12 +1946,11 @@ const Order = () => {
             >
               <CheckBoxText>삭제</CheckBoxText>
               <CheckBoxBar>|</CheckBoxBar>
-              <CheckBoxText>품절삭제</CheckBoxText>
-              <CheckBoxBar>|</CheckBoxBar>
+              <CheckBoxText>품절삭제</CheckBoxBar>
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <div
             style={{
               display: 'flex',
@@ -1567,7 +1962,7 @@ const Order = () => {
               borderBottom: '1px solid #e7e7e7',
             }}
           >
-            <img src={ErrorIcon}></img>
+            <img src={ErrorIcon} alt="Error icon" />
             <p
               style={{
                 fontFamily: 'Noto Sans KR',
@@ -1630,7 +2025,7 @@ const Order = () => {
       label: '브랜드직송 0',
       children: (
         <>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -1667,7 +2062,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <div
             style={{
               display: 'flex',
@@ -1741,7 +2136,7 @@ const Order = () => {
       label: 'e슈퍼마켓 0',
       children: (
         <>
-          <CheckBoxContainer>
+          {/* <CheckBoxContainer>
             <div
               style={{
                 display: 'flex',
@@ -1778,7 +2173,7 @@ const Order = () => {
               <CheckBoxText>좋아요담기</CheckBoxText>
             </div>
           </CheckBoxContainer>
-          <Line />
+          <Line /> */}
           <div
             style={{
               display: 'flex',
@@ -1914,7 +2309,7 @@ const Order = () => {
         </HeaderInner>
       </HeaderContainer>
       <ContentContainer>
-        <HeaderTitle>장바구니</HeaderTitle>
+        <HeaderTitle>결제</HeaderTitle>
         <div style={{ marginTop: '5vh', display: 'flex' }}>
           {accessToken ? (
             <>
@@ -1928,6 +2323,8 @@ const Order = () => {
                     flexDirection: 'column',
                     background: '#ffffff',
                     border: '1px solid #ff6913',
+                    position: 'sticky',
+                    top: '0',
                   }}
                 >
                   <div
@@ -1947,7 +2344,8 @@ const Order = () => {
                         marginTop: '1.5vw',
                       }}
                     >
-                      <div>{totalPrice}</div>
+                      {/* <div>{totalPrice}</div> */}
+                      {totalPrice}
                       <div>원</div>
                     </div>
                   </div>
@@ -1968,7 +2366,8 @@ const Order = () => {
                         marginTop: '1.5vw',
                       }}
                     >
-                      <div>{totalPrice * discount * 0.01}</div>
+                      {/* <div>{totalPrice * discount * 0.01}</div> */}
+                      {discountPrice}
                       <div>원</div>
                     </div>
                   </div>
@@ -2042,7 +2441,7 @@ const Order = () => {
                               color: '#ff6913',
                             }}
                           >
-                            {discountedPrice}
+                            {totalDiscountPrice}
                           </div>
                           <div
                             style={{
@@ -2063,7 +2462,7 @@ const Order = () => {
                     }}
                   >
                     <CustomButton
-                      text={'주문하기'}
+                      text={'결제하기'}
                       color="#ffffff"
                       width="100%"
                       backgroundColor="#ff6913"
@@ -2071,7 +2470,7 @@ const Order = () => {
                       fontFamily="Noto Sans KR"
                       fontSize={'1vw'}
                       fontWeight="600"
-                      onClick={handleClick}
+                      onClick={() => showLoader()}
                     />
                     <StyledSpin
                       spinning={spinning}
@@ -2096,6 +2495,8 @@ const Order = () => {
                     flexDirection: 'column',
                     background: '#ffffff',
                     border: '1px solid #ff6913',
+                    position: 'sticky',
+                    top: '0',
                   }}
                 >
                   <div
@@ -2115,7 +2516,8 @@ const Order = () => {
                         marginTop: '1.5vw',
                       }}
                     >
-                      <div>{totalPrice}</div>
+                      {/* <div>{totalPrice}</div> */}
+                      {totalPrice}
                       <div>원</div>
                     </div>
                   </div>
@@ -2136,7 +2538,8 @@ const Order = () => {
                         marginTop: '1.5vw',
                       }}
                     >
-                      <div>{totalPrice * discount * 0.01}</div>
+                      {/* <div>{totalPrice * discount * 0.01}</div> */}
+                      {discountPrice}
                       <div>원</div>
                     </div>
                   </div>
@@ -2210,7 +2613,8 @@ const Order = () => {
                               color: '#ff6913',
                             }}
                           >
-                            {discountedPrice}
+                            {/* {discountedPrice} */}
+                            {totalDiscountPrice}
                           </div>
                           <div
                             style={{
@@ -2231,7 +2635,7 @@ const Order = () => {
                     }}
                   >
                     <CustomButton
-                      text={'주문하기'}
+                      text={'결제하기'}
                       color="#ffffff"
                       width="100%"
                       backgroundColor="#ff6913"
@@ -2239,7 +2643,7 @@ const Order = () => {
                       fontFamily="Noto Sans KR"
                       fontSize={'1vw'}
                       fontWeight="600"
-                      onClick={handleClick}
+                      onClick={() => showLoader()}
                     />
                     <StyledSpin
                       spinning={spinning}

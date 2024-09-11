@@ -23,7 +23,7 @@ import { COLORS } from '../../constants';
 import { useResetRecoilState } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../../apis/member';
-import { memberState } from '../../store';
+import { ingredientState, memberState } from '../../store';
 import { debounce } from 'lodash';
 
 const CustomSideBar = () => {
@@ -43,6 +43,7 @@ const CustomSideBar = () => {
     { icon: Refrigerator, label: '냉장고 파헤치기', path: '/recommends' },
   ];
   const resetMemberState = useResetRecoilState(memberState);
+  const resetIngredientState = useResetRecoilState(ingredientState);
   const isSskcookLocation = window.location.href.includes('/sskcook');
   const isLongcookLocation = window.location.href.includes('/longcook');
   const isSubscriptionLocation = window.location.href.includes('/subscription');
@@ -76,6 +77,7 @@ const CustomSideBar = () => {
     },
     onSuccess: () => {
       resetMemberState();
+      resetIngredientState();
       deleteAllCookies();
       handleChangeUrl('/');
     },

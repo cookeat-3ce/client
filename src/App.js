@@ -35,7 +35,6 @@ import { getCookie } from './hooks';
 import { memberState } from './store';
 import { useRecoilValue } from 'recoil';
 import AuthLayout from './pages/Layout/Auth';
-import SskcookDetailsLayout from './pages/Layout/Sskcook';
 import CreateLive from './pages/CreateLive';
 import ClassSession from './pages/ClassSession';
 import LiveSession from './pages/LiveSession';
@@ -47,6 +46,10 @@ import Fridge from './pages/Fridge';
 import RecipeRecommend from './pages/RecipeRecommend';
 import Event from './pages/Event';
 import EventDetail from './pages/EventDetail';
+import AdminLayout from './pages/Layout/Admin';
+import AdminAlarm from './pages/AdminAlarm';
+import AdminVerify from './pages/AdminVerify';
+import AdminReport from './pages/AdminReport';
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -138,7 +141,9 @@ function App() {
             role === 'ROLE_ADMIN' && getCookie('accessToken') ? (
               <>
                 <AdminRedirector role={role} />
-                <Admin />
+                <AdminLayout isLogined={!!getCookie('accessToken')}>
+                  <Admin />
+                </AdminLayout>
               </>
             ) : (
               <CommonLayout isLogined={!!getCookie('accessToken')}>
@@ -166,9 +171,9 @@ function App() {
         <Route
           path="/sskcook/:sskcookId"
           element={
-            <SskcookDetailsLayout isLogined={!!getCookie('accessToken')}>
+            <CommonLayout isLogined={!!getCookie('accessToken')}>
               <SskcookDetails />
-            </SskcookDetailsLayout>
+            </CommonLayout>
           }
         />
         <Route
@@ -265,7 +270,9 @@ function App() {
             getCookie('accessToken') && role === 'ROLE_ADMIN' ? (
               <>
                 <AdminRedirector role={role} />
-                <Admin />
+                <AdminLayout isLogined={!!getCookie('accessToken')}>
+                  <Admin />
+                </AdminLayout>
               </>
             ) : (
               <CommonLayout isLogined={!!getCookie('accessToken')}>
@@ -356,6 +363,30 @@ function App() {
           }
         />
         <Route path="/order/done" element={<OrderDone />} />
+        <Route
+          path="/admin/alarm"
+          element={
+            <AdminLayout>
+              <AdminAlarm />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/admin/verify"
+          element={
+            <AdminLayout>
+              <AdminVerify />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/admin/report"
+          element={
+            <AdminLayout>
+              <AdminReport />
+            </AdminLayout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

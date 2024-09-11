@@ -11,11 +11,13 @@ export const ContentContainer = styled.div`
 
 export const CustomContents = styled.div`
   margin-top: 5vh;
+  margin-left: 5vw;
+`;
+
+export const StyledSidebar = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 3vh;
+  algin-items: center;
   justify-content: center;
-  margin-left: 5vw;
-  scroll-snap-type: y mandatory;
-  scrollbar-width: none;
-  height: 150vh;
 `;

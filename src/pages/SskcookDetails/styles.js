@@ -113,7 +113,7 @@ export const SubscriptionContainer = styled.div`
   align-items: center;
   position: absolute;
   z-index: 1;
-  bottom: -25vh;
+  bottom: 4vh;
   left: 28vw;
   gap: 0.5vw;
 `;
@@ -145,4 +145,10 @@ export const FooterSkeletion = styled(Skeleton.Button)`
   bottom: -40vh !important;
   border-radius: 20px 20px 0 0 !important;
   margin-left: 3.5vw !important;
+`;
+
+export const LineContainer2 = styled.div`
+  width: 27vw;
+  height: 2px;
+  background: ${COLORS.BLACK};
 `;

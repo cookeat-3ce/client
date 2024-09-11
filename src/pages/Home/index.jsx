@@ -29,19 +29,16 @@ const Index = () => {
   const recentSskcooksQuery = useQuery({
     queryKey: ['recentSskcooks'],
     queryFn: () => sskcookAPI.recentSskcookListAPI(1),
-    staleTime: Infinity,
   });
 
   const recentLongcooksQuery = useQuery({
     queryKey: ['recentLongcooks'],
     queryFn: () => longcookAPI.recentLongcookListAPI(1),
-    staleTime: Infinity,
   });
 
   const monthlyLikesSskcooksQuery = useQuery({
     queryKey: ['monthlyLikesSskcooks', formattedDate],
     queryFn: () => sskcookAPI.monthlyLikesSskcookListAPI(formattedDate),
-    staleTime: Infinity,
   });
 
   const recentSskcooks = recentSskcooksQuery.data?.data?.data;

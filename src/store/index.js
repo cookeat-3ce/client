@@ -25,3 +25,9 @@ export const subscriptionState = atom({
     profileImage: '',
   },
 });
+
+export const ingredientState = atom({
+  key: 'ingredientState',
+  default: [],
+  effects_UNSTABLE: [persistAtom],
+});
