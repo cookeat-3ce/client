@@ -45,7 +45,7 @@ jobs:
       # 6. Push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
-          docker push --debug hd3ce/cookeat-client:latest
+          docker push hd3ce/cookeat-client:latest
 
       # 7. Invoke Lambda function to deploy on EC2
       - name: Invoke Lambda for deployment
