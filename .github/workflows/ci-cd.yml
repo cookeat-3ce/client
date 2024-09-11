@@ -28,7 +28,6 @@ jobs:
       # 4. Build React client
       - name: Build React client
         run: |
-          cd client
           npm install
           npm run build
 
