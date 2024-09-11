@@ -10,10 +10,13 @@ import { COLORS } from '../../constants';
 import CustomButton from '../Button';
 import CustomText from '../Text';
 import icon_need_verified from '../../assets/icons/need_verified.svg';
+import { useNavigate } from 'react-router-dom';
 
 const CheckModal = ({ show, onClose, info, check }) => {
+  const navigate = useNavigate();
   const handleCheckButtonClick = () => {
     onClose();
+    navigate('/info');
   };
 
   if (!show) return null;
@@ -25,15 +28,9 @@ const CheckModal = ({ show, onClose, info, check }) => {
           <NeedVerifiedInfoImage
             src={icon_need_verified}
           ></NeedVerifiedInfoImage>
-          <CustomText
-            text={info?.name}
-            fontFamily="Happiness-Sans-Bold"
-            fontSize="1.4rem"
-            color={COLORS.ORANGE}
-          />
           <TextContainer>
             <CustomText
-              text={'슥쿡이 정상적으로 업로드 되었어요!'}
+              text={info}
               fontFamily="Happiness-Sans-Bold"
               fontSize="1.2rem"
               color={COLORS.BLACK}
