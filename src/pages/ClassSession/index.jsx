@@ -50,33 +50,8 @@ const ClassSession = () => {
   useEffect(() => {
     if (liveInfo) {
       initSession();
-      // TODO: 라이브 리스트 페이지로 옮길 예정
-      // checkFullCapacityAndInitSession();
     }
   }, [liveInfo]);
-
-  /* TODO: 라이브 리스트 페이지로 옮길 예정
-  const checkFullCapacityAndInitSession = async () => {
-    const isFullCapacity = await isFull();
-    console.log('isFullCapacity: ', isFullCapacity);
-    if (isFullCapacity) {
-      openModal();
-    } else {
-      initSession();
-    }
-  };
-
-  const isFull = async () => {
-    try {
-      const res = await getSessionInfo();
-      console.log('res: ', res.connections.numberOfElements);
-      return res.connections.numberOfElements > liveInfo.people;
-    } catch (error) {
-      console.error('Error checking session capacity:', error);
-      return false;
-    }
-  };
-  */
 
   useEffect(() => {
     if (session && OV) {
@@ -86,6 +61,13 @@ const ClassSession = () => {
       });
 
       session.on('streamDestroyed', (event) => {
+        const remainingSubscribers = subscribers.filter(
+          (sub) =>
+            sub.stream.connection.connectionId !==
+            event.stream.connection.connectionId,
+        );
+        setSubscribers(remainingSubscribers);
+
         if (event.stream.connection.data === managerUsername) {
           handleManagerStreamDisconnected();
         }
@@ -187,27 +169,6 @@ const ClassSession = () => {
 
   const getToken = (sessionId) => {
     return createSession(sessionId).then((sessionId) => createToken(sessionId));
-  };
-
-  const getSessionInfo = () => {
-    return axios
-      .get(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}`, {
-        headers: {
-          Authorization:
-            'Basic ' + btoa(`OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`),
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((response) => response.data)
-      .catch((error) => {
-        console.error('Error getting session info:', error);
-        if (error?.response?.status === 404) {
-          return { connections: { numberOfElements: 0 } };
-        } else {
-          alert('No connection to OpenVidu Server.');
-          window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-        }
-      });
   };
 
   const createSession = (sessionId) => {
