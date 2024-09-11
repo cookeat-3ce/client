@@ -1,10 +1,7 @@
 # Step 1: Use Node.js image to build the React app
 FROM node:18 AS build
 
-# Add build arguments
 ARG REACT_ENV_FILE
-# Copy the env file
-COPY ${REACT_ENV_FILE} /app/.env
 
 # Set working directory
 WORKDIR /app
@@ -15,6 +12,8 @@ RUN npm install
 
 # Copy the rest of the application code
 COPY . .
+
+COPY ${REACT_ENV_FILE} .env
 
 # Build the React app
 RUN npm run build
