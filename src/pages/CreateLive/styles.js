@@ -131,6 +131,8 @@ export const CustomInputNumber = styled(InputNumber)`
 `;
 
 export const RightContainer = styled.div`
+  margin-top: 4vh;
+  margin-right: 10vh;
   // border: 10px solid GREEN;
 `;
 
@@ -144,84 +146,11 @@ export const ThumbnailWrapper = styled.div`
 export const UploadContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   margin: 0 auto;
   margin-top: 5vh;
   gap: 3vh;
-`;
-
-<span
-  role="img"
-  aria-label="eye"
-  class="anticon anticon-eye"
-  style="fill: white;"
->
-  <svg
-    viewBox="64 64 896 896"
-    focusable="false"
-    data-icon="eye"
-    width="1em"
-    height="1em"
-    fill="currentColor"
-    aria-hidden="true"
-  >
-    <path d="M942.2 486.2C847.4 286.5 704.1 186 512 186c-192.2 0-335.4 100.5-430.2 300.3a60.3 60.3 0 000 51.5C176.6 737.5 319.9 838 512 838c192.2 0 335.4-100.5 430.2-300.3 7.7-16.2 7.7-35 0-51.5zM512 766c-161.3 0-279.4-81.8-362.7-254C232.6 339.8 350.7 258 512 258c161.3 0 279.4 81.8 362.7 254C791.5 684.2 673.4 766 512 766zm-4-430c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"></path>
-  </svg>
-</span>;
-
-export const StyledUpload = styled(Upload)`
-  &.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select,
-  &.ant-upload.ant-upload-select {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40vh;
-    height: 40vh;
-    text-align: center;
-    background-color: ${COLORS.WHITE};
-  }
-
-  .ant-upload-wrapper.ant-upload-picture-card-wrapper
-    .ant-upload-list.ant-upload-list-picture-card
-    .ant-upload-list-item,
-  .ant-upload-wrapper.ant-upload-picture-circle-wrapper
-    .ant-upload-list.ant-upload-list-picture-card
-    .ant-upload-list-item,
-  .ant-upload-wrapper.ant-upload-picture-card-wrapper
-    .ant-upload-list.ant-upload-list-picture-circle
-    .ant-upload-list-item,
-  .ant-upload-wrapper.ant-upload-picture-circle-wrapper
-    .ant-upload-list.ant-upload-list-picture-circle
-    .ant-upload-list-item,
-  .ant-upload-wrapper.ant-upload-picture-card-wrapper
-    .ant-upload-list.ant-upload-list-picture-card
-    .ant-upload-list-item,
-  .ant-upload-wrapper.ant-upload-picture-card-wrapper
-    .ant-upload-list.ant-upload-list-picture-card
-    .ant-upload-list-item-container,
-  .ant-upload-list-item-container,
-  .ant-upload-list-item.ant-upload-list-item-undefined {
-    height: 30vh !important;
-    margin: 0 !important;
-    width: 30vh !important;
-  }
-  .anticon.anticon-plus {
-    svg {
-      fill: black;
-    }
-  }
-  .anticon {
-    svg {
-      fill: white;
-    }
-  }
-
-  /* 추가된 스타일: hover 및 focus 상태에서의 스타일 변경 */
-  &.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select:hover,
-  &.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select:focus {
-    border-color: ${COLORS.ORANGE} !important;
-  }
 `;
 
 export const ButtonContainer = styled.div`
@@ -231,4 +160,12 @@ export const ButtonContainer = styled.div`
   margin-top: 5vh;
   gap: 2vw;
   // border: 10px solid BLACK;
+`;
+
+export const ThumbnailButton = styled.input`
+  width: 6vw;
+  height: 4vw;
+  background-color: ${COLORS.ORANGE}
+  border-color: ${COLORS.ORANGE}
+  border-radius: 100px;
 `;

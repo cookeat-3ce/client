@@ -10,17 +10,16 @@ import {
   RadioWrapper,
   RadioLabel,
   RadioContainer,
-  StyledUpload,
   StyledRadio,
   UploadContainer,
   ButtonContainer,
   CustomInputNumber,
   ParticipantTitleWrapper,
+  ThumbnailButton,
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
-import { Tooltip, Radio, Image } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Tooltip, Radio } from 'antd';
 import TooltipIcon from '../../assets/icons/tooltip.svg';
 import imageCompression from 'browser-image-compression';
 import CustomButton from '../../components/Button';
@@ -44,10 +43,7 @@ const CreateLive = () => {
   const [classType, setClassType] = useState('live');
   const [maxParticipant, setMaxParticipant] = useState(1);
   const [className, setClassName] = useState(null);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
   const [thumbnail, setThumbnail] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
   const { handleChangeUrl } = useCustomNavigate();
   const [backError, setBackError] = useState(false);
@@ -113,8 +109,15 @@ const CreateLive = () => {
     window.history.back();
   };
 
-  const handleFileChange = ({ fileList }) => {
-    setFileList(fileList);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setThumbnail(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else setThumbnail(null);
   };
 
   const handleMaxParticipant = (value) => {
@@ -160,61 +163,6 @@ const CreateLive = () => {
     setShowVerifiedModal(false);
   };
 
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: 'transparent',
-        cursor: 'pointer',
-      }}
-      type="button"
-    >
-      <div
-        style={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-        }}
-      >
-        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-        <div style={{ marginTop: '1vh' }}>Upload</div>
-      </div>
-    </button>
-  );
-
-  const beforeUpload = () => false;
-  const getBase64 = async (file) => {
-    try {
-      const options = {
-        maxSizeMB: 0.1,
-        maxWidthOrHeight: 101,
-        useWebWorker: true,
-      };
-
-      const compressedFile = await imageCompression(file, options);
-
-      const reader = new FileReader();
-      return new Promise((resolve, reject) => {
-        reader.readAsDataURL(compressedFile);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-  };
-
   const handleSubmitVerify = () => {
     mutationVerifyRequest.mutate();
     handleChangeUrl('/');
@@ -225,20 +173,6 @@ const CreateLive = () => {
       openVerifiedModal();
     }
   }, [verifiedStatus]);
-
-  useEffect(() => {
-    const updateThumbnail = async () => {
-      if (fileList.length > 0) {
-        const file = fileList[0].originFileObj;
-        const imageBase64 = await getBase64(file);
-        setThumbnail(imageBase64);
-      } else {
-        setThumbnail(null);
-      }
-    };
-
-    updateThumbnail();
-  }, [fileList]);
 
   useEffect(() => {
     if (verifyCheckQuery.data) {
@@ -392,30 +326,34 @@ const CreateLive = () => {
                 color={COLORS.BLACK}
               />
               <UploadContainer>
-                <StyledUpload
-                  name="files"
-                  listType="picture-card"
-                  fileList={fileList}
-                  onPreview={handlePreview}
-                  onChange={handleFileChange}
-                  beforeUpload={beforeUpload}
-                  showUploadList={{
-                    showPreviewIcon: true,
-                    showRemoveIcon: true,
-                  }} // Correct usage
-                >
-                  {fileList.length >= 1 ? null : uploadButton}
-                </StyledUpload>
-                <Image
-                  preview={{
-                    visible: previewOpen,
-                    onVisibleChange: (visible) => setPreviewOpen(visible),
-                    afterOpenChange: (visible) =>
-                      !visible && setPreviewImage(''),
-                  }}
-                  src={previewImage}
-                  style={{ display: 'none' }}
-                />
+                <label>
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
+                  <CustomButton
+                    text={'파일 선택'}
+                    color={COLORS.WHITE}
+                    width={'6vw'}
+                    height={'4vh'}
+                    fontSize={'1rem'}
+                    borderRadius={'100px'}
+                    fontFamily={'Happiness-Sans-Bold'}
+                    backgroundColor={COLORS.ORANGE}
+                    borderColor={COLORS.ORANGE}
+                    onClick={() =>
+                      document.querySelector('input[type="file"]').click()
+                    }
+                  />
+                </label>
+                {thumbnail ? (
+                  <img
+                    src={thumbnail}
+                    alt="Thumbnail"
+                    style={{ width: '20vw', height: '20vw' }}
+                  />
+                ) : null}
               </UploadContainer>
             </RightContainer>
           </ContentContainer>
