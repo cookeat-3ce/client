@@ -11,6 +11,7 @@ import {
   CheckBoxText,
   CheckBoxBar,
   Line,
+  RadioTitle,
   ProductContainer,
   DeliveryTitle,
   NumberText,
@@ -27,13 +28,19 @@ import Logo from '../../assets/icons/hyundai_logo.png';
 import { getCookie, useCustomNavigate } from '../../hooks';
 import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../../apis/member';
-import { debounce } from 'lodash';
+import { debounce, wrap } from 'lodash';
 import { useResetRecoilState } from 'recoil';
 import { deleteAllCookies } from '../../hooks';
 import ArrowUpIcon from '../../assets/icons/arrow_up.svg';
 import ArrowDownIcon from '../../assets/icons/arrow_down.svg';
 import ErrorIcon from '../../assets/icons/error.svg';
 import CloseIcon from '../../assets/icons/close.svg';
+import NaverPayIcon from '../../assets/icons/naverpay.svg';
+import PaycoIcon from '../../assets/icons/payco.svg';
+import KakaoPayIcon from '../../assets/icons/kakaopay.svg';
+import CreditCardIcon from '../../assets/icons/credit_card.svg';
+import PassbookIcon from '../../assets/icons/passbook.svg';
+import PhoneIcon from '../../assets/icons/phone.svg';
 import { memberState, ingredientState } from '../../store';
 import CustomButton from '../../components/Button';
 import CustomText from '../../components/Text';
@@ -138,8 +145,12 @@ const Order = () => {
   const totalDiscountPrice = totalPrice - discountPrice - shippingPrice;
 
   const [arrayData, setArrayData] = useState(orderData);
-  const [prices, setPrices] = useState(priceData);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState('credit-card');
 
+  const handlePaymentMethodChange = (event) => {
+    setSelectedPaymentMethod(event.target.value);
+  };
   // const [checkedItems, setCheckedItems] = useState(() =>
   //   randomNumbers.map((num) => num !== 0),
   // );
@@ -631,6 +642,188 @@ const Order = () => {
               marginBottom: '17vh',
             }}
           >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                marginTop: '3vh',
+                width: '52vw',
+                gap: '1vw',
+                paddingBottom: '3vh',
+                borderBottom: '1px solid black',
+              }}
+            >
+              <DeliveryTitle>결제수단 선택</DeliveryTitle>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  gap: '1vw',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="credit-card"
+                    checked={selectedPaymentMethod === 'credit-card'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={CreditCardIcon} alt="CreditCard Icon" />
+                    <RadioTitle>신용카드</RadioTitle>
+                  </div>
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="payco"
+                    checked={selectedPaymentMethod === 'payco'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={PaycoIcon} alt="Payco Icon" />
+                    <RadioTitle>PAYCO</RadioTitle>
+                  </div>
+                </label>
+
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="kakaopay"
+                    checked={selectedPaymentMethod === 'kakaopay'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={KakaoPayIcon} alt="KakaoPay Icon" />
+                    <RadioTitle>카카오페이</RadioTitle>
+                  </div>
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="naverpay"
+                    checked={selectedPaymentMethod === 'naverpay'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={NaverPayIcon} alt="NaverPay Icon" />
+                    <RadioTitle>네이버페이</RadioTitle>
+                  </div>
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="phone"
+                    checked={selectedPaymentMethod === 'phone'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={PhoneIcon} alt="Phone Icon" />
+                    <RadioTitle>휴대폰결제</RadioTitle>
+                  </div>
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="passbook"
+                    checked={selectedPaymentMethod === 'passbook'}
+                    onChange={handlePaymentMethodChange}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '.5vw',
+                      marginLeft: '.5vw',
+                    }}
+                  >
+                    <img src={PassbookIcon} alt="Passbook Icon" />
+                    <RadioTitle> 무통장입금</RadioTitle>
+                  </div>
+                </label>
+              </div>
+            </div>
             <div
               style={{
                 color: '#454545',
@@ -1499,6 +1692,188 @@ const Order = () => {
           <div
             style={{
               display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              marginTop: '3vh',
+              width: '52vw',
+              gap: '1vw',
+              paddingBottom: '3vh',
+              borderBottom: '1px solid black',
+            }}
+          >
+            <DeliveryTitle>결제수단 선택</DeliveryTitle>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                gap: '1vw',
+                flexWrap: 'wrap',
+              }}
+            >
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="credit-card"
+                  checked={selectedPaymentMethod === 'credit-card'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={CreditCardIcon} alt="CreditCard Icon" />
+                  <RadioTitle>신용카드</RadioTitle>
+                </div>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="payco"
+                  checked={selectedPaymentMethod === 'payco'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={PaycoIcon} alt="Payco Icon" />
+                  <RadioTitle>PAYCO</RadioTitle>
+                </div>
+              </label>
+
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="kakaopay"
+                  checked={selectedPaymentMethod === 'kakaopay'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={KakaoPayIcon} alt="KakaoPay Icon" />
+                  <RadioTitle>카카오페이</RadioTitle>
+                </div>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="naverpay"
+                  checked={selectedPaymentMethod === 'naverpay'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={NaverPayIcon} alt="NaverPay Icon" />
+                  <RadioTitle>네이버페이</RadioTitle>
+                </div>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="phone"
+                  checked={selectedPaymentMethod === 'phone'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={PhoneIcon} alt="Phone Icon" />
+                  <RadioTitle>휴대폰결제</RadioTitle>
+                </div>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  value="passbook"
+                  checked={selectedPaymentMethod === 'passbook'}
+                  onChange={handlePaymentMethodChange}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '.5vw',
+                    marginLeft: '.5vw',
+                  }}
+                >
+                  <img src={PassbookIcon} alt="Passbook Icon" />
+                  <RadioTitle> 무통장입금</RadioTitle>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
               marginTop: '9vh',
               flexDirection: 'column',
               justifyContent: 'center',
@@ -1948,6 +2323,8 @@ const Order = () => {
                     flexDirection: 'column',
                     background: '#ffffff',
                     border: '1px solid #ff6913',
+                    position: 'sticky',
+                    top: '0',
                   }}
                 >
                   <div
@@ -2118,6 +2495,8 @@ const Order = () => {
                     flexDirection: 'column',
                     background: '#ffffff',
                     border: '1px solid #ff6913',
+                    position: 'sticky',
+                    top: '0',
                   }}
                 >
                   <div
