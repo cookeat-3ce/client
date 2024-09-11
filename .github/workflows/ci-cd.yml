@@ -34,7 +34,6 @@ jobs:
       # 5. Build Docker image for React client
       - name: Build Docker image for React client
         run: |
-          cd client
           docker build -t hd3ce/cookeat-client:latest .
 
       # 6. Log in to Docker Hub
