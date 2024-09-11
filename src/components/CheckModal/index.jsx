@@ -9,29 +9,11 @@ import {
 import { COLORS } from '../../constants';
 import CustomButton from '../Button';
 import CustomText from '../Text';
-import { useNavigate } from 'react-router-dom';
-import { useCustomNavigate } from '../../hooks';
-import { sskcookAPI } from '../../apis/sskcook';
-import { useMutation } from '@tanstack/react-query';
 import icon_need_verified from '../../assets/icons/need_verified.svg';
 
 const CheckModal = ({ show, onClose, info, check }) => {
-  const navigate = useNavigate();
-
-  // const mutation = useMutation({
-  //   mutationFn: () => sskcookAPI.deleteIngredientAPI(),
-  //   onSuccess: (response) => {
-  //     handleChangeUrl('/info');
-  //     onClose();
-  //   },
-  //   onError: (error) => {
-  //     console.error(`Failed to delete: `, error);
-  //   },
-  // });
-
   const handleCheckButtonClick = () => {
     onClose();
-    navigate('/info', { replace: true });
   };
 
   if (!show) return null;

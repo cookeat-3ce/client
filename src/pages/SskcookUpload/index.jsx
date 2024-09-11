@@ -33,8 +33,10 @@ import { COLORS, TAGS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { sskcookAPI } from '../../apis/sskcook';
 import CheckModal from '../../components/CheckModal';
+import { useNavigate } from 'react-router-dom';
 
 const SskcookUpload = () => {
+  const navigate = useNavigate();
   const [member] = useRecoilState(memberState);
   const username = member.username;
   const [file, setFile] = useState(null);
@@ -96,6 +98,7 @@ const SskcookUpload = () => {
     {
       onSuccess: () => {
         console.log('업로드 성공');
+        navigate('/info');
       },
       onError: (error) => {
         console.error();
