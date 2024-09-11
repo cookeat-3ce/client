@@ -33,7 +33,8 @@ jobs:
       # 4. Build Docker image for React client
       - name: Build Docker image for React client
         run: |
-          docker build --build-arg REACT_ENV="${{ secrets.REACT_ENV }}" -t hd3ce/cookeat-client:latest .
+          echo "$REACT_ENV_FILE" > .env
+          docker build --build-arg REACT_ENV_FILE=.env -t hd3ce/cookeat-client:latest .
 
       # 5. Log in to Docker Hub
       - name: Log in to Docker Hub
