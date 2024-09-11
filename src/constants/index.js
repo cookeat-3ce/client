@@ -33,20 +33,20 @@ export const COLORS = {
 };
 
 export const TAGS = {
-  KOREAN_FOOD: '한식',
-  JAPANESE_FOOD: '일식',
-  WESTERN_FOOD: '양식',
-  CHINESE_FOOD: '중식',
-  HEALTH: '건강',
-  EASY: '간편',
-  SWEET_AND_SALTY: '단짠',
-  ACRID: '매운',
-  VEGAN: '비건',
-  LATE_NIGHT_SNACK: '야식',
-  BRUNCH: '브런치',
-  SNACK: '간식',
-  RUDIMENTS: '초보',
-  LIGHT: '가벼운',
+  1: '한식',
+  2: '일식',
+  3: '양식',
+  4: '중식',
+  5: '건강',
+  6: '간편',
+  7: '단짠',
+  8: '매운',
+  9: '비건',
+  10: '야식',
+  11: '브런치',
+  12: '간식',
+  13: '초보',
+  14: '가벼운',
 };
 
 export const INGREDIENTS = {
