@@ -14,22 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Set up Node.js for React client
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-
       # 3. Set up environment variables from GitHub Secrets
       - name: Set up environment variables
         run: |
           echo "${{ secrets.REACT_ENV }}" >> $GITHUB_ENV
-
-      # 4. Build React client
-      - name: Build React client
-        run: |
-          npm install --force
-          ESLINT_NO_DEV_ERRORS=true npm run build
 
       # 5. Build Docker image for React client
       - name: Build Docker image for React client
