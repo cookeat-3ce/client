@@ -57,6 +57,7 @@ const ClassSession = () => {
     if (session && OV) {
       session.on('streamCreated', (event) => {
         let subscriber = session.subscribe(event.stream, undefined);
+        console.log('new stream created: ', subscriber);
         setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
       });
 
@@ -68,7 +69,9 @@ const ClassSession = () => {
         );
         setSubscribers(remainingSubscribers);
 
+        console.log('subscriber`s stream destroyed: ', event.stream.connection);
         if (event.stream.connection.data === managerUsername) {
+          console.log('stream destroyed: ', event.stream.connection);
           handleManagerStreamDisconnected();
         }
       });
@@ -115,12 +118,16 @@ const ClassSession = () => {
     },
   });
 
-  const endSession = () => {
+  const endSession = async () => {
     mutation.mutate(liveInfo.liveId);
   };
 
-  const leaveSession = useCallback(() => {
+  const leaveSession = useCallback(async () => {
     if (session) {
+      if (username === managerUsername) {
+        await endSession();
+      }
+
       session.disconnect();
     }
 
@@ -130,16 +137,8 @@ const ClassSession = () => {
     setPublisher(null);
     setManagerUsername(null);
 
-    window.location.href = '/';
+    window.location.href = '/live';
   }, [session]);
-
-  useEffect(() => {
-    window.addEventListener('beforeunload', leaveSession);
-
-    return () => {
-      window.removeEventListener('beforeunload', leaveSession);
-    };
-  }, [leaveSession]);
 
   const initSession = () => {
     let OV = new OpenVidu();
@@ -147,16 +146,6 @@ const ClassSession = () => {
 
     const newSession = OV.initSession();
     setSession(newSession);
-  };
-
-  const openExceedPeopleModal = () => {
-    console.log('modal open');
-    setShowExceedPeopleModal(true);
-  };
-
-  const closeExceedPeopleModal = () => {
-    console.log('modal close');
-    setShowExceedPeopleModal(false);
   };
 
   const openExitModal = () => {
