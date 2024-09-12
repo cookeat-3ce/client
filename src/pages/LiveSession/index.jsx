@@ -133,7 +133,7 @@ const LiveSession = () => {
     },
   });
 
-  const endSession = () => {
+  const endSession = async () => {
     console.log('end session: ', liveInfo.liveId);
     mutation.mutate(liveInfo.liveId);
   };
@@ -143,17 +143,21 @@ const LiveSession = () => {
     endSession();
   };
 
-  const leaveSession = useCallback(() => {
+  const leaveSession = useCallback(async () => {
     if (session) {
+      if (username === managerUsername) {
+        await endSession();
+      }
       session.disconnect();
     }
+
     setOV(null);
     setSession(null);
     setManagerStream(null);
     setParticipantsCount(0);
 
     window.location.href = '/live';
-  }, [session]);
+  }, [session, endSession, username, managerUsername]);
 
   useEffect(() => {
     window.addEventListener('beforeunload', leaveSession);
