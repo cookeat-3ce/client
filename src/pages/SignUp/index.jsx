@@ -27,6 +27,7 @@ import CustomButton from '../../components/Button';
 import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../../apis/member';
 import imageCompression from 'browser-image-compression';
+import ReactGA from 'react-ga4';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -174,6 +175,10 @@ const SignUp = () => {
     },
     onSuccess: (response) => {
       console.log(response);
+      ReactGA.event({
+        category: 'Member',
+        action: 'sign_up',
+      });
       handleChangeUrl('/login');
     },
 

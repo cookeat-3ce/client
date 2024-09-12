@@ -34,6 +34,7 @@ import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { sskcookAPI } from '../../apis/sskcook';
 import CheckModal from '../../components/CheckModal';
 import { useNavigate } from 'react-router-dom';
+import ReactGA from 'react-ga4';
 
 const SskcookUpload = () => {
   const navigate = useNavigate();
@@ -98,6 +99,10 @@ const SskcookUpload = () => {
     {
       onSuccess: () => {
         console.log('업로드 성공');
+        ReactGA.event({
+          category: 'Sskcook',
+          action: 'Sskcook_upload',
+        });
         openUploadModal();
       },
       onError: (error) => {
@@ -111,7 +116,6 @@ const SskcookUpload = () => {
       console.error('파일이 선택되지 않았습니다.');
       return;
     }
-
     // FormData 생성
     const formData = new FormData();
     const hashtags = selectedTags.map((tagId) => ({

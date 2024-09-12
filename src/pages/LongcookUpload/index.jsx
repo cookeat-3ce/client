@@ -30,6 +30,7 @@ import { COLORS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { longcookAPI } from '../../apis/longcook';
 import CheckModal from '../../components/CheckModal';
+import ReactGA from 'react-ga4';
 
 const LongcookUpload = () => {
   const [member] = useRecoilState(memberState);
@@ -84,6 +85,10 @@ const LongcookUpload = () => {
     {
       onSuccess: () => {
         console.log('업로드 성공');
+        ReactGA.event({
+          category: 'Longcook',
+          action: 'Longcook_upload',
+        });
         openUploadModal();
       },
       onError: (error) => {
