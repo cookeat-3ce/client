@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getCookie } from '../hooks';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
     Accept: 'application/json',
   },
