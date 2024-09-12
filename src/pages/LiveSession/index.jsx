@@ -101,6 +101,7 @@ const LiveSession = () => {
     });
 
     newSession.on('streamDestroyed', (event) => {
+      console.log('stream destroyed: ', event.stream.connection);
       if (event.stream.connection.data === managerUsername) {
         handleManagerStreamDisconnected();
       }

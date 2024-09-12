@@ -69,6 +69,7 @@ const ClassSession = () => {
         setSubscribers(remainingSubscribers);
 
         if (event.stream.connection.data === managerUsername) {
+          console.log('stream destroyed: ', event.stream.connection);
           handleManagerStreamDisconnected();
         }
       });
@@ -147,16 +148,6 @@ const ClassSession = () => {
 
     const newSession = OV.initSession();
     setSession(newSession);
-  };
-
-  const openExceedPeopleModal = () => {
-    console.log('modal open');
-    setShowExceedPeopleModal(true);
-  };
-
-  const closeExceedPeopleModal = () => {
-    console.log('modal close');
-    setShowExceedPeopleModal(false);
   };
 
   const openExitModal = () => {
