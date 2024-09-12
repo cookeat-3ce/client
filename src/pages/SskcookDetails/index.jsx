@@ -940,7 +940,7 @@ const SskcookDetails = () => {
       const encodedOrderList = encodeURIComponent(
         JSON.stringify(newIngredientNames),
       );
-      const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${20}`;
+      const url = `https://www.cookeat.site/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${20}`;
 
       window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -950,7 +950,7 @@ const SskcookDetails = () => {
     const encodedOrderList = encodeURIComponent(
       JSON.stringify(notHaveProducts),
     );
-    const url = `http://localhost:3000/order?orderData=${encodedOrderList}&priceData=${notHavePrices}&discount=${17}`;
+    const url = `https://www.cookeat.site/order?orderData=${encodedOrderList}&priceData=${notHavePrices}&discount=${17}`;
 
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -960,7 +960,7 @@ const SskcookDetails = () => {
     const priceForItem = prices[itemIndex];
     const encodedItem = encodeURIComponent(item);
     window.open(
-      `http://localhost:3000/order?orderData=${encodedItem}&priceData=${priceForItem}`,
+      `www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`,
       '_blank',
       'noopener,noreferrer',
     );
