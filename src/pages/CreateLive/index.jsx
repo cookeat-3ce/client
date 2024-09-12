@@ -99,6 +99,8 @@ const CreateLive = () => {
       type: classType === 'class' ? 0 : 1,
     };
 
+    console.log('addLiveData: ', addLiveData);
+
     mutationLiveAdd.mutate(addLiveData);
   };
 
