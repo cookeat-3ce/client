@@ -127,7 +127,10 @@ const SskcookUpload = () => {
     });
 
     formData.append('file', file.fileObject);
-    formData.append('sskcook', sskcookData);
+    formData.append(
+      'sskcook',
+      new Blob([sskcookData], { type: 'application/json; charset=UTF-8' }),
+    );
     mutation.mutate(formData);
   };
 

@@ -110,7 +110,10 @@ const LongcookUpload = () => {
     });
 
     formData.append('file', file.fileObject);
-    formData.append('longcook', longcookData);
+    formData.append(
+      'longcook',
+      new Blob([longcookData], { type: 'application/json; charset=UTF-8' }),
+    );
     mutation.mutate(formData);
   };
 
