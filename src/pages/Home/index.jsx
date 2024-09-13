@@ -24,12 +24,15 @@ import { memberState } from '../../store';
 import { useRecoilState } from 'recoil';
 import { fridgeAPI } from '../../apis/fridge';
 const Index = () => {
+  const member = useRecoilState(memberState);
+  const username = member[0].username;
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
   const formattedDate = `${year}-${formattedMonth}`;
-  const member = useRecoilState(memberState);
+  const [recommends, setRecommends] = useState([]);
+  const [isFridgeEmpty, setIsFridgeEmpty] = useState(true);
   const recentSskcooksQuery = useQuery({
     queryKey: ['recentSskcooks'],
     queryFn: () => sskcookAPI.recentSskcookListAPI(1),
@@ -45,15 +48,36 @@ const Index = () => {
     queryFn: () => sskcookAPI.monthlyLikesSskcookListAPI(formattedDate),
   });
 
-  const fridgeSskcooksQuery = useQuery({
-    queryKey: ['fridge', member],
+  const myIngredientsQuery = useQuery({
+    queryKey: ['myIngredients', username],
     queryFn: () => fridgeAPI.getIngredientsAPI(),
+    staleTime: 0,
+    cacheTime: 0,
   });
+
+  const recommendsRecipeQuery = useQuery({
+    queryKey: ['recommends', username],
+    queryFn: () => sskcookAPI.getSskcookRecommendsAPI(),
+    staleTime: 0,
+    cacheTime: 0,
+  });
+
+  useEffect(() => {
+    if (myIngredientsQuery.data && myIngredientsQuery.data.data.length > 0) {
+      setIsFridgeEmpty(false);
+    }
+  }, [myIngredientsQuery.data]);
+
+  useEffect(() => {
+    if (recommendsRecipeQuery.data) {
+      setRecommends(recommendsRecipeQuery.data.data);
+      console.log(recommendsRecipeQuery.data.data);
+    }
+  }, [recommendsRecipeQuery.data]);
 
   const recentSskcooks = recentSskcooksQuery.data?.data?.data;
   const recentLongcooks = recentLongcooksQuery.data?.data?.data;
   const monthlyLikesSskcooks = monthlyLikesSskcooksQuery.data?.data?.data;
-  const fridgeSskcooks = fridgeSskcooksQuery.data?.data?.data;
   const [imagesLoaded, setImagesLoaded] = useState(false);
   // console.log(recentSskcooks);
   // console.log(recentLongcooks);
@@ -198,17 +222,21 @@ const Index = () => {
               isLogined={'fridge'}
               now={'fridge'}
             />
-          ) : fridgeSskcooks ? (
+          ) : !isFridgeEmpty ? (
             <SskcookSwiper
               firstText={'냉장고를 털어보자'}
               secondText={'더보기'}
               thirdText={'>'}
-              arr={fridgeSskcooks}
+              arr={recommends}
               now={'fridge'}
               page={1}
             />
           ) : (
-            <SskcookSwiper firstText={'냉장고를 털어보자'} now={'fridge'} />
+            <SskcookSwiper
+              firstText={'냉장고를 털어보자'}
+              now={'fridge'}
+              arr={recommends}
+            />
           )}
           <TagSwiper firstText={'태그'} arr={TAG_VALUES} />
           {recentSskcooks ? (
