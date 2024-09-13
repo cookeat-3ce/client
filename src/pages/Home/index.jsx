@@ -20,12 +20,16 @@ import LongcookSwiper from '../../components/LongcookSwiper';
 import TagSwiper from '../../components/TagSwiper';
 import { TAG_VALUES } from '../../constants';
 import { getCookie } from '../../hooks';
+import { memberState } from '../../store';
+import { useRecoilState } from 'recoil';
+import { fridgeAPI } from '../../apis/fridge';
 const Index = () => {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
   const formattedDate = `${year}-${formattedMonth}`;
+  const member = useRecoilState(memberState);
   const recentSskcooksQuery = useQuery({
     queryKey: ['recentSskcooks'],
     queryFn: () => sskcookAPI.recentSskcookListAPI(1),
@@ -41,9 +45,15 @@ const Index = () => {
     queryFn: () => sskcookAPI.monthlyLikesSskcookListAPI(formattedDate),
   });
 
+  const fridgeSskcooksQuery = useQuery({
+    queryKey: ['fridge', member],
+    queryFn: () => fridgeAPI.getIngredientsAPI(),
+  });
+
   const recentSskcooks = recentSskcooksQuery.data?.data?.data;
   const recentLongcooks = recentLongcooksQuery.data?.data?.data;
   const monthlyLikesSskcooks = monthlyLikesSskcooksQuery.data?.data?.data;
+  const fridgeSskcooks = fridgeSskcooksQuery.data?.data?.data;
   const [imagesLoaded, setImagesLoaded] = useState(false);
   // console.log(recentSskcooks);
   // console.log(recentLongcooks);
@@ -188,12 +198,12 @@ const Index = () => {
               isLogined={'fridge'}
               now={'fridge'}
             />
-          ) : monthlyLikesSskcooks ? (
+          ) : fridgeSskcooks ? (
             <SskcookSwiper
               firstText={'냉장고를 털어보자'}
               secondText={'더보기'}
               thirdText={'>'}
-              arr={monthlyLikesSskcooks}
+              arr={fridgeSskcooks}
               now={'fridge'}
               page={1}
             />
