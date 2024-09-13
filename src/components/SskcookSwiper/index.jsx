@@ -154,7 +154,7 @@ const CustomSwiper = ({
                 fontFamily="Happiness-Sans-Regular"
                 backgroundColor={COLORS.DARKGRAPEFRUIT}
                 borderColor={COLORS.DARKGRAPEFRUIT}
-                onClick={() => handleChangeUrl('/login')}
+                onClick={() => handleChangeUrl('/myfridge')}
               />
             </LoginWrapper>
           </LoginContainer>
