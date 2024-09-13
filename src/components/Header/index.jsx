@@ -61,7 +61,7 @@ const CustomHeader = () => {
     if (accessToken) {
       // SSE 연결 객체
       const eventSource = new EventSourcePolyfill(
-        `${process.env.REACT_APP_SERVER_URL}/api/alert/sse`,
+        `${process.env.REACT_APP_SERVER_URL}/alert/sse`,
         {
           headers: {
             Authorization: `${accessToken}`,

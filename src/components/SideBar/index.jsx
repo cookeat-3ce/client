@@ -38,7 +38,7 @@ const CustomSideBar = () => {
     { icon: LongCook, label: '스-윽쿡', path: '/longcook' },
     { icon: Subscribe, label: '구독', path: '/subscription' },
     { icon: Storage, label: '보관함', path: '/stored' },
-    { icon: Event, label: '이벤트', path: '/' },
+    { icon: Event, label: '이벤트', path: '/notice' },
     { icon: MyInfo, label: '내 정보', path: '/info' },
     { icon: Refrigerator, label: '냉장고 파헤치기', path: '/recommends' },
   ];
