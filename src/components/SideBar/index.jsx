@@ -47,6 +47,10 @@ const CustomSideBar = () => {
   const isSskcookLocation = window.location.href.includes('/sskcook');
   const isLongcookLocation = window.location.href.includes('/longcook');
   const isSubscriptionLocation = window.location.href.includes('/subscription');
+  const isLiveLocation = window.location.href.includes('/live');
+  const isEventLocation = window.location.href.includes('/notice');
+  const isNoticeLocation = window.location.href.includes('/notice/create');
+  const isInfoLocation = window.location.href.includes('/info');
 
   // 예시
   // isLogined = false;
@@ -101,11 +105,18 @@ const CustomSideBar = () => {
           const isTopSpecial = [4, 7].includes(index);
           const isActive = location === item.path;
           const isSskcookLookActive =
-            item.label === '슥쿡 둘러보기' && isSskcookLocation;
+            item.label === '슥쿡 둘러보기' &&
+            isSskcookLocation &&
+            !isInfoLocation;
           const isLongcookLookActive =
-            item.label === '스-윽쿡' && isLongcookLocation;
+            item.label === '스-윽쿡' && isLongcookLocation && !isInfoLocation;
           const isSubscriptionActive =
             item.label === '구독' && isSubscriptionLocation;
+          const isLiveActive = item.label === '실시간 클래스' && isLiveLocation;
+          const isEventActive =
+            item.label === '이벤트' && isEventLocation && !isNoticeLocation;
+          const isInfoActive =
+            item.label === '내 정보' && (isInfoLocation || isNoticeLocation);
           return (
             <ButtonContainer
               key={item.path}
@@ -118,7 +129,13 @@ const CustomSideBar = () => {
                 isActive ||
                 isLongcookLookActive ||
                 isActive ||
-                isSubscriptionActive
+                isSubscriptionActive ||
+                isActive ||
+                isLiveActive ||
+                isActive ||
+                isEventActive ||
+                isActive ||
+                isInfoActive
               }
             >
               <ButtonWrapper>
