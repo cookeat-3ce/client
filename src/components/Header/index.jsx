@@ -133,7 +133,7 @@ const CustomHeader = () => {
                         key={index}
                         onClick={() =>
                           window.open(
-                            `/order?orderData=${encodedItem}&priceData=${priceForItem}&discount=${20}&special=${true}`,
+                            `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}&discount=${20}&special=${true}`,
                             '_blank',
                             'noopener,noreferrer',
                           )
