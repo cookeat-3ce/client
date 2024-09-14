@@ -118,24 +118,45 @@ const CustomHeader = () => {
                 {notifications.length === 0 ? (
                   <NoNotifications>새로운 알림이 없습니다.</NoNotifications>
                 ) : (
-                  notifications.map((noti) => (
-                    <NotificationItem>
-                      <CustomText
-                        text={'✨ 밀키트 선정 안내'}
-                        fontFamily={'Happiness-Sans-Bold'}
-                        fontSize={'1rem'}
-                        color={COLORS.ORANGE}
-                      />
-                      <CustomText
-                        text={noti}
-                        fontFamily={'Happiness-Sans-Bold'}
-                        fontSize={'.8rem'}
-                        color={COLORS.BLACK}
-                      />
-                    </NotificationItem>
-                  ))
+                  notifications.map((noti, index) => {
+                    const extractContentBetweenBrackets = (noti) => {
+                      const matches = noti.match(/\[(.*?)\]/);
+                      return matches ? matches[1] : null;
+                    };
+                    const encodedItem = encodeURIComponent(
+                      extractContentBetweenBrackets(noti), // [] 사이의 값
+                    );
+                    const priceForItem = 10000; // 가격은 정해야 할 듯
+
+                    return (
+                      <NotificationItem
+                        key={index}
+                        onClick={() =>
+                          window.open(
+                            `/order?orderData=${encodedItem}&priceData=${priceForItem}&discount=${20}&special=${true}`,
+                            '_blank',
+                            'noopener,noreferrer',
+                          )
+                        }
+                      >
+                        <CustomText
+                          text="✨ 밀키트 선정 안내"
+                          fontFamily="Happiness-Sans-Bold"
+                          fontSize="1rem"
+                          color={COLORS.ORANGE}
+                        />
+                        <CustomText
+                          text={noti}
+                          fontFamily="Happiness-Sans-Bold"
+                          fontSize=".8rem"
+                          color={COLORS.BLACK}
+                        />
+                      </NotificationItem>
+                    );
+                  })
                 )}
               </NotificationDropdown>
+
               <CustomImageButton
                 src={persist.profileImage}
                 width="5vh"
