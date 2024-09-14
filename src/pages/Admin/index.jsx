@@ -22,12 +22,21 @@ const Admin = () => {
   useEffect(() => {
     const initializeGapi = async () => {
       try {
-        await gapi.load('client:auth2');
+        await new Promise((resolve, reject) => {
+          gapi.load('client:auth2', {
+            callback: resolve,
+            onerror: reject,
+            timeout: 5000,
+            ontimeout: () => reject(new Error('GAPI load timeout')),
+          });
+        });
+
         await gapi.client.init({
           clientId: clientId,
           discoveryDocs: DISCOVERY_DOCS,
           scope: SCOPES,
         });
+
         const authInstance = gapi.auth2.getAuthInstance();
         if (authInstance.isSignedIn.get()) {
           handleFetchData();
@@ -61,7 +70,7 @@ const Admin = () => {
               {
                 dateRanges: [
                   {
-                    startDate: '7daysAgo',
+                    startDate: '14daysAgo',
                     endDate: 'today',
                   },
                 ],
