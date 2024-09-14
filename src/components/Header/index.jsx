@@ -17,7 +17,7 @@ import CustomImageButton from '../Button/Image';
 import { COLORS } from '../../constants';
 import { getCookie, useCustomNavigate } from '../../hooks';
 import { useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, atom } from 'recoil';
 import { memberState } from '../../store';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import CustomText from '../Text';
@@ -36,6 +36,13 @@ const CustomHeader = () => {
     setShowAlertDropdown(!showAlertDropdown);
   };
 
+  // 로컬 스토리지에서 알림 불러오기
+  useEffect(() => {
+    const storedNotifications =
+      JSON.parse(localStorage.getItem('notifications')) || [];
+    setNotifications(storedNotifications);
+  }, []);
+
   const handleNewNotice = useCallback((event) => {
     console.log('event data new notice: ', event.data);
     const notificationData = event.data;
@@ -51,17 +58,24 @@ const CustomHeader = () => {
       }, 500); // 슬라이드 아웃 애니메이션 시간과 일치
     }, 5000);
 
-    setNotifications((prevNotifications) => [
-      notificationData,
-      ...prevNotifications,
-    ]);
+    setNotifications((prevNotifications) => {
+      const updatedNotifications = [notificationData, ...prevNotifications];
+
+      // 로컬 스토리지에 알림 저장
+      localStorage.setItem(
+        'notifications',
+        JSON.stringify(updatedNotifications),
+      );
+
+      return updatedNotifications;
+    });
   }, []);
 
   useEffect(() => {
     if (accessToken) {
       // SSE 연결 객체
       const eventSource = new EventSourcePolyfill(
-        `${process.env.REACT_APP_SERVER_URL}/alert/sse`,
+        `${process.env.REACT_APP_SERVER_URL}/api/alert/sse`,
         {
           headers: {
             Authorization: `${accessToken}`,
