@@ -94,7 +94,7 @@ const Admin = () => {
           },
         });
 
-      console.log('API Response:', response);
+      console.log(response);
 
       const rows = response.result?.reports[0]?.rows || [];
       const reportData = rows.map((row) => ({
@@ -102,9 +102,33 @@ const Admin = () => {
         eventName: row.dimensionValues?.[1]?.value || 'Unknown',
         eventCount: Number(row.metricValues?.[0]?.value) || 0,
       }));
-      setData(reportData);
+
+      const eventNames = [
+        'page_view',
+        'Longcook_upload',
+        'Sskcook_upload',
+        'Sign_up',
+      ];
+      const dates = [...new Set(reportData.map((data) => data.date))];
+
+      const completeData = dates.flatMap((date) => {
+        return eventNames.map((eventName) => {
+          const existingData = reportData.find(
+            (data) => data.date === date && data.eventName === eventName,
+          );
+          return (
+            existingData || {
+              date,
+              eventName,
+              eventCount: 0,
+            }
+          );
+        });
+      });
+
+      setData(completeData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error(error);
     }
   };
 
