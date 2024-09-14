@@ -74,7 +74,7 @@ const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
                   url={slide.longcookUrl}
                   id={slide.longcookId}
                   color={COLORS.BLACK}
-                  height="30vh"
+                  height="24vh"
                   deleteAPI={longcookAPI.longcookDeleteAPI}
                   queryKey="longcook"
                 />
