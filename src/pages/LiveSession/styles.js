@@ -26,11 +26,6 @@ export const ClassInfoContainer = styled.div`
   // border: 10px solid BLACK;
 `;
 
-export const LiveScreenContainer = styled.div`
-  width: 80%;
-  // border: 10px solid GREEN;
-`;
-
 export const ButtonContainer = styled.div`
   margin: 2vh 0 4vh 0;
   // border: 10px solid BLACK;
