@@ -959,11 +959,8 @@ const SskcookDetails = () => {
     const itemIndex = orderList.indexOf(item);
     const priceForItem = prices[itemIndex];
     const encodedItem = encodeURIComponent(item);
-    window.open(
-      `www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`,
-      '_blank',
-      'noopener,noreferrer',
-    );
+    const url = `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   if (isLoading) {
