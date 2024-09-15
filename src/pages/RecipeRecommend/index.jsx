@@ -28,12 +28,12 @@ const RecipeRecommend = () => {
   const [isFridgeEmpty, setIsFridgeEmpty] = useState(true);
 
   const myIngredientsQuery = useQuery({
-    queryKey: ['myIngredients'],
+    queryKey: ['myIngredients', username],
     queryFn: () => fridgeAPI.getIngredientsAPI(),
   });
 
   const recommendsRecipeQuery = useQuery({
-    queryKey: ['recommends'],
+    queryKey: ['recommends', username],
     queryFn: () => sskcookAPI.getSskcookRecommendsAPI(),
   });
 
@@ -97,7 +97,11 @@ const RecipeRecommend = () => {
           </NoIngredientAlertContainer>
         ) : (
           <SskcookContainer>
-            <CustomVideoList type={'sskcook'} videos={recommends} />
+            <CustomVideoList
+              type={'sskcook'}
+              videos={recommends}
+              status={'fridge'}
+            />
           </SskcookContainer>
         )}
       </ContentContainer>

@@ -71,7 +71,6 @@ const Index = () => {
   useEffect(() => {
     if (recommendsRecipeQuery.data) {
       setRecommends(recommendsRecipeQuery.data.data);
-      console.log(recommendsRecipeQuery.data.data);
     }
   }, [recommendsRecipeQuery.data]);
 
