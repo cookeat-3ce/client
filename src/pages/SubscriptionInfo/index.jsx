@@ -49,7 +49,7 @@ const SubscriptionInfo = () => {
 
   useEffect(() => {
     if (username === member.username) {
-      handleChangeUrl('/');
+      handleChangeUrl('/info');
     }
   }, []);
 

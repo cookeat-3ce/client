@@ -6,7 +6,6 @@ import {
   SkeletonContainer,
   CardContainer,
   CardWrapper,
-  ContentContainer,
 } from './styles';
 import { sskcookAPI } from '../../apis/sskcook';
 import CustomText from '../../components/Text';
@@ -66,86 +65,84 @@ const Tag = () => {
         <CustomText
           text={'#'}
           fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1.5rem'}
+          fontSize={'1.3vw'}
           color={COLORS.BLACK}
         />
         <CustomText
           text={tag}
           fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1.5rem'}
+          fontSize={'1.3vw'}
           color={COLORS.BLACK}
         />
       </TextContainer>
-      <ContentContainer>
-        <SkeletonContainer>
-          {data && data.pages[0].total === 0 ? (
-            <div
-              style={{
-                height: '50vh',
-                margin: '0 auto',
-                textAlign: 'center',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <CustomText
-                fontFamily={'Happiness-Sans-Bold'}
-                text={'해당 태그의 슥쿡이 없어요!'}
-                fontSize={'1.2rem'}
-                color={COLORS.DARKGRAPEFRUIT}
-              />
-            </div>
-          ) : data === undefined ? (
-            <>
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-            </>
-          ) : (
-            allData.map((item) => (
-              <CardContainer key={item.sskcookId}>
-                <CardWrapper>
-                  <Card
-                    type="sskcook"
-                    url={item.sskcookUrl}
-                    id={item.sskcookId}
-                    color={COLORS.BLACK}
-                    deleteAPI={sskcookAPI.sskcookDeleteAPI}
-                    queryKey="sskcooks"
-                    status={`tag: ${tag}`}
-                    page={handleItemClick(item.sskcookId)}
-                    width={'12vw'}
-                    height={'42vh'}
-                  />
-                  <ProfileCard profileImage={item.profileImage} index={item} />
-                </CardWrapper>
-              </CardContainer>
-            ))
-          )}
-          {isLoading && (
-            <>
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-            </>
-          )}
-        </SkeletonContainer>
-      </ContentContainer>
+      <SkeletonContainer>
+        {data && data.pages[0].total === 0 ? (
+          <div
+            style={{
+              height: '50vh',
+              margin: '0 auto',
+              textAlign: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CustomText
+              fontFamily={'Happiness-Sans-Bold'}
+              text={'해당 태그의 슥쿡이 없어요!'}
+              fontSize={'1.5vw'}
+              color={COLORS.DARKGRAPEFRUIT}
+            />
+          </div>
+        ) : data === undefined ? (
+          <>
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+          </>
+        ) : (
+          allData.map((item) => (
+            <CardContainer key={item.sskcookId}>
+              <CardWrapper>
+                <Card
+                  type="sskcook"
+                  url={item.sskcookUrl}
+                  id={item.sskcookId}
+                  color={COLORS.BLACK}
+                  height="42vh"
+                  width="12vw"
+                  deleteAPI={sskcookAPI.sskcookDeleteAPI}
+                  queryKey="sskcooks"
+                  status={`tag: ${tag}`}
+                  page={handleItemClick(item.sskcookId)}
+                />
+                <ProfileCard profileImage={item.profileImage} index={item} />
+              </CardWrapper>
+            </CardContainer>
+          ))
+        )}
+        {isLoading && (
+          <>
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+          </>
+        )}
+      </SkeletonContainer>
     </Container>
   );
 };

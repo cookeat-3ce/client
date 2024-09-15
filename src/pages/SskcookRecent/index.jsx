@@ -49,7 +49,6 @@ const SskcookRecent = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [fetchNextPage, hasNextPage, isFetching]);
 
-  console.log(allData);
   const handleItemClick = (itemId) => {
     const index = allData.findIndex((item) => item.sskcookId === itemId);
     return index;
@@ -105,7 +104,8 @@ const SskcookRecent = () => {
                   url={item.sskcookUrl}
                   id={item.sskcookId}
                   color={COLORS.BLACK}
-                  height="35vh"
+                  width="12vw"
+                  height="42vh"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
                   status={'recent'}

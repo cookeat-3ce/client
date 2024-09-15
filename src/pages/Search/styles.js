@@ -41,7 +41,9 @@ export const StyledTabs = styled(Tabs)`
   }
 `;
 
-export const Inner = styled.div``;
+export const Inner = styled.div`
+  width: 100%;
+`;
 
 export const SortInner = styled.div`
   width: 100%;

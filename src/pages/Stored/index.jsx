@@ -5,7 +5,6 @@ import {
   SkeletonContainer,
   CardContainer,
   CardWrapper,
-  ContentContainer,
 } from '../Tag/styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
@@ -59,83 +58,78 @@ const Stored = () => {
         <CustomText
           text={'저장한 슥쿡 목록'}
           fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1.5rem'}
+          fontSize={'1.3vw'}
           color={COLORS.BLACK}
         />
       </TextContainer>
-      <ContentContainer>
-        <SkeletonContainer>
-          {data && data.pages[0].total === 0 ? (
-            <div
-              style={{
-                height: '50vh',
-                margin: '0 auto',
-                textAlign: 'center',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <CustomText
-                fontFamily={'Happiness-Sans-Bold'}
-                text={'저장된 슥쿡이 없어요!'}
-                fontSize={'1rem'}
-                color={COLORS.DARKGRAPEFRUIT}
-              />
-            </div>
-          ) : data === undefined ? (
-            <>
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-            </>
-          ) : (
-            allData.map((item) => {
-              return (
-                <CardContainer key={item.sskcookId}>
-                  <CardWrapper>
-                    <Card
-                      url={item.sskcookUrl}
-                      id={item.sskcookId}
-                      type={'sskcook'}
-                      status={'stored'}
-                      color={COLORS.BLACK}
-                      page={handleItemClick(item.sskcookId)}
-                      width={'12vw'}
-                      height={'42vh'}
-                    />
-                    <ProfileCard
-                      profileImage={item.profileImage}
-                      index={item}
-                    />
-                  </CardWrapper>
-                </CardContainer>
-              );
-            })
-          )}
-          {isLoading && (
-            <>
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-              <StyledSskcookSkeleton />
-            </>
-          )}
-        </SkeletonContainer>
-      </ContentContainer>
+      <SkeletonContainer>
+        {data && data.pages[0].total === 0 ? (
+          <div
+            style={{
+              height: '50vh',
+              margin: '0 auto',
+              textAlign: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CustomText
+              fontFamily={'Happiness-Sans-Bold'}
+              text={'저장된 슥쿡이 없어요!'}
+              fontSize={'1.5vw'}
+              color={COLORS.DARKGRAPEFRUIT}
+            />
+          </div>
+        ) : data === undefined ? (
+          <>
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+          </>
+        ) : (
+          allData.map((item) => {
+            return (
+              <CardContainer key={item.sskcookId}>
+                <CardWrapper>
+                  <Card
+                    url={item.sskcookUrl}
+                    id={item.sskcookId}
+                    type={'sskcook'}
+                    status={'stored'}
+                    color={COLORS.BLACK}
+                    page={handleItemClick(item.sskcookId)}
+                    width="12vw"
+                    height="42vh"
+                  />
+                  <ProfileCard profileImage={item.profileImage} index={item} />
+                </CardWrapper>
+              </CardContainer>
+            );
+          })
+        )}
+        {isLoading && (
+          <>
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+            <StyledSskcookSkeleton />
+          </>
+        )}
+      </SkeletonContainer>
     </Container>
   );
 };

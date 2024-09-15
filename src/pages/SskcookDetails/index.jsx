@@ -472,8 +472,7 @@ const SskcookDetails = () => {
             });
           }
         } else if (dateHasPrevPage && !dateIsFetching) {
-          const page = await dateFetchPrevPage();
-          console.log(page);
+          await dateFetchPrevPage();
           index2 = dateAllData?.length - 1;
           const currentItem = dateAllData[index2];
           if (currentItem) {
@@ -484,7 +483,6 @@ const SskcookDetails = () => {
         }
       } else if (flag === 3 && storeAllData?.length > 0) {
         index3--;
-        console.log(index3);
         if (index3 < -1) index3 = -1;
         if (index3 >= 0) {
           const currentItem = storeAllData[index3];
@@ -494,8 +492,7 @@ const SskcookDetails = () => {
             });
           }
         } else if (storeHasPreviousPage && !storeIsFetching) {
-          const page = await storeFetchPreviousPage();
-          console.log(page);
+          await storeFetchPreviousPage();
           index3 = storeAllData?.length - 1;
           const currentItem = storeAllData[index3];
           if (currentItem) {
@@ -515,8 +512,7 @@ const SskcookDetails = () => {
             });
           }
         } else if (fetchHasPrevPage && !isSskcookFetching) {
-          const page = await fetchSskcookPrevPage();
-          console.log(page);
+          await fetchSskcookPrevPage();
           index4 = fetchSskcookAllData?.length - 1;
           const currentItem = fetchSskcookAllData[index4];
           if (currentItem) {
@@ -536,8 +532,7 @@ const SskcookDetails = () => {
             });
           }
         } else if (recentSearchHasPrevPage && !isFetchingRecent) {
-          const page = await recentSearchFetchPrev();
-          console.log(page);
+          await recentSearchFetchPrev();
           index5 = recentSearchAllData?.length - 1;
           const currentItem = recentSearchAllData[index5];
           if (currentItem) {
@@ -557,8 +552,7 @@ const SskcookDetails = () => {
             });
           }
         } else if (tagHasPrevPage && !tagIsFetching) {
-          const page = await tagFetchPrevPage();
-          console.log(page);
+          await tagFetchPrevPage();
           index6 = tagAllData?.length - 1;
           const currentItem = tagAllData[index6];
           if (currentItem) {
@@ -578,8 +572,7 @@ const SskcookDetails = () => {
             });
           }
         } else if (likeHasPrevPage && !isFetchingLike) {
-          const page = await likeFetchPrevPage();
-          console.log(page);
+          await likeFetchPrevPage();
           index7 = likeSearchAllData?.length - 1;
           const currentItem = likeSearchAllData[index7];
           if (currentItem) {
@@ -665,7 +658,6 @@ const SskcookDetails = () => {
 
       if (index < allData?.length) {
         index++;
-        console.log(index);
 
         // 증가된 index 값을 원래 상태에 저장
         switch (flag) {
@@ -705,10 +697,8 @@ const SskcookDetails = () => {
         }
       } else if (index >= allData?.length && hasNextPage && !isFetching) {
         const pages = await fetchNextPage();
-        console.log(pages);
         const newData =
           pages?.data?.pages[pages?.data?.pages?.length - 1]?.data || [];
-        console.log(newData);
         allData = [...allData, ...newData];
         index = allData.length - 1;
 
@@ -973,12 +963,10 @@ const SskcookDetails = () => {
           ] || 0;
         return acc;
       }, {});
-      console.log('Price Map:', priceMap);
 
       const leng2 = Object.keys(priceMap).length;
       setNotHavePrices(Object.values(priceMap));
       const startIdx = leng - leng2;
-      console.log(leng, leng2);
       const partialSum = newPrice
         .slice(startIdx)
         .reduce((sum, price) => sum + price, 0);
@@ -1014,10 +1002,14 @@ const SskcookDetails = () => {
 
   const handleItemClick = (item) => {
     const itemIndex = orderList.indexOf(item);
+    console.log(orderList);
     const priceForItem = prices[itemIndex];
     const encodedItem = encodeURIComponent(item);
-    const url = `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(
+      `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
   };
 
   if (isLoading) {
