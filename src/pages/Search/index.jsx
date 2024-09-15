@@ -329,6 +329,8 @@ const Search = () => {
                                 sskcookSearchRecentData,
                                 item.sskcookId,
                               )}
+                              width={'12vw'}
+                              height={'42vh'}
                             />
                           </CardWrapper>
                         </CardContainer>
@@ -339,7 +341,7 @@ const Search = () => {
                             text={item.title}
                             color={COLORS.BLACK}
                             fontFamily={'Happiness-Sans-Bold'}
-                            fontSize={'1.5vw'}
+                            fontSize={'1.2rem'}
                           />
                           <CustomText
                             text={item.nickname}
@@ -383,6 +385,8 @@ const Search = () => {
                               sskcookSearchLikeData,
                               item.sskcookId,
                             )}
+                            width={'12vw'}
+                            height={'42vh'}
                           />
                         </CardWrapper>
                       </CardContainer>
@@ -391,7 +395,7 @@ const Search = () => {
                           text={item.title}
                           color={COLORS.BLACK}
                           fontFamily={'Happiness-Sans-Bold'}
-                          fontSize={'1.5vw'}
+                          fontSize={'1.2rem'}
                         />
                         <CustomText
                           text={item.nickname}

@@ -116,7 +116,8 @@ const Tag = () => {
                   url={item.sskcookUrl}
                   id={item.sskcookId}
                   color={COLORS.BLACK}
-                  height="35vh"
+                  height="42vh"
+                  width="12vw"
                   deleteAPI={sskcookAPI.sskcookDeleteAPI}
                   queryKey="sskcooks"
                   status={`tag: ${tag}`}

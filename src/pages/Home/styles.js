@@ -61,8 +61,8 @@ export const StyledTitleSkeleton = styled(Skeleton.Button)`
 `;
 
 export const StyledSskcookSkeleton = styled(Skeleton.Button)`
-  width: 10vw !important;
-  height: 40vh !important;
+  width: 12vw !important;
+  height: 42vh !important;
 `;
 
 export const StyledLongcookSkeleton = styled(Skeleton.Button)`

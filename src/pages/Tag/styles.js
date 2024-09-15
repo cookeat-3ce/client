@@ -29,5 +29,5 @@ export const CardContainer = styled.div`
 `;
 
 export const CardWrapper = styled.div`
-  width: 10vw;
+  width: 12vw;
 `;
