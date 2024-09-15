@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const PageTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 2vh 0;
+`;
+
 export const ImageButtonContainer = styled.div`
   height: 16vh;
   width: 30vw;

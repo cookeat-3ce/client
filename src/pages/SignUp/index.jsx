@@ -310,9 +310,9 @@ const SignUp = () => {
           <CustomButton
             text={'이전'}
             color={COLORS.WHITE}
-            width={'5vw'}
+            width={'4vw'}
             height={'5vh'}
-            fontSize={'.8vw'}
+            fontSize={'1rem'}
             borderRadius={'100px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor="#ADADAD"
@@ -322,9 +322,9 @@ const SignUp = () => {
           <CustomButton
             text={'회원가입'}
             color={COLORS.WHITE}
-            width={'9vw'}
+            width={'6vw'}
             height={'5vh'}
-            fontSize={'1vw'}
+            fontSize={'1rem'}
             borderRadius={'100px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.ORANGE}

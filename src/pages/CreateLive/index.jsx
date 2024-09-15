@@ -336,7 +336,7 @@ const CreateLive = () => {
                     color={COLORS.WHITE}
                     width={'6vw'}
                     height={'4vh'}
-                    fontSize={'1rem'}
+                    fontSize={'.9rem'}
                     borderRadius={'100px'}
                     fontFamily={'Happiness-Sans-Bold'}
                     backgroundColor={COLORS.ORANGE}
@@ -362,7 +362,7 @@ const CreateLive = () => {
               color={COLORS.WHITE}
               width={'4vw'}
               height={'4vh'}
-              fontSize={'1rem'}
+              fontSize={'.9rem'}
               borderRadius={'100px'}
               fontFamily={'Happiness-Sans-Bold'}
               backgroundColor="#ADADAD"
@@ -372,9 +372,9 @@ const CreateLive = () => {
             <CustomButton
               text={'시작'}
               color={COLORS.WHITE}
-              width={'6vw'}
+              width={'4vw'}
               height={'4vh'}
-              fontSize={'1rem'}
+              fontSize={'.9rem'}
               borderRadius={'100px'}
               fontFamily={'Happiness-Sans-Bold'}
               backgroundColor={COLORS.ORANGE}

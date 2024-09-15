@@ -18,7 +18,7 @@ import {
   TopContainer,
   TopInfoContainer,
 } from '../Info/styles';
-import { ImageButtonContainer } from './styles';
+import { ImageButtonContainer, PageTitleContainer } from './styles';
 import ProfileImage from '../../components/ProfileImage';
 import CustomText from '../../components/Text';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -266,12 +266,14 @@ const Subscription = () => {
   };
   return (
     <Container>
-      <CustomText
-        text={'구독목록'}
-        fontSize={'1.3vw'}
-        fontFamily={'Happiness-Sans-Bold'}
-        color={COLORS.BLACK}
-      />
+      <PageTitleContainer>
+        <CustomText
+          text={'구독 목록'}
+          fontSize={'1.5rem'}
+          fontFamily={'Happiness-Sans-Bold'}
+          color={COLORS.BLACK}
+        />
+      </PageTitleContainer>
       {currentSubscription.username ? (
         <>
           <SubscriptionSwiper
@@ -330,8 +332,8 @@ const Subscription = () => {
                       }}
                       color={COLORS.WHITE}
                       backgroundColor={COLORS.BLACK}
-                      width={'5vw'}
-                      height={'5vh'}
+                      width={'6vw'}
+                      height={'4vh'}
                       borderColor={COLORS.BLACK}
                       fontFamily={'Happiness-Sans-Bold'}
                       borderRadius={'100px'}
@@ -348,8 +350,8 @@ const Subscription = () => {
                       }}
                       color={COLORS.BLACK}
                       backgroundColor={COLORS.WHITE}
-                      width={'5vw'}
-                      height={'5vh'}
+                      width={'6vw'}
+                      height={'4vh'}
                       borderColor={COLORS.BLACK}
                       fontFamily={'Happiness-Sans-Bold'}
                       borderRadius={'100px'}

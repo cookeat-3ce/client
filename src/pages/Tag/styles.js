@@ -1,21 +1,27 @@
 import styled from 'styled-components';
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70vw;
+  width: 74vw;
 `;
 
 export const TextContainer = styled.div`
   display: flex;
-  gap: 0.5vw;
+  align-items: center;
+  margin: 2vh 0;
+  // border: 10px solid GREEN;
+`;
+
+export const ContentContainer = styled.div`
+  padding: 2vh 0;
 `;
 
 export const SkeletonContainer = styled.div`
-  margin-top: 3vh;
   display: flex;
-  width: 70vw;
-  gap: 50px;
+  gap: 3vw;
   flex-wrap: wrap;
+  // border: 10px solid BLACK;
 `;
 
 export const CardGrid = styled.div`
@@ -26,8 +32,10 @@ export const CardGrid = styled.div`
 export const CardContainer = styled.div`
   display: flex;
   align-items: center;
+  // border: 10px solid GREEN;
 `;
 
 export const CardWrapper = styled.div`
-  width: 10vw;
+  width: 12vw;
+  // border: 10px solid red;
 `;

@@ -8,8 +8,16 @@ export const Container = styled.div`
 
 export const TextContainer = styled.div`
   display: flex;
-  gap: 0.5vw;
-  margin-bottom: 3vh;
+  align-items: end;
+  margin: 2vh 0;
+  // border: 10px solid GREEN;
+`;
+
+export const ContentContainer = styled.div`
+  display: flex;
+  margin: 2vh 0 4vh 0;
+  // width: 74vw;
+  // border: 10px solid GREEN;
 `;
 
 export const SkeletonContainer = styled.div`
@@ -25,9 +33,8 @@ export const CardGrid = styled.div`
 `;
 
 export const InputContainer = styled.div`
-  margin-top: 1vh;
-  margin-bottom: 5vh;
-  margin-left: 48vw;
+  margin: 2vh 0;
+  // border: 10px solid BLACK;
 `;
 
 export const CardContainer = styled.div`
