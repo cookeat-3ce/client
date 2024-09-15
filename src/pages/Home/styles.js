@@ -5,9 +5,9 @@ import { COLORS } from '../../constants';
 export const StyledCarousel = styled(Carousel).attrs({
   className: 'slick-slider sc-jCbFiK xxCXH slick-initialized',
 })`
-  max-width: 75vw;
+  max-width: 56vw;
   margin: 0 auto;
-  max-height: 50vh;
+  max-height: 48vh;
   overflow: hidden;
   cursor: pointer;
   box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);
@@ -21,8 +21,7 @@ export const StyledCarousel = styled(Carousel).attrs({
 
 export const StyledImage = styled.img`
   width: 100%;
-  height: 80vh;
-  object-fit: fill;
+  object-fit: contain;
   border-radius: inherit;
 `;
 
@@ -31,7 +30,6 @@ export const ItemContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
   border-radius: inherit;
 `;
 
