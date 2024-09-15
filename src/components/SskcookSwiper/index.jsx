@@ -64,8 +64,9 @@ const CustomSwiper = ({
               window.location.href = `/sskcook?date=${formattedDate}`;
             } else if (now === 'recent') {
               window.location.href = `/sskcook?sort=latest`;
+            } else {
+              window.location.href = '/recommends';
             }
-            // 내 냉장고 조회 추가할 예정
           }}
         >
           <CustomText
@@ -88,19 +89,19 @@ const CustomSwiper = ({
           <LoginContainer>
             <LoginWrapper>
               <CustomText
-                text={'로그인이 필요한 서비스예요!'}
-                fontSize={'1.3vw'}
-                fontFamily={'Happiness-Sans-Regular'}
+                text="로그인이 필요한 서비스예요!"
+                fontSize="1.3vw"
+                fontFamily="Happiness-Sans-Regular"
                 color={COLORS.BLACK}
               />
               <CustomButton
-                text={'로그인 하러 가기'}
-                fontSize={'1vw'}
-                width={'12vw'}
-                height={'5vh'}
+                text="로그인 하러 가기"
+                fontSize="1vw"
+                width="12vw"
+                height="5vh"
                 color={COLORS.WHITE}
-                borderRadius={'20px'}
-                fontFamily={'Happiness-Sans-Regular'}
+                borderRadius="20px"
+                fontFamily="Happiness-Sans-Regular"
                 backgroundColor={COLORS.DARKGRAPEFRUIT}
                 borderColor={COLORS.DARKGRAPEFRUIT}
                 onClick={() => handleChangeUrl('/login')}
@@ -110,15 +111,15 @@ const CustomSwiper = ({
         ) : arr && arr.length > 0 ? (
           <Swiper
             ref={swiperRef}
-            slidesPerView={'auto'}
+            slidesPerView="auto"
             spaceBetween={50}
             pagination={false}
-            navigation={true}
+            navigation
             modules={[Pagination, Navigation]}
             className="mySwiper"
           >
             {arr.map((slide, index) => (
-              <SwiperSlide key={index} className={'sskcook'}>
+              <SwiperSlide key={index} className="sskcook">
                 <Card
                   type="sskcook"
                   url={slide.sskcookUrl}
@@ -134,26 +135,26 @@ const CustomSwiper = ({
               </SwiperSlide>
             ))}
           </Swiper>
-        ) : isLogined === 'fridge' && (arr.length === 0 || !arr) ? (
+        ) : arr && arr.length === 0 ? (
           <LoginContainer>
             <LoginWrapper>
               <CustomText
-                text={'내 냉장고에 아무것도 없어요!'}
-                fontSize={'1.3vw'}
-                fontFamily={'Happiness-Sans-Regular'}
+                text="내 냉장고에 아무것도 없어요!"
+                fontSize="1.3vw"
+                fontFamily="Happiness-Sans-Regular"
                 color={COLORS.BLACK}
               />
               <CustomButton
-                text={'재료 등록하러 가기'}
-                fontSize={'1vw'}
-                width={'12vw'}
-                height={'5vh'}
+                text="재료 등록하러 가기"
+                fontSize="1vw"
+                width="12vw"
+                height="5vh"
                 color={COLORS.WHITE}
-                borderRadius={'20px'}
-                fontFamily={'Happiness-Sans-Regular'}
+                borderRadius="20px"
+                fontFamily="Happiness-Sans-Regular"
                 backgroundColor={COLORS.DARKGRAPEFRUIT}
                 borderColor={COLORS.DARKGRAPEFRUIT}
-                onClick={() => handleChangeUrl('/login')}
+                onClick={() => handleChangeUrl('/myfridge')}
               />
             </LoginWrapper>
           </LoginContainer>
@@ -168,9 +169,9 @@ const CustomSwiper = ({
             }}
           >
             <CustomText
-              text={'표시할 데이터가 없습니다.'}
-              fontSize={'1vw'}
-              fontFamily={'Happiness-Sans-Bold'}
+              text="표시할 데이터가 없습니다."
+              fontSize="1vw"
+              fontFamily="Happiness-Sans-Bold"
               color={COLORS.ORANGE}
             />
           </div>
