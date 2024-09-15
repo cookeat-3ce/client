@@ -944,15 +944,21 @@ const SskcookDetails = () => {
   };
 
   const handleItemClick = (item) => {
-    const itemIndex = orderList.indexOf(item);
-    console.log(orderList);
-    const priceForItem = prices[itemIndex];
-    const encodedItem = encodeURIComponent(item);
-    window.open(
-      `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`,
-      '_blank',
-      'noopener,noreferrer',
+    const itemIndex = sskcookDetailsData?.data?.ingredients.findIndex(
+      (ingredient) => ingredient.name === item,
     );
+    const priceForItem = prices[itemIndex];
+
+    if (itemIndex !== -1 && priceForItem) {
+      const encodedItem = encodeURIComponent(item);
+      window.open(
+        `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`,
+        '_blank',
+        'noopener,noreferrer',
+      );
+    } else {
+      console.log('error');
+    }
   };
 
   if (isLoading) {
