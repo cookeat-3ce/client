@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Container,
@@ -17,6 +17,8 @@ import CustomText from '../../components/Text';
 import CustomButton from '../../components/Button';
 import { COLORS } from '../../constants';
 import { longcookAPI } from '../../apis/longcook';
+import { getCookie } from '../../hooks';
+import { INGREDIENTS } from '../../constants';
 
 const LongcookDetails = () => {
   const { id } = useParams();
@@ -25,31 +27,49 @@ const LongcookDetails = () => {
   const [ingredients, setIngredients] = useState([]);
   const [title, setTitle] = useState('');
   const [recipe, setRecipe] = useState('');
+  const [prices, setPrices] = useState([]);
   const [longcookUrl, setLongcookUrl] = useState('');
   const [longcookId, setLongcookId] = useState('');
   const [username, setUsername] = useState('');
+
+  const getRandomNumber = useCallback((min, max) => {
+    const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.round(randomNum / 100) * 100;
+  }, []);
+
+  const generateRandomPrices = (items) => {
+    return items.map(() => getRandomNumber(1000, 20000));
+  };
 
   useEffect(() => {
     const fetchLongcookDetails = async () => {
       try {
         const { data } = await longcookAPI.longcookDetailsAPI(id);
-        console.log(data.details[0]);
-        setTitle(data.details[0].title);
-        setRecipe(data.details[0].recipe);
-        setIngredients(data.ingredients);
-        setLongcookUrl(data.details[0].longcookUrl);
-        setLongcookId(data.details[0].longcookId);
-        setUsername(data.details[0].username);
+        const details = data?.details?.[0];
 
-        if (data.details[0].longcookUrl) {
-          setFile({
-            fileObject: null,
-            url: data.details[0].longcookUrl,
-            video: true,
-          });
+        if (details) {
+          setTitle(details.title);
+          setRecipe(details.recipe);
+          setIngredients(data.ingredients);
+          setLongcookUrl(details.longcookUrl);
+          setLongcookId(details.longcookId);
+          setUsername(details.username);
+
+          if (details.longcookUrl) {
+            setFile({
+              fileObject: null,
+              url: details.longcookUrl,
+              video: true,
+            });
+          }
+
+          const generatedPrices = generateRandomPrices(data.ingredients);
+          setPrices(generatedPrices);
+        } else {
+          console.error('No details found for the given id');
         }
       } catch (error) {
-        console.error('Error fetching longcook details: ', error);
+        console.error('Error fetching longcook details:', error);
       }
     };
 
@@ -57,12 +77,21 @@ const LongcookDetails = () => {
   }, [id]);
 
   const handleItemClick = (item) => {
-    const encodedItem = encodeURIComponent(item);
-    window.open(
-      `http://localhost:3000/order?data=${encodedItem}`,
-      '_blank',
-      'noopener,noreferrer',
+    const itemIndex = ingredients?.findIndex(
+      (ingredient) => ingredient.name === item,
     );
+    const priceForItem = prices?.[itemIndex];
+
+    if (itemIndex !== -1 && priceForItem) {
+      const encodedItem = encodeURIComponent(item);
+      window.open(
+        `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`,
+        '_blank',
+        'noopener,noreferrer',
+      );
+    } else {
+      console.error('Item not found or price unavailable');
+    }
   };
 
   return (
@@ -102,13 +131,39 @@ const LongcookDetails = () => {
       </SubTitleContainer>
 
       <IngredientWrapper>
-        {ingredients.map((ingredient, index) => (
+        {ingredients.map((item, index) => (
           <IngredientItem key={index}>
             <IngredientSection>
-              <CustomText text={ingredient.name} fontSize={'1vw'} />
+              <CustomText
+                text={item.name}
+                fontFamily={'Happiness-Sans-Regular'}
+                color={
+                  getCookie('accessToken') &&
+                  ingredients.some((ing) => item.name.includes(ing.name))
+                    ? COLORS.ORANGE
+                    : COLORS.BLACK
+                }
+                fontSize={'1vw'}
+              />
             </IngredientSection>
             <IngredientSection>
-              <CustomText text={ingredient.amount} fontSize={'1vw'} />
+              <CustomText
+                text={item.amount}
+                fontSize={'1vw'}
+                fontFamily={'Happiness-Sans-Regular'}
+              />
+            </IngredientSection>
+            <IngredientSection>
+              <CustomText
+                text={
+                  INGREDIENTS[item.name]
+                    ? `${INGREDIENTS[item.name]}원`
+                    : `${(prices[index] || '').toString()}원`
+                }
+                fontFamily={'Happiness-Sans-Regular'}
+                color={COLORS.BLACK}
+                fontSize={'1vw'}
+              />
             </IngredientSection>
             <IngredientSection>
               <CustomButton
@@ -122,7 +177,7 @@ const LongcookDetails = () => {
                 height={'3vh'}
                 fontFamily={'Happiness-Sans-Bold'}
                 marginTop={'-0.2vh'}
-                onClick={() => handleItemClick(ingredient.name)}
+                onClick={() => handleItemClick(item.name)}
               />
             </IngredientSection>
           </IngredientItem>
