@@ -100,18 +100,20 @@ const Fridge = () => {
             color={COLORS.GRAY}
           />
         </TitleWrapper>
-        <CustomButton
-          text={'재료 등록하기'}
-          color={`${COLORS.WHITE}`}
-          width={'8vw'}
-          height={'4vh'}
-          backgroundColor={`${COLORS.ORANGE}`}
-          fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'.8rem'}
-          borderColor={`${COLORS.ORANGE}`}
-          borderRadius={'10px'}
-          onClick={openSubmitIngredientModal}
-        ></CustomButton>
+        {0 < ingredients.length && (
+          <CustomButton
+            text={'재료 등록하기'}
+            color={`${COLORS.WHITE}`}
+            width={'8vw'}
+            height={'4vh'}
+            backgroundColor={`${COLORS.ORANGE}`}
+            fontFamily={'Happiness-Sans-Bold'}
+            fontSize={'.8rem'}
+            borderColor={`${COLORS.ORANGE}`}
+            borderRadius={'10px'}
+            onClick={openSubmitIngredientModal}
+          ></CustomButton>
+        )}
       </PageTitleContainer>
       <ContentContainer>
         {ingredients.length === 0 ? (
