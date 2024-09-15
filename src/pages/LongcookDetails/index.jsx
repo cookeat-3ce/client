@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Container,
@@ -17,58 +17,112 @@ import CustomText from '../../components/Text';
 import CustomButton from '../../components/Button';
 import { COLORS } from '../../constants';
 import { longcookAPI } from '../../apis/longcook';
+import { getCookie } from '../../hooks';
+import { INGREDIENTS } from '../../constants';
+import { fridgeAPI } from '../../apis/fridge';
 
 const LongcookDetails = () => {
   const { id } = useParams();
 
   const [file, setFile] = useState(null);
   const [ingredients, setIngredients] = useState([]);
+  const [ingredient, setIngredientss] = useState([]);
   const [title, setTitle] = useState('');
   const [recipe, setRecipe] = useState('');
-  const [longcookUrl, setLongcookUrl] = useState('');
-  const [longcookId, setLongcookId] = useState('');
+  const [prices, setPrices] = useState([]);
   const [username, setUsername] = useState('');
 
+  const getRandomNumber = useCallback((min, max) => {
+    const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.round(randomNum / 100) * 100;
+  }, []);
+
+  const fetchMyIngredients = async () => {
+    try {
+      const response = await fridgeAPI.getIngredientsAPI();
+      setIngredientss(response.data || []);
+    } catch (error) {
+      console.error('Failed to fetch ingredients:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyIngredients();
+  }, []);
+
+  const generateRandomPrices = (items) => {
+    console.log(items, INGREDIENTS);
+    return items.map((item) => {
+      if (INGREDIENTS[item.name]) {
+        return INGREDIENTS[item.name];
+      } else {
+        return getRandomNumber(1000, 20000);
+      }
+    });
+  };
   useEffect(() => {
     const fetchLongcookDetails = async () => {
       try {
         const { data } = await longcookAPI.longcookDetailsAPI(id);
-        console.log(data.details[0]);
-        setTitle(data.details[0].title);
-        setRecipe(data.details[0].recipe);
-        setIngredients(data.ingredients);
-        setLongcookUrl(data.details[0].longcookUrl);
-        setLongcookId(data.details[0].longcookId);
-        setUsername(data.details[0].username);
+        const details = data?.details?.[0];
 
-        if (data.details[0].longcookUrl) {
-          setFile({
-            fileObject: null,
-            url: data.details[0].longcookUrl,
-            video: true,
-          });
+        if (details) {
+          setTitle(details.title);
+          setRecipe(details.recipe);
+          setIngredients(data.ingredients);
+          setUsername(details.username);
+
+          if (details.longcookUrl) {
+            setFile({
+              fileObject: null,
+              url: details.longcookUrl,
+              video: true,
+            });
+          }
+
+          const generatedPrices = generateRandomPrices(data.ingredients);
+          setPrices(generatedPrices);
+        } else {
+          console.error('No details found for the given id');
         }
       } catch (error) {
-        console.error('Error fetching longcook details: ', error);
+        console.error('Error fetching longcook details:', error);
       }
     };
 
     fetchLongcookDetails();
   }, [id]);
+  console.log(prices);
 
   const handleItemClick = (item) => {
-    const encodedItem = encodeURIComponent(item);
-    const url = `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${123}`; // 여기 priceItem 바꿔줘야함
-    window.open(url, '_blank', 'noopener,noreferrer');
+    const itemIndex = ingredients?.findIndex((ing) => ing.name === item);
+    const priceForItem = prices?.[itemIndex];
+
+    if (itemIndex !== -1 && priceForItem !== undefined) {
+      const encodedItem = encodeURIComponent(item);
+      window.open(
+        `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`,
+        '_blank',
+        'noopener,noreferrer',
+      );
+    } else {
+      console.error('Item not found or price unavailable');
+    }
   };
+
+  const highlightedIngredients = getCookie('accessToken')
+    ? ingredients.filter((item) =>
+        ingredient.some((ing) => ing.name === item.name),
+      )
+    : [];
 
   return (
     <Container>
       <VideoContainer>
         <VideoPreviewContainer>
           <VideoPreview
-            file={file && file.video}
-            src={file ? file.url : ''}
+            file={file?.video}
+            src={file?.url || ''}
             controls
             autoPlay
             muted
@@ -99,31 +153,58 @@ const LongcookDetails = () => {
       </SubTitleContainer>
 
       <IngredientWrapper>
-        {ingredients.map((ingredient, index) => (
-          <IngredientItem key={index}>
-            <IngredientSection>
-              <CustomText text={ingredient.name} fontSize={'1vw'} />
-            </IngredientSection>
-            <IngredientSection>
-              <CustomText text={ingredient.amount} fontSize={'1vw'} />
-            </IngredientSection>
-            <IngredientSection>
-              <CustomButton
-                text={'구매'}
-                fontSize={'.7vw'}
-                borderRadius={'100px'}
-                color={COLORS.WHITE}
-                backgroundColor={COLORS.ORANGE}
-                borderColor={COLORS.ORANGE}
-                width={'3vw'}
-                height={'3vh'}
-                fontFamily={'Happiness-Sans-Bold'}
-                marginTop={'-0.2vh'}
-                onClick={() => handleItemClick(ingredient.name)}
-              />
-            </IngredientSection>
-          </IngredientItem>
-        ))}
+        {ingredients.map((item, index) => {
+          const isHighlighted = highlightedIngredients.some(
+            (highlightedItem) => highlightedItem.name === item.name,
+          );
+
+          return (
+            <IngredientItem key={index}>
+              <IngredientSection>
+                <CustomText
+                  text={item.name}
+                  fontFamily={'Happiness-Sans-Regular'}
+                  color={isHighlighted ? COLORS.ORANGE : COLORS.BLACK}
+                  fontSize={'1vw'}
+                />
+              </IngredientSection>
+              <IngredientSection>
+                <CustomText
+                  text={item.amount}
+                  fontSize={'1vw'}
+                  fontFamily={'Happiness-Sans-Regular'}
+                />
+              </IngredientSection>
+              <IngredientSection>
+                <CustomText
+                  text={
+                    INGREDIENTS[item.name]
+                      ? `${INGREDIENTS[item.name]}원`
+                      : `${(prices[index] || '').toString()}원`
+                  }
+                  fontFamily={'Happiness-Sans-Regular'}
+                  color={COLORS.BLACK}
+                  fontSize={'1vw'}
+                />
+              </IngredientSection>
+              <IngredientSection>
+                <CustomButton
+                  text={'구매'}
+                  fontSize={'.7vw'}
+                  borderRadius={'100px'}
+                  color={COLORS.WHITE}
+                  backgroundColor={COLORS.ORANGE}
+                  borderColor={COLORS.ORANGE}
+                  width={'3vw'}
+                  height={'3vh'}
+                  fontFamily={'Happiness-Sans-Bold'}
+                  marginTop={'-0.2vh'}
+                  onClick={() => handleItemClick(item.name)}
+                />
+              </IngredientSection>
+            </IngredientItem>
+          );
+        })}
       </IngredientWrapper>
 
       <SubTitleContainer>

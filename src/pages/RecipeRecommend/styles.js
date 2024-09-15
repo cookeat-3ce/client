@@ -2,6 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   //   border: 10px solid BLACK;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 74vw;
 `;
 
 export const PageTitleContainer = styled.div`
@@ -19,7 +23,6 @@ export const ContentContainer = styled.div`
 `;
 
 export const SskcookContainer = styled.div`
-  height: 32vh;
   margin: 0 2vw 0 0;
   //   border: 10px solid black;
 `;
