@@ -17,7 +17,7 @@ import { memberState } from '../../store';
 import { COLORS } from '../../constants';
 import CustomButton from '../Button';
 import CustomText from '../Text';
-import { CustomInput } from '../Input';
+import { CustomInput, CustomInputTextarea } from '../Input';
 import icon_fruit from '../../assets/icons/fruit.svg';
 import icon_egg from '../../assets/icons/egg.svg';
 import icon_etc from '../../assets/icons/etc.svg';
@@ -28,8 +28,9 @@ import { fridgeAPI } from '../../apis/fridge';
 import { useCustomNavigate } from '../../hooks';
 import { useMutation } from '@tanstack/react-query';
 import moment from 'moment/moment';
+import { memberAPI } from '../../apis/member';
 
-const InputModal = ({ show, onClose, onSubmit }) => {
+export const InputModal = ({ show, onClose, onSubmit }) => {
   const [member] = useRecoilState(memberState);
   const username = member.username;
   const { handleChangeUrl } = useCustomNavigate();
@@ -234,4 +235,93 @@ const InputModal = ({ show, onClose, onSubmit }) => {
   );
 };
 
-export default InputModal;
+export const ModifyOnelineModal = ({ show, onClose, onSubmit }) => {
+  const [member] = useRecoilState(memberState);
+  const username = member.username;
+  const [oneliner, setOneliner] = useState('');
+  const { handleChangeUrl } = useCustomNavigate();
+
+  const modifyOnelinerData = {
+    username: username,
+    oneLiner: oneliner,
+  };
+
+  const mutation = useMutation({
+    mutationFn: async (data) => {
+      await memberAPI.modifyOneLinerAPI(data);
+    },
+    onSuccess: (response) => {
+      console.log(response);
+      handleChangeUrl('/info');
+      onClose();
+    },
+    onError: (error) => {
+      console.error('Error modify one line:', error);
+    },
+  });
+
+  const handleSubmitButtonClick = () => {
+    mutation.mutate(modifyOnelinerData);
+  };
+
+  if (!show) return null;
+
+  const handleChangeOneline = (e) => {
+    setOneliner(e.target.value);
+  };
+
+  return (
+    <ModalBackdrop onClick={onClose}>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
+        <ModalTitleContainer>
+          <CustomText
+            text={'한줄 소개 수정'}
+            fontFamily={'Happiness-Sans-Bold'}
+            fontSize={'1.2rem'}
+          />
+        </ModalTitleContainer>
+        <InputTextWrapper>
+          <CustomInputTextarea
+            fontSize={'1rem'}
+            width={'28vw'}
+            height={'4vh'}
+            type={'text'}
+            onChange={handleChangeOneline}
+          ></CustomInputTextarea>
+        </InputTextWrapper>
+        <ButtonGroup>
+          <CustomButton
+            text={'취소'}
+            color={COLORS.ORANGE}
+            width={'4vw'}
+            height={'3vh'}
+            fontSize={'.8rem'}
+            borderRadius={'20px'}
+            fontFamily={'Happiness-Sans-Bold'}
+            backgroundColor={COLORS.WHITE}
+            borderColor={COLORS.ORANGE}
+            onClick={(e) => {
+              e.preventDefault();
+              onClose();
+            }}
+          />
+          <CustomButton
+            text={'등록'}
+            color={COLORS.WHITE}
+            width={'4vw'}
+            height={'3vh'}
+            fontSize={'.8rem'}
+            borderRadius={'20px'}
+            fontFamily={'Happiness-Sans-Bold'}
+            backgroundColor={COLORS.ORANGE}
+            borderColor={COLORS.ORANGE}
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmitButtonClick();
+            }}
+          />
+        </ButtonGroup>
+      </ModalContent>
+    </ModalBackdrop>
+  );
+};

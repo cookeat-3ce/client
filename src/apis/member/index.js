@@ -30,4 +30,7 @@ export const memberAPI = {
   verifyRequestAPI: (username) => {
     return instance.patch(`/member/${username}/verify`);
   },
+  modifyOneLinerAPI: (data) => {
+    return instance.post(`/member/one-liner`, data);
+  },
 };
