@@ -30,13 +30,11 @@ const RecipeRecommend = () => {
   const myIngredientsQuery = useQuery({
     queryKey: ['myIngredients'],
     queryFn: () => fridgeAPI.getIngredientsAPI(),
-    staleTime: Infinity,
   });
 
   const recommendsRecipeQuery = useQuery({
     queryKey: ['recommends'],
     queryFn: () => sskcookAPI.getSskcookRecommendsAPI(),
-    staleTime: Infinity,
   });
 
   useEffect(() => {
