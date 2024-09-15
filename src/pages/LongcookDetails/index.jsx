@@ -51,9 +51,15 @@ const LongcookDetails = () => {
   }, []);
 
   const generateRandomPrices = (items) => {
-    return items.map(() => getRandomNumber(1000, 20000));
+    console.log(items, INGREDIENTS);
+    return items.map((item) => {
+      if (INGREDIENTS[item.name]) {
+        return INGREDIENTS[item.name];
+      } else {
+        return getRandomNumber(1000, 20000);
+      }
+    });
   };
-
   useEffect(() => {
     const fetchLongcookDetails = async () => {
       try {
@@ -86,12 +92,13 @@ const LongcookDetails = () => {
 
     fetchLongcookDetails();
   }, [id]);
+  console.log(prices);
 
   const handleItemClick = (item) => {
     const itemIndex = ingredients?.findIndex((ing) => ing.name === item);
     const priceForItem = prices?.[itemIndex];
 
-    if (itemIndex !== -1 && priceForItem) {
+    if (itemIndex !== -1 && priceForItem !== undefined) {
       const encodedItem = encodeURIComponent(item);
       window.open(
         `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${priceForItem}`,

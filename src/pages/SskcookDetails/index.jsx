@@ -892,7 +892,6 @@ const SskcookDetails = () => {
   const { data: sskcookDetailsData, isLoading } = useQuery({
     queryKey: ['sskccokDetails', sskcookId],
     queryFn: () => sskcookAPI.sskcookDetailsAPI(sskcookId),
-    staleTime: Infinity,
   });
 
   useEffect(() => {
@@ -918,11 +917,16 @@ const SskcookDetails = () => {
       prev !== newIsSirenClicked ? newIsSirenClicked : prev,
     );
   }, [sskcookDetailsData]);
-
   const generateRandomPrices = (items) => {
-    return items.map(() => getRandomNumber(1000, 20000));
+    console.log(items, INGREDIENTS);
+    return items.map((item) => {
+      if (INGREDIENTS[item.name]) {
+        return INGREDIENTS[item.name];
+      } else {
+        return getRandomNumber(1000, 20000);
+      }
+    });
   };
-
   // 모든 금액
   const [prices, setPrices] = useState([]);
 
