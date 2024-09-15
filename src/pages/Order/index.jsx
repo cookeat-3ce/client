@@ -146,11 +146,6 @@ const Order = () => {
 
   const totalDiscountPrice = totalPrice - discountPrice + shippingPrice;
 
-  console.log('Total Price:', totalPrice);
-  console.log('Discount Price:', discountPrice);
-  console.log('Shipping Price:', shippingPrice);
-  console.log('Total Discount Price:', totalDiscountPrice);
-
   const [arrayData, setArrayData] = useState(orderData);
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState('credit-card');
