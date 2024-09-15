@@ -48,6 +48,13 @@ const AdminSidebar = () => {
         }
       ></CustomTextButton>
       <CustomTextButton
+        text={'이벤트 등록'}
+        onClick={() => handleChangeUrl('/admin/event')}
+        color={
+          location.pathname === '/admin/event' ? COLORS.ORANGE : COLORS.BLACK
+        }
+      ></CustomTextButton>
+      <CustomTextButton
         text={'신고'}
         onClick={() => handleChangeUrl('/admin/report')}
         color={

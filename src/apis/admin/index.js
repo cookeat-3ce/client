@@ -10,4 +10,7 @@ export const AdminAPI = {
   deleteSskcookAPI: (data) => {
     return instance.delete(`/admin/sskcook/${data}`);
   },
+  postEvent: (data) => {
+    return instance.post('/admin/event', data);
+  },
 };

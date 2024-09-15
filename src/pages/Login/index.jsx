@@ -22,7 +22,6 @@ import { memberState } from '../../store';
 import { getCookie } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
-import { fridgeAPI } from '../../apis/fridge';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -84,7 +83,6 @@ const Login = () => {
       };
 
       setMemberState(updatedMemberData);
-      const res = await fridgeAPI.getIngredientsAPI();
 
       authValue === 'ROLE_ADMIN' ? navigate('/admin') : navigate('/');
     },

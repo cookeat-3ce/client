@@ -51,6 +51,7 @@ import AdminAlarm from './pages/AdminAlarm';
 import AdminVerify from './pages/AdminVerify';
 import AdminReport from './pages/AdminReport';
 import ReactGA from 'react-ga4';
+import AdminEvent from './pages/AdminEvent';
 
 const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID;
 console.log(GA_TRACKING_ID);
@@ -391,6 +392,14 @@ function App() {
           element={
             <AdminLayout>
               <AdminReport />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/admin/event"
+          element={
+            <AdminLayout>
+              <AdminEvent />
             </AdminLayout>
           }
         />
