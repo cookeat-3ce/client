@@ -12,9 +12,9 @@ import {
   StyledLongcookSkeleton,
   StyledTagSkeleton,
 } from './styles';
-import image1 from '../../assets/images/example_carousel1.jpg';
-import image2 from '../../assets/images/example_carousel2.jpg';
-import image3 from '../../assets/images/example_carousel3.jpg';
+import image1 from '../../assets/images/mealkit_sale_banner.svg';
+import image2 from '../../assets/images/mealkit_event_banner.svg';
+import image3 from '../../assets/images/service_info_banner.svg';
 import SskcookSwiper from '../../components/SskcookSwiper';
 import LongcookSwiper from '../../components/LongcookSwiper';
 import TagSwiper from '../../components/TagSwiper';
