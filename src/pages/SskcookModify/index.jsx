@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
+
 import {
   Container,
   TextContainer,
@@ -31,10 +32,10 @@ import CustomButton from '../../components/Button';
 import { COLORS, TAGS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { sskcookAPI } from '../../apis/sskcook';
+import CheckModal from '../../components/CheckModal';
 
 const SskcookModify = () => {
   const { id } = useParams();
-
   const [file, setFile] = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [ingredientName, setIngredientName] = useState('');
@@ -45,7 +46,28 @@ const SskcookModify = () => {
   const fileInputRef = useRef(null);
   const [sskcookUrl, setSskcookUrl] = useState('');
   const [sskcookId, setSskcookId] = useState('');
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const openUploadModal = () => {
+    setShowUploadModal(true);
+  };
+  const closeUploadModal = () => {
+    setShowUploadModal(false);
+  };
+  const openDeleteModal = () => {
+    setShowDeleteModal(true);
+  };
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+  };
+  const options = Object.keys(TAGS).map((key) => ({
+    label: TAGS[key],
+    value: key,
+  }));
 
+  const handleChange = (value) => {
+    setSelectedTags(value);
+  };
   useEffect(() => {
     const fetchSskcookDetails = async () => {
       try {
@@ -54,7 +76,6 @@ const SskcookModify = () => {
         setTitle(data.details[0].title);
         setRecipe(data.details[0].recipe);
         setIngredients(data.ingredients);
-        // TODO : setSelectedTags(data.hashtags.map(tag => tag.id));
         setSskcookUrl(data.details[0].sskcookUrl);
         setSskcookId(data.details[0].sskcookId);
         if (data.details[0].sskcookUrl) {
@@ -71,14 +92,6 @@ const SskcookModify = () => {
 
     fetchSskcookDetails();
   }, [id]);
-  const options = Object.keys(TAGS).map((key) => ({
-    label: TAGS[key],
-    value: key,
-  }));
-
-  const handleChange = (value) => {
-    setSelectedTags(value);
-  };
 
   const videoUpload = (e) => {
     const selectedFile = e.target.files[0];
@@ -115,6 +128,7 @@ const SskcookModify = () => {
     {
       onSuccess: () => {
         console.log('수정 성공');
+        openUploadModal();
       },
       onError: (error) => {
         console.error();
@@ -128,39 +142,41 @@ const SskcookModify = () => {
       return;
     }
 
-    // FormData 생성
     const formData = new FormData();
-    console.log(sskcookId);
-    // sskcook JSON 데이터
+    const hashtags = selectedTags.map((tagId) => ({
+      hashtagId: Number(tagId),
+    }));
+
     const sskcookData = JSON.stringify({
       sskcookUrl: sskcookUrl,
       sskcookId: sskcookId,
       title: title,
       recipe: recipe,
       ingredient: ingredients,
-      hashtag: [
-        {
-          hashtagId: 1,
-        },
-      ],
+      hashtag: hashtags,
     });
-    console.log(file.url);
-    console.log(sskcookUrl);
+
     formData.append('file', file.fileObject);
     formData.append('sskcook', sskcookData);
+    console.log(sskcookData);
     mutation.mutate(formData);
   };
 
-  const handleDelete = async () => {
-    try {
-      const confirmed = window.confirm('정말로 슥쿡을 삭제하시겠습니까?');
-      if (confirmed) {
-        await sskcookAPI.sskcookDeleteAPI(sskcookId);
+  const deleteMutation = useMutation(
+    () => sskcookAPI.sskcookDeleteAPI(sskcookId),
+    {
+      onSuccess: () => {
         console.log('삭제 성공');
-      }
-    } catch (error) {
-      console.error('삭제 실패:', error);
-    }
+        openDeleteModal();
+      },
+      onError: (error) => {
+        console.error('삭제 실패:', error);
+      },
+    },
+  );
+
+  const handleDelete = () => {
+    deleteMutation.mutate();
   };
 
   return (
@@ -343,6 +359,16 @@ const SskcookModify = () => {
           />
         </SubmitButtonWrapper>
       </UploadContainer>
+      <CheckModal
+        show={showUploadModal}
+        onClose={closeUploadModal}
+        info={'슥쿡이 정상적으로 수정 되었어요!'}
+      />
+      <CheckModal
+        show={showDeleteModal}
+        onClose={closeDeleteModal}
+        info={'슥쿡이 성공적으로 삭제되었어요!'}
+      />
     </Container>
   );
 };

@@ -58,11 +58,8 @@ const LongcookDetails = () => {
 
   const handleItemClick = (item) => {
     const encodedItem = encodeURIComponent(item);
-    window.open(
-      `http://localhost:3000/order?data=${encodedItem}`,
-      '_blank',
-      'noopener,noreferrer',
-    );
+    const url = `https://www.cookeat.site/order?orderData=${encodedItem}&priceData=${123}`; // 여기 priceItem 바꿔줘야함
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (

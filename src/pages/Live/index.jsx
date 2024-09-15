@@ -10,6 +10,7 @@ import {
   LiveTitleWrapper,
   PageTitleContainer,
   ParticipantImage,
+  SearchContainer,
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
@@ -21,11 +22,13 @@ import Modal from '../../components/Modal';
 import CustomButton from '../../components/Button';
 import icon_person from '../../assets/icons/icon_person.svg';
 import { Tooltip } from 'antd';
+import { CustomSearchInput } from '../../components/Input';
 
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
 const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
 
 const Live = () => {
+  const [searchValue, setSearchValue] = useState('');
   const { handleChangeUrl } = useCustomNavigate();
   const [liveList, setLiveList] = useState([]);
   const [keyword, setKeyword] = useState(null);
@@ -141,6 +144,16 @@ const Live = () => {
     handleChangeUrl('/live/create');
   };
 
+  const handleChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      setKeyword(searchValue);
+    }
+  };
+
   return (
     <Container>
       <PageTitleContainer>
@@ -150,28 +163,38 @@ const Live = () => {
           fontSize={'1.5rem'}
           color={COLORS.BLACK}
         />
-        <CreateButtonWrapper>
-          <CustomButton
-            text={'라이브 생성하기'}
-            color={COLORS.WHITE}
-            width={'8vw'}
-            height={'4vh'}
-            backgroundColor={COLORS.ORANGE}
-            borderColor={COLORS.ORANGE}
-            fontSize={'.8rem'}
-            onClick={handleClickCreateButton}
-            fontFamily={'Happiness-Sans-Bold'}
-            borderRadius={'20px'}
-          />
-        </CreateButtonWrapper>
       </PageTitleContainer>
+      <SearchContainer>
+        <CustomSearchInput
+          text={'라이브 검색'}
+          fontSize={'1rem'}
+          width={'20vw'}
+          height={'4vh'}
+          type={'text'}
+          onChange={handleChange}
+          value={searchValue}
+          onKeyDown={handleKeyDown}
+        />
+        <CustomButton
+          text={'라이브 열기'}
+          color={COLORS.WHITE}
+          width={'6vw'}
+          height={'4vh'}
+          backgroundColor={COLORS.ORANGE}
+          borderColor={COLORS.ORANGE}
+          fontSize={'.9rem'}
+          onClick={handleClickCreateButton}
+          fontFamily={'Happiness-Sans-Bold'}
+          borderRadius={'20px'}
+        />
+      </SearchContainer>
       <ContentContainer>
         {liveList.length === 0 && (
           <CustomText
-            text={'진행 중인 클래스가 없습니다.'}
-            fontFamily={'Happiness-Sans-Regular'}
-            fontSize={'.8rem'}
-            color={COLORS.BLACK}
+            text={'열린 클래스가 없어요!'}
+            fontFamily={'Happiness-Sans-Bold'}
+            fontSize={'1rem'}
+            color={COLORS.ORANGE}
           />
         )}
         <LiveListContainer>

@@ -12,7 +12,7 @@ import { getCookie, deleteAllCookies } from '../../hooks';
 import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../../apis/member';
 import { useCustomNavigate } from '../../hooks';
-import { ingredientState, memberState } from '../../store';
+import { memberState } from '../../store';
 import { useResetRecoilState, useRecoilValue } from 'recoil';
 import { debounce } from 'lodash';
 import Logo from '../../assets/icons/hyundai_logo.png';
@@ -23,7 +23,6 @@ const OrderDone = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const accessToken = getCookie('accessToken');
   const resetMemberState = useResetRecoilState(memberState);
-  const resetIngredientState = useResetRecoilState(ingredientState);
   const member = useRecoilValue(memberState);
   const mutation = useMutation({
     mutationFn: async () => {
@@ -31,7 +30,6 @@ const OrderDone = () => {
     },
     onSuccess: () => {
       resetMemberState();
-      resetIngredientState();
       deleteAllCookies();
       handleChangeUrl('/');
     },

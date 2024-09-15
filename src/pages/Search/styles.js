@@ -4,30 +4,34 @@ import { COLORS } from '../../constants';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3vw;
-  width: 70vw;
+  width: 72vw;
+`;
+
+export const InputContainer = styled.div`
+  display: flex;
+  margin: 2vh 0;
 `;
 
 export const TabsContainer = styled.div`
-  margin-top: 7vh;
+  margin: 2vh 0 0 0;
 `;
 
 export const StyledTabs = styled(Tabs)`
   .ant-tabs-tab-btn {
     color: ${COLORS.GRAY};
     font-family: 'Happiness-Sans-Regular', sans-serif;
-    font-size: 1.2vw;
+    font-size: 1.2rem;
   }
 
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: ${COLORS.BLACK};
     font-family: 'Happiness-Sans-Bold', sans-serif;
-    font-size: 1.2vw;
+    font-size: 1.2rem;
     text-shadow: none;
   }
 
   .ant-tabs-tab + .ant-tabs-tab {
-    margin: 0 0 0 5vw;
+    margin: 0 0 0 2vw;
   }
 
   .ant-tabs-ink-bar {
@@ -57,8 +61,8 @@ export const ContentInner = styled.div`
 `;
 
 export const TagImage = styled.div`
-  width: 3.5vw;
-  height: 4vw;
+  width: 2.5vw;
+  height: 3vw;
   border-radius: 15px;
   background: ${COLORS.TAG};
   display: flex;

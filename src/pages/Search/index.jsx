@@ -13,6 +13,7 @@ import {
   StyledContentSkeleton,
   StyledCountSkeleton,
   StyledProfileSkeleton,
+  InputContainer,
 } from './styles';
 import { sskcookAPI } from '../../apis/sskcook';
 import { debounce } from 'lodash';
@@ -357,7 +358,7 @@ const Search = () => {
                       text={'검색 결과가 없어요!'}
                       fontFamily={'Happiness-Sans-Bold'}
                       color={COLORS.DARKGRAPEFRUIT}
-                      fontSize={'1vw'}
+                      fontSize={'1rem'}
                     />
                   ) : null
                 ) : !isNull && sskcookSearchLikeData.length > 0 ? (
@@ -411,7 +412,7 @@ const Search = () => {
                     text={'검색 결과가 없어요!'}
                     fontFamily={'Happiness-Sans-Bold'}
                     color={COLORS.DARKGRAPEFRUIT}
-                    fontSize={'1vw'}
+                    fontSize={'1rem'}
                   />
                 ) : null}
               </>
@@ -450,14 +451,14 @@ const Search = () => {
                           text={'#'}
                           fontFamily={'Happiness-Sans-Bold'}
                           color={COLORS.BLACK}
-                          fontSize={'1.5vw'}
+                          fontSize={'1.2rem'}
                         />
                       </TagImage>
                       <CustomText
                         text={item}
                         fontFamily={'Happiness-Sans-Regular'}
                         color={COLORS.BLACK}
-                        fontSize={'1.5vw'}
+                        fontSize={'1.2rem'}
                       />
                     </div>
                   </div>
@@ -468,7 +469,7 @@ const Search = () => {
                 text={'검색 결과가 없어요!'}
                 fontFamily={'Happiness-Sans-Bold'}
                 color={COLORS.DARKGRAPEFRUIT}
-                fontSize={'1vw'}
+                fontSize={'1rem'}
               />
             )}
           </ContentInner>
@@ -539,16 +540,18 @@ const Search = () => {
 
   return (
     <Container>
-      <CustomSearchInput
-        text={'슥쿡 / 태그 / 크리에이터 검색'}
-        fontSize={'1.1vw'}
-        width={'40vw'}
-        height={'6vh'}
-        type={'text'}
-        onChange={handleChange}
-        value={searchValue}
-        onKeyDown={handleKeyDown}
-      />
+      <InputContainer>
+        <CustomSearchInput
+          text={'슥쿡 / 태그 / 크리에이터 검색'}
+          fontSize={'1rem'}
+          width={'32vw'}
+          height={'4vh'}
+          type={'text'}
+          onChange={handleChange}
+          value={searchValue}
+          onKeyDown={handleKeyDown}
+        />
+      </InputContainer>
       <TabsContainer>
         <StyledTabs
           defaultActiveKey="1"
