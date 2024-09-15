@@ -58,7 +58,7 @@ const Event = () => {
   useEffect(() => {
     if (eventListQuery.data) {
       setEventList(eventListQuery.data.data.data);
-      setTotalPages(Math.ceil(eventListQuery.data.data.total / 10));
+      setTotalPages(Math.ceil(eventListQuery.data.data.total / 6));
     }
   }, [eventListQuery.data]);
 

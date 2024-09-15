@@ -20,7 +20,7 @@ import icon_etc from '../../assets/icons/etc.svg';
 import icon_seafood from '../../assets/icons/seafood.svg';
 import icon_vegi from '../../assets/icons/vegi.svg';
 import icon_meat from '../../assets/icons/meat.svg';
-import InputModal from '../../components/InputModal';
+import { InputModal } from '../../components/InputModal/index';
 import { fridgeAPI } from '../../apis/fridge';
 import ImageModal from '../../components/ImageModal';
 import { Tooltip } from 'antd';
@@ -100,18 +100,20 @@ const Fridge = () => {
             color={COLORS.GRAY}
           />
         </TitleWrapper>
-        <CustomButton
-          text={'재료 등록하기'}
-          color={`${COLORS.WHITE}`}
-          width={'8vw'}
-          height={'4vh'}
-          backgroundColor={`${COLORS.ORANGE}`}
-          fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'.8rem'}
-          borderColor={`${COLORS.ORANGE}`}
-          borderRadius={'10px'}
-          onClick={openSubmitIngredientModal}
-        ></CustomButton>
+        {0 < ingredients.length && (
+          <CustomButton
+            text={'재료 등록하기'}
+            color={`${COLORS.WHITE}`}
+            width={'8vw'}
+            height={'4vh'}
+            backgroundColor={`${COLORS.ORANGE}`}
+            fontFamily={'Happiness-Sans-Bold'}
+            fontSize={'.8rem'}
+            borderColor={`${COLORS.ORANGE}`}
+            borderRadius={'10px'}
+            onClick={openSubmitIngredientModal}
+          ></CustomButton>
+        )}
       </PageTitleContainer>
       <ContentContainer>
         {ingredients.length === 0 ? (

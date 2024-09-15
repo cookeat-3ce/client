@@ -50,6 +50,10 @@ import AdminLayout from './pages/Layout/Admin';
 import AdminAlarm from './pages/AdminAlarm';
 import AdminVerify from './pages/AdminVerify';
 import AdminReport from './pages/AdminReport';
+import ReactGA from 'react-ga4';
+
+const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID;
+console.log(GA_TRACKING_ID);
 const queryClient = new QueryClient();
 
 const AdminRedirector = ({ role }) => {
@@ -82,6 +86,9 @@ const Sskcook = () => {
 function App() {
   const persist = useRecoilValue(memberState);
   const role = persist.authValue;
+  useEffect(() => {
+    ReactGA.initialize(GA_TRACKING_ID);
+  }, []);
 
   return (
     <BrowserRouter>

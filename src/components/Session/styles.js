@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { COLORS } from '../../constants';
 
+const live_frame = require('../../assets/images/live_frame.svg').default;
+
 export const Container = styled.div`
   width: 72vw;
   display: flex;
@@ -8,9 +10,20 @@ export const Container = styled.div`
   // border: 10px solid ${COLORS.BLACK};
 `;
 
+export const ManagerVideoContainer = styled.div`
+  width: 72vw;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(${live_frame});
+  background-size: cover;
+  background-position: center;
+`;
+
 export const ManagerVideoWrapper = styled.div`
   position: relative;
-  width: 100%;
+  width: 90%;
   padding-top: 56.25%; /* 16:9 aspect ratio */
   background-color: ${COLORS.ORANGE};
   overflow: hidden;

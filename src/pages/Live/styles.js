@@ -7,22 +7,23 @@ export const Container = styled.div`
 
 export const PageTitleContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: end;
-  padding: 0 4vw 0 0;
   align-items: center;
   margin: 2vh 0;
   // border: 10px solid BLACK;
 `;
 
-export const CreateButtonWrapper = styled.div`
-  // border: 10px solid RED;
+export const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 2vh 0;
+  gap: 2vw;
+  // border: 10px solid GREEN;
 `;
 
 export const ContentContainer = styled.div`
   display: flex;
-  width: 74vw;
   margin: 2vh 0;
+  width: 74vw;
   // border: 10px solid GREEN;
 `;
 

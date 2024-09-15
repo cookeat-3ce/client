@@ -19,6 +19,7 @@ import {
   TabSeparator,
   TopContainer,
   TopInfoContainer,
+  OnelinerButtonContainer,
 } from './styles';
 import ProfileImage from '../../components/ProfileImage';
 import fridge_closed from '../../assets/images/fridge_closed.svg';
@@ -35,6 +36,7 @@ import CustomVideoList from '../../components/VideoList';
 import CustomNoticeList from '../../components/NoticeList';
 import CustomButton from '../../components/Button';
 import Modal from '../../components/Modal';
+import { ModifyOnelineModal } from '../../components/InputModal';
 
 const Index = () => {
   const [member] = useRecoilState(memberState);
@@ -47,6 +49,7 @@ const Index = () => {
   const [noticeList, setNoticeList] = useState([]);
   const [sskcookList, setSskcookList] = useState([]);
   const [longcookList, setLongcookList] = useState([]);
+  const [showModifyModal, setShowModifyModal] = useState(false);
 
   const myInfoQuery = useQuery({
     queryKey: ['myInfo'],
@@ -183,6 +186,14 @@ const Index = () => {
     window.location.href = '/myfridge';
   };
 
+  const openModifyOneline = () => {
+    setShowModifyModal(true);
+  };
+
+  const closeModifyOneline = () => {
+    setShowModifyModal(false);
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
@@ -250,12 +261,25 @@ const Index = () => {
           </ImageButtonContainer>
         </TopInfoContainer>
         <OnelinerContainer>
-          <CustomText
-            fontFamily="Happiness-Sans-Bold"
-            fontSize="1.2rem"
-            color={COLORS.BLACK}
-            text="채널 한줄 소개"
-          ></CustomText>
+          <OnelinerButtonContainer>
+            <CustomText
+              fontFamily="Happiness-Sans-Bold"
+              fontSize="1.2rem"
+              color={COLORS.BLACK}
+              text="채널 한줄 소개"
+            ></CustomText>
+            <CustomButton
+              text={'수정'}
+              color={COLORS.WHITE}
+              width={'4vw'}
+              height={'3vh'}
+              fontFamily={'Happiness-Sans-Bold'}
+              fontSize={'1rem'}
+              backgroundColor={COLORS.BLACK}
+              borderRadius={'30px'}
+              onClick={openModifyOneline}
+            />
+          </OnelinerButtonContainer>
           <CustomText
             fontFamily="Happiness-Sans-Bold"
             fontSize="1rem"
@@ -352,6 +376,10 @@ const Index = () => {
           </NoticeContainer>
         )}
       </BottomContainer>
+      <ModifyOnelineModal
+        show={showModifyModal}
+        onClose={closeModifyOneline}
+      ></ModifyOnelineModal>
     </Container>
   );
 };

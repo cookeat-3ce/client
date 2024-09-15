@@ -71,8 +71,9 @@ export const DetailContainer = styled.div`
 `;
 
 export const OnelinerButtonContainer = styled.div`
-  height: 6vh;
-  width: 60vw;
+  display: flex;
+  gap: 1vw;
+  align-items: center;
 `;
 
 export const OnelinerContainer = styled.div`

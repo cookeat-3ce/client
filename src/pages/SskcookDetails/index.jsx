@@ -23,8 +23,8 @@ import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { sskcookAPI } from '../../apis/sskcook';
-import { memberState, ingredientState } from '../../store';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { memberState } from '../../store';
+import { useRecoilState } from 'recoil';
 import CustomButton from '../../components/Button';
 import ReactPlayer from 'react-player/lazy';
 import SpeechRecognition, {
@@ -54,11 +54,13 @@ import instance from '../../apis';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import SalesNavyIcon from '../../assets/icons/sale_navy.svg';
 import MikeIcon from '../../assets/icons/mike.svg';
+import { fridgeAPI } from '../../apis/fridge';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
+  const containerRef = useRef(null);
+  const [ingredient, setIngredients] = useState([]);
   const [member, setMember] = useRecoilState(memberState);
-  const ingredient = useRecoilValue(ingredientState);
   const [isSirenClicked, setIsSirenClicked] = useState(false);
   const [isLikeClicked, setIsLikeClicked] = useState(false);
   const [isShareClicked, setIsShareClicked] = useState(false);
@@ -76,7 +78,7 @@ const SskcookDetails = () => {
   const month = today.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
   const formattedDate = `${year}-${formattedMonth}`;
-  // console.log('State 값:', state);
+  console.log('State 값:', state);
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
   const navigate = useNavigate();
@@ -92,6 +94,7 @@ const SskcookDetails = () => {
   const [keyword, setKeyword] = useState('');
   const [flag, setFlag] = useState('');
   const [page, setPage] = useState('');
+
   useEffect(() => {
     if (!state?.key || !state.key?.status) {
       setFlag(0);
@@ -124,6 +127,9 @@ const SskcookDetails = () => {
       setFlag(6);
       setKeyword(stateString.substring(5, stateString.length));
       setPage(stateValue.transformedPage);
+    } else if (stateString === 'fridge') {
+      setFlag(8);
+      setPage(stateValue.transformedPage);
     } else {
       setFlag(7);
       setKeyword(stateString.substring(14, stateString.length));
@@ -138,6 +144,19 @@ const SskcookDetails = () => {
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_KAKAO_INIT_KEY);
+  }, []);
+
+  const fetchMyIngredients = async () => {
+    try {
+      const response = await fridgeAPI.getIngredientsAPI();
+      setIngredients(response.data || []);
+    } catch (error) {
+      console.error('Failed to fetch ingredients:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyIngredients();
   }, []);
 
   const {
@@ -291,6 +310,17 @@ const SskcookDetails = () => {
     enabled: flag === 3,
   });
 
+  const recommendsRecipeQuery = useQuery({
+    queryKey: ['recommends', member.username],
+    queryFn: () => sskcookAPI.getSskcookRecommendsAPI(),
+    enabled: flag === 8,
+  });
+  useEffect(() => {
+    if (recommendsRecipeQuery.data) {
+      setFridgeSskcookAllData(recommendsRecipeQuery.data.data);
+      console.log(recommendsRecipeQuery.data.data);
+    }
+  }, [recommendsRecipeQuery.data]);
   const [recentAllData, setRecentAllData] = useState([]);
   const [tagAllData, setTagAllData] = useState([]);
   const [storeAllData, setStoreAllData] = useState([]);
@@ -298,6 +328,7 @@ const SskcookDetails = () => {
   const [recentSearchAllData, setRecentSearchAllData] = useState([]);
   const [likeSearchAllData, setLikeSearchAllData] = useState([]);
   const [fetchSskcookAllData, setFetchSskcookAllData] = useState([]);
+  const [fridgeSskcookAllData, setFridgeSskcookAllData] = useState([]);
   useEffect(() => {
     if (recentData?.pages) {
       const allData = recentData.pages.flatMap((page) => page.data);
@@ -347,7 +378,8 @@ const SskcookDetails = () => {
     }
   }, [fetchedSskcookList]);
 
-  // console.log(recentAllData, Number(sskcookId));
+  // console.log(fridgeData.pages);
+  console.log(fridgeSskcookAllData);
   let index1 = recentAllData?.findIndex(
     (item) => item.sskcookId === Number(sskcookId),
   );
@@ -376,6 +408,10 @@ const SskcookDetails = () => {
     (item) => item.sskcookId === Number(sskcookId),
   );
 
+  let index8 = fridgeSskcookAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+
   const debounce = (func, delay) => {
     let timer;
     return function (...args) {
@@ -393,7 +429,9 @@ const SskcookDetails = () => {
   };
 
   const handleWheel = (event) => {
-    if (event.deltaY < 0) {
+    if (containerRef.current && containerRef.current.contains(event.target)) {
+      event.preventDefault();
+    } else if (event.deltaY < 0) {
       handleScroll('ArrowUp');
     } else {
       handleScroll('ArrowDown');
@@ -543,6 +581,17 @@ const SskcookDetails = () => {
             });
           }
         }
+      } else if (flag === 8 && fridgeSskcookAllData?.length > 0) {
+        index8--;
+        if (index8 < -1) index8 = -1;
+        if (index8 >= 0) {
+          const currentItem = fridgeSskcookAllData[index8];
+          if (currentItem) {
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
+          }
+        }
       }
     }
     // 맨 아래
@@ -599,6 +648,10 @@ const SskcookDetails = () => {
           isFetching = isFetchingLike;
           index = index7;
           break;
+        case 8:
+          allData = fridgeSskcookAllData;
+          index = index8;
+          break;
         default:
           return;
       }
@@ -628,6 +681,9 @@ const SskcookDetails = () => {
             break;
           case 7:
             index7 = index;
+            break;
+          case 8:
+            index8 = index;
             break;
           default:
             return;
@@ -730,6 +786,7 @@ const SskcookDetails = () => {
     isFetchingLike,
     likeHasPrevPage,
     likeFetchPrevPage,
+    fridgeSskcookAllData,
   ]);
   const likeMutation = useMutation({
     mutationFn: async (data) => {
@@ -1063,7 +1120,7 @@ const SskcookDetails = () => {
         </Tooltip>
         <StyledSwitch checked={member.audio} onChange={onChange} />
       </SwitchContainer>
-      <DetailsContainer>
+      <DetailsContainer ref={containerRef}>
         <VideoContainer
           onClick={() => setIsPlaying(!isPlaying)}
           style={{ position: 'relative' }}

@@ -9,13 +9,13 @@ export const PageTitleContainer = styled.div`
   align-items: end;
   gap: 1vw;
   margin: 2vh 0;
-  //   border: 10px solid BLACK;
+  // border: 10px solid GREEN;
 `;
 
 export const ContentContainer = styled.div`
   display: flex;
   margin: 2vh 0;
-  //   border: 10px solid RED;
+  // border: 10px solid RED;
 `;
 
 export const SskcookContainer = styled.div`

@@ -3,7 +3,6 @@ import { COLORS } from '../../constants';
 
 export const Container = styled.div`
   width: 72vw;
-  margin: 0 2vw;
   // border: 10px solid BLACK;
 `;
 

@@ -18,7 +18,7 @@ import { setCookie, useCustomNavigate } from '../../hooks';
 import { memberAPI } from '../../apis/member';
 import { useMutation } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
-import { memberState, ingredientState } from '../../store';
+import { memberState } from '../../store';
 import { getCookie } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
@@ -38,7 +38,6 @@ const Login = () => {
   const [showError, setShowError] = useState(false);
 
   const setMemberState = useSetRecoilState(memberState);
-  const setIngredientState = useSetRecoilState(ingredientState);
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
@@ -86,7 +85,6 @@ const Login = () => {
 
       setMemberState(updatedMemberData);
       const res = await fridgeAPI.getIngredientsAPI();
-      setIngredientState(res.data || []);
 
       authValue === 'ROLE_ADMIN' ? navigate('/admin') : navigate('/');
     },
