@@ -41,14 +41,13 @@ import KakaoPayIcon from '../../assets/icons/kakaopay.svg';
 import CreditCardIcon from '../../assets/icons/credit_card.svg';
 import PassbookIcon from '../../assets/icons/passbook.svg';
 import PhoneIcon from '../../assets/icons/phone.svg';
-import { memberState, ingredientState } from '../../store';
+import { memberState } from '../../store';
 import CustomButton from '../../components/Button';
 import CustomText from '../../components/Text';
 
 const Order = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const resetMemberState = useResetRecoilState(memberState);
-  const resetIngredientState = useResetRecoilState(ingredientState);
   // const [checked, setChecked] = useState(true);
   const [isArrowClicked, setIsArrowClicked] = useState(true);
   // const [randomNumbers, setRandomNumbers] = useState([]);
@@ -87,7 +86,6 @@ const Order = () => {
     },
     onSuccess: () => {
       resetMemberState();
-      resetIngredientState();
       deleteAllCookies();
       handleChangeUrl('/');
     },
