@@ -23,8 +23,8 @@ import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { sskcookAPI } from '../../apis/sskcook';
-import { memberState, ingredientState } from '../../store';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { memberState } from '../../store';
+import { useRecoilState } from 'recoil';
 import CustomButton from '../../components/Button';
 import ReactPlayer from 'react-player/lazy';
 import SpeechRecognition, {
@@ -54,11 +54,12 @@ import instance from '../../apis';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import SalesNavyIcon from '../../assets/icons/sale_navy.svg';
 import MikeIcon from '../../assets/icons/mike.svg';
+import { fridgeAPI } from '../../apis/fridge';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
+  const [ingredient, setIngredients] = useState([]);
   const [member, setMember] = useRecoilState(memberState);
-  const ingredient = useRecoilValue(ingredientState);
   const [isSirenClicked, setIsSirenClicked] = useState(false);
   const [isLikeClicked, setIsLikeClicked] = useState(false);
   const [isShareClicked, setIsShareClicked] = useState(false);
@@ -92,6 +93,7 @@ const SskcookDetails = () => {
   const [keyword, setKeyword] = useState('');
   const [flag, setFlag] = useState('');
   const [page, setPage] = useState('');
+
   useEffect(() => {
     if (!state?.key || !state.key?.status) {
       setFlag(0);
@@ -138,6 +140,19 @@ const SskcookDetails = () => {
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_KAKAO_INIT_KEY);
+  }, []);
+
+  const fetchMyIngredients = async () => {
+    try {
+      const response = await fridgeAPI.getIngredientsAPI();
+      setIngredients(response.data || []);
+    } catch (error) {
+      console.error('Failed to fetch ingredients:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyIngredients();
   }, []);
 
   const {
