@@ -64,6 +64,7 @@ export const NotificationItem = styled.div`
   flex-direction: column;
   gap: 1vh;
   padding: 1rem;
+  cursor: pointer;
   border-bottom: 1px solid ${COLORS.LIGHTGRAY};
   &:last-child {
     border-bottom: none;

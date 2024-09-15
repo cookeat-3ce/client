@@ -128,19 +128,21 @@ const Order = () => {
     ? queryParams.get('priceData').split(',').map(Number)
     : [];
 
+  const special = queryParams.get('special');
+
   const totalPrice = priceData.reduce((acc, curr) => acc + curr, 0);
 
   const discount = parseInt(queryParams.get('discount'), 0) || 0;
 
   const discountPrice = (totalPrice * discount) / 100;
 
-  const [shippingPrice, setShippingPrice] = useState('');
+  const [shippingPrice, setShippingPrice] = useState(0);
   useEffect(() => {
     if (totalPrice - discountPrice >= 50000) setShippingPrice(0);
     else setShippingPrice(3500);
   }, []);
 
-  const totalDiscountPrice = totalPrice - discountPrice - shippingPrice;
+  const totalDiscountPrice = totalPrice - discountPrice + shippingPrice;
 
   const [arrayData, setArrayData] = useState(orderData);
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
@@ -445,7 +447,7 @@ const Order = () => {
                             fontFamily={'Noto Sans KR'}
                             fontSize={'1.3vw'}
                           />
-                          {/* {randomNumbers[index] !== 0 && (
+                          {special && (
                             <div
                               style={{
                                 color: '#ff6913',
@@ -453,9 +455,9 @@ const Order = () => {
                                 fontSize: '.8vw',
                               }}
                             >
-                              남은 수량 : {randomNumbers[index]}개
+                              한정수량 100개!
                             </div>
-                          )} */}
+                          )}
                           <div
                             style={{ display: 'flex', alignItems: 'flex-end' }}
                           >
