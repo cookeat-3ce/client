@@ -37,6 +37,9 @@ jobs:
           echo "REACT_APP_SERVER_URL=${{ secrets.REACT_APP_SERVER_URL }}" >> .env
           echo "REACT_APP_OPENVIDU_SERVER_SECRET=${{ secrets.REACT_APP_OPENVIDU_SERVER_SECRET }}" >> .env
           echo "REACT_APP_OPENVIDU_SERVER_URL=${{ secrets.REACT_APP_OPENVIDU_SERVER_URL }}" >> .env
+          echo "REACT_APP_GA_TRACKING_ID=${{ secrets.REACT_APP_GA_TRACKING_ID }}" >> .env
+          echo "REACT_APP_PROPERTY_ID=${{ secrets.REACT_APP_PROPERTY_ID }}" >> .env
+          echo "REACT_APP_CLIENT_ID=${{ secrets.REACT_APP_CLIENT_ID }}" >> .env
           docker build --build-arg REACT_ENV_FILE=.env -t hd3ce/cookeat-client:latest .
 
       # 5. Log in to Docker Hub
