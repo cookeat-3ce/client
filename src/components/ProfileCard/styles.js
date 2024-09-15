@@ -29,6 +29,7 @@ export const TitleContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  max-width: 72%;
   gap: 10px;
 `;
 
