@@ -58,6 +58,7 @@ import { fridgeAPI } from '../../apis/fridge';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
+  const containerRef = useRef(null);
   const [ingredient, setIngredients] = useState([]);
   const [member, setMember] = useRecoilState(memberState);
   const [isSirenClicked, setIsSirenClicked] = useState(false);
@@ -77,7 +78,7 @@ const SskcookDetails = () => {
   const month = today.getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month;
   const formattedDate = `${year}-${formattedMonth}`;
-  // console.log('State 값:', state);
+  console.log('State 값:', state);
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
   const navigate = useNavigate();
@@ -125,6 +126,9 @@ const SskcookDetails = () => {
     } else if (stateString.substring(0, 4) === 'tag:') {
       setFlag(6);
       setKeyword(stateString.substring(5, stateString.length));
+      setPage(stateValue.transformedPage);
+    } else if (stateString === 'fridge') {
+      setFlag(8);
       setPage(stateValue.transformedPage);
     } else {
       setFlag(7);
@@ -306,6 +310,17 @@ const SskcookDetails = () => {
     enabled: flag === 3,
   });
 
+  const recommendsRecipeQuery = useQuery({
+    queryKey: ['recommends', member.username],
+    queryFn: () => sskcookAPI.getSskcookRecommendsAPI(),
+    enabled: flag === 8,
+  });
+  useEffect(() => {
+    if (recommendsRecipeQuery.data) {
+      setFridgeSskcookAllData(recommendsRecipeQuery.data.data);
+      console.log(recommendsRecipeQuery.data.data);
+    }
+  }, [recommendsRecipeQuery.data]);
   const [recentAllData, setRecentAllData] = useState([]);
   const [tagAllData, setTagAllData] = useState([]);
   const [storeAllData, setStoreAllData] = useState([]);
@@ -313,6 +328,7 @@ const SskcookDetails = () => {
   const [recentSearchAllData, setRecentSearchAllData] = useState([]);
   const [likeSearchAllData, setLikeSearchAllData] = useState([]);
   const [fetchSskcookAllData, setFetchSskcookAllData] = useState([]);
+  const [fridgeSskcookAllData, setFridgeSskcookAllData] = useState([]);
   useEffect(() => {
     if (recentData?.pages) {
       const allData = recentData.pages.flatMap((page) => page.data);
@@ -362,7 +378,8 @@ const SskcookDetails = () => {
     }
   }, [fetchedSskcookList]);
 
-  // console.log(recentAllData, Number(sskcookId));
+  // console.log(fridgeData.pages);
+  console.log(fridgeSskcookAllData);
   let index1 = recentAllData?.findIndex(
     (item) => item.sskcookId === Number(sskcookId),
   );
@@ -391,6 +408,10 @@ const SskcookDetails = () => {
     (item) => item.sskcookId === Number(sskcookId),
   );
 
+  let index8 = fridgeSskcookAllData?.findIndex(
+    (item) => item.sskcookId === Number(sskcookId),
+  );
+
   const debounce = (func, delay) => {
     let timer;
     return function (...args) {
@@ -408,7 +429,9 @@ const SskcookDetails = () => {
   };
 
   const handleWheel = (event) => {
-    if (event.deltaY < 0) {
+    if (containerRef.current && containerRef.current.contains(event.target)) {
+      event.preventDefault();
+    } else if (event.deltaY < 0) {
       handleScroll('ArrowUp');
     } else {
       handleScroll('ArrowDown');
@@ -429,7 +452,7 @@ const SskcookDetails = () => {
             });
           }
         } else if (recentHasPrevPage && !recentIsFetching) {
-          const page = await recentFetchPrevPage();
+          await recentFetchPrevPage();
           index1 = recentAllData?.length - 1;
           const currentItem = recentAllData[index1];
           if (currentItem) {
@@ -565,6 +588,17 @@ const SskcookDetails = () => {
             });
           }
         }
+      } else if (flag === 8 && fridgeSskcookAllData?.length > 0) {
+        index8--;
+        if (index8 < -1) index8 = -1;
+        if (index8 >= 0) {
+          const currentItem = fridgeSskcookAllData[index8];
+          if (currentItem) {
+            navigate(`/sskcook/${currentItem?.sskcookId}`, {
+              state,
+            });
+          }
+        }
       }
     }
     // 맨 아래
@@ -621,6 +655,10 @@ const SskcookDetails = () => {
           isFetching = isFetchingLike;
           index = index7;
           break;
+        case 8:
+          allData = fridgeSskcookAllData;
+          index = index8;
+          break;
         default:
           return;
       }
@@ -651,6 +689,9 @@ const SskcookDetails = () => {
             break;
           case 7:
             index7 = index;
+            break;
+          case 8:
+            index8 = index;
             break;
           default:
             return;
@@ -755,6 +796,7 @@ const SskcookDetails = () => {
     isFetchingLike,
     likeHasPrevPage,
     likeFetchPrevPage,
+    fridgeSskcookAllData,
   ]);
   const likeMutation = useMutation({
     mutationFn: async (data) => {
@@ -1080,7 +1122,7 @@ const SskcookDetails = () => {
         </Tooltip>
         <StyledSwitch checked={member.audio} onChange={onChange} />
       </SwitchContainer>
-      <DetailsContainer>
+      <DetailsContainer ref={containerRef}>
         <VideoContainer
           onClick={() => setIsPlaying(!isPlaying)}
           style={{ position: 'relative' }}
