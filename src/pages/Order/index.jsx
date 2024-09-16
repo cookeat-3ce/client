@@ -44,6 +44,21 @@ import PhoneIcon from '../../assets/icons/phone.svg';
 import { memberState } from '../../store';
 import CustomButton from '../../components/Button';
 import CustomText from '../../components/Text';
+import Allulose from '../../assets/images/ingredients/allulose.png';
+import BrownSeaweed from '../../assets/images/ingredients/brown_seaweed.jpg';
+import CreamCheeze from '../../assets/images/ingredients/cream_cheeze.jpg';
+import Egg from '../../assets/images/ingredients/egg.jpg';
+import Lemon from '../../assets/images/ingredients/lemon.jpg';
+import MincedGalic from '../../assets/images/ingredients/minced_galic.jpg';
+import Salt from '../../assets/images/ingredients/salt.jpg';
+import Shrimp from '../../assets/images/ingredients/shrimp.jpg';
+import SoupSoySouce from '../../assets/images/ingredients/soup_soy_souce.jpg';
+import StratchCorn from '../../assets/images/ingredients/stratch_corn.jpg';
+import Sugar from '../../assets/images/ingredients/sugar.jpg';
+import Tuna from '../../assets/images/ingredients/tuna.jpg';
+import Water from '../../assets/images/ingredients/water.jpg';
+import MealKit from '../../assets/images/mealkit.svg';
+import Cream from '../../assets/images/ingredients/cream.jpg';
 
 const Order = () => {
   const { handleChangeUrl } = useCustomNavigate();
@@ -94,6 +109,23 @@ const Order = () => {
     },
   });
 
+  const INGREDIENT_IMAGES = {
+    계란: Egg,
+    소금: Salt,
+    크림치즈: CreamCheeze,
+    설탕: Sugar,
+    알룰로스: Allulose,
+    옥수수전분: StratchCorn,
+    레몬즙: Lemon,
+    불린미역: BrownSeaweed,
+    다진마늘: MincedGalic,
+    국간장: SoupSoySouce,
+    새우: Shrimp,
+    물: Water,
+    참치액젓: Tuna,
+    생크림: Cream,
+  };
+
   const debouncedLogout = useCallback(
     debounce(() => {
       mutation.mutate();
@@ -129,7 +161,6 @@ const Order = () => {
     : [];
 
   const special = queryParams.get('special');
-
   const totalPrice = priceData.reduce((acc, curr) => acc + curr, 0);
 
   const discount = parseInt(queryParams.get('discount'), 0) || 0;
@@ -351,6 +382,44 @@ const Order = () => {
   //   }
   // };
 
+  const getImageForItem = (item, special) => {
+    if (special) {
+      return (
+        <div style={{ width: '100%', height: '100%' }}>
+          <img
+            src={MealKit}
+            alt="Mealkit"
+            style={{
+              width: '90%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
+        </div>
+      );
+    }
+
+    const imageSrc = INGREDIENT_IMAGES[item];
+
+    if (imageSrc) {
+      return (
+        <div style={{ width: '100%', height: '100%' }}>
+          <img
+            src={imageSrc}
+            alt={item}
+            style={{
+              width: '90%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   const items = [
     {
       key: '1',
@@ -420,6 +489,7 @@ const Order = () => {
                   <>
                     <ItemContainer key={index}>
                       <Item1>
+                        {getImageForItem(item, special)}
                         {/* {randomNumbers[index] !== 0 && (
                           <input
                             type="checkbox"
@@ -1481,6 +1551,7 @@ const Order = () => {
                   <>
                     <ItemContainer key={index}>
                       <Item1>
+                        {getImageForItem(item, special)}
                         {/* {randomNumbers[index] !== 0 && (
                           <input
                             type="checkbox"
@@ -1519,6 +1590,17 @@ const Order = () => {
                               남은 수량 : {randomNumbers[index]}개
                             </div>
                           )} */}
+                          {special && (
+                            <div
+                              style={{
+                                color: '#ff6913',
+                                fontFamily: 'Noto Sans KR',
+                                fontSize: '.8vw',
+                              }}
+                            >
+                              한정수량 100개!
+                            </div>
+                          )}
                           <div
                             style={{ display: 'flex', alignItems: 'flex-end' }}
                           >

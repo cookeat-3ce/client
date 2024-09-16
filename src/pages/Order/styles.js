@@ -196,6 +196,9 @@ export const Item = styled.div`
 
 export const Item1 = styled(Item)`
   flex: 1 1 18%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Item2 = styled(Item)`
