@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants';
 
 export const Container = styled.div`
-  height: 16vh;
+  // height: 16vh;
+  padding: 2vh 2vw;
   display: flex;
   justify-content: space-between;
   border: 2px solid ${COLORS.STROKE};
@@ -10,17 +11,21 @@ export const Container = styled.div`
 `;
 
 export const InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 90%;
+  gap: 2vh;
   // border: 5px solid RED;
 `;
 
 export const TitleWrapper = styled.div`
-  margin: 2vh 0 0 2vw;
+  margin: 0 2vw;
   // border: 5px solid RED;
 `;
 
 export const ContentWrapper = styled.div`
-  margin: 2vh 0 0 2vw;
+  margin: 0 2vw;
+  line-height: 2vh;
   // border: 5px solid BLACK;
 `;
 
