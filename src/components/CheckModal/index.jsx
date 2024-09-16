@@ -12,11 +12,13 @@ import CustomText from '../Text';
 import icon_need_verified from '../../assets/icons/need_verified.svg';
 import { useNavigate } from 'react-router-dom';
 
-const CheckModal = ({ show, onClose, info, check }) => {
+const CheckModal = ({ show, onClose, info, admin = false, check }) => {
   const navigate = useNavigate();
   const handleCheckButtonClick = () => {
     onClose();
-    navigate('/info');
+    if (!admin) {
+      navigate('/info');
+    }
   };
 
   if (!show) return null;
