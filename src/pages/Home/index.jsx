@@ -188,17 +188,17 @@ const Index = () => {
         <>
           <StyledCarousel arrows infinite autoplay>
             <CarouselItem
+              linkedUrl={`https://www.cookeat.site/order?orderData=${'양고기 마라샹궈'}&priceData=${'10000'}&discount=${0}&special=${true}`} // 가격 수정 필요
               imgUrl={image1}
-              linkedUrl="https://www.thehandsome.com/ko/DP/planshopDetail/20477"
             />
             <CarouselItem
               imgUrl={image2}
-              linkedUrl="https://www.thehandsome.com/ko/DP/planshopDetail/20561"
             />
             <CarouselItem
-              imgUrl={image3}
-              linkedUrl="https://www.thehandsome.com/ko/DP/planshopDetail/20561"
+              imgUrl={image2}
+              linkedUrl="https://www.cookeat.site/notice/113"
             />
+            <CarouselItem imgUrl={image3} />
           </StyledCarousel>
           {monthlyLikesSskcooks ? (
             <SskcookSwiper

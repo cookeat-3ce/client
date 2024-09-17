@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import { gapi } from 'gapi-script';
 import CustomText from '../../components/Text';
+
 const Admin = () => {
   const clientId = process.env.REACT_APP_CLIENT_ID;
   const analyticsPropertyId = process.env.REACT_APP_PROPERTY_ID;
@@ -94,8 +95,6 @@ const Admin = () => {
           },
         });
 
-      console.log(response);
-
       const rows = response.result?.reports[0]?.rows || [];
       const reportData = rows.map((row) => ({
         date: row.dimensionValues?.[0]?.value || 'Unknown',
@@ -136,11 +135,45 @@ const Admin = () => {
     const groupedData = {};
 
     data.forEach((item) => {
-      const { date, eventName, eventCount } = item;
+      let date;
+      try {
+        const dateStr = item.date;
+        if (dateStr.length === 8) {
+          const formattedDateStr = `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
+          date = new Date(formattedDateStr);
+        } else {
+          throw new Error('Invalid date format');
+        }
+
+        if (isNaN(date.getTime())) {
+          throw new Error('Invalid date');
+        }
+      } catch {
+        console.warn(`Invalid date format: ${item.date}`);
+        return;
+      }
+
+      const { eventName, eventCount } = item;
       if (!groupedData[eventName]) {
         groupedData[eventName] = [];
       }
       groupedData[eventName].push({ date, eventCount });
+    });
+
+    Object.keys(groupedData).forEach((eventName) => {
+      groupedData[eventName].sort((a, b) => a.date - b.date);
+    });
+
+    Object.keys(groupedData).forEach((eventName) => {
+      groupedData[eventName] = groupedData[eventName].map((item) => {
+        const month = item.date.getMonth() + 1;
+        const day = item.date.getDate();
+        const formattedDate = `${month}-${day < 10 ? '0' : ''}${day}`;
+        return {
+          date: formattedDate,
+          eventCount: item.eventCount,
+        };
+      });
     });
 
     return groupedData;
@@ -164,7 +197,7 @@ const Admin = () => {
             <div
               key={eventName}
               style={{
-                width: '20vw',
+                width: '25vw',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '3vw',

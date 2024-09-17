@@ -75,7 +75,6 @@ const SskcookDetails = () => {
   const location = useLocation();
   const state = location.state;
   const lastMonth = moment().subtract(1, 'month').format('YYYY-MM');
-  console.log('State 값:', state);
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
   const navigate = useNavigate();
@@ -883,11 +882,12 @@ const SskcookDetails = () => {
       prev !== newIsSirenClicked ? newIsSirenClicked : prev,
     );
   }, [sskcookDetailsData]);
+
   const generateRandomPrices = (items) => {
     console.log(items, INGREDIENTS);
     return items.map((item) => {
       if (INGREDIENTS[item.name]) {
-        return INGREDIENTS[item.name];
+        return Number(INGREDIENTS[item.name]);
       } else {
         return getRandomNumber(1000, 20000);
       }
@@ -943,7 +943,7 @@ const SskcookDetails = () => {
       setSelectivePrice(partialSum);
       setDiscountSelectivePrice(partialSum * 0.73);
     }
-  }, [sskcookDetailsData, ingredient]);
+  }, [sskcookDetailsData, ingredient, location]);
 
   const handleArrayClick = () => {
     if (sskcookDetailsData && sskcookDetailsData.data.ingredients) {
