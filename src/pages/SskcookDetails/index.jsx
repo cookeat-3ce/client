@@ -940,22 +940,21 @@ const SskcookDetails = () => {
   const [discountTotalPrice, setDiscountTotalPrice] = useState('');
   const [selectivePrice, setSelectivePrice] = useState('');
   const [discountSelectivePrice, setDiscountSelectivePrice] = useState('');
-
   useEffect(() => {
     if (sskcookDetailsData?.data?.ingredients) {
-      // 유효한 재료 이름을 가져옵니다.
       const validIngredientNames = new Set(
         ingredient
           .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
           .map((ing) => ing.name),
       );
 
-      // 유효한 재료를 필터링합니다.
       const validIngredients = sskcookDetailsData.data.ingredients.filter(
         (item) => validIngredientNames.has(item.name),
       );
+      const filteredItems = sskcookDetailsData.data.ingredients.filter(
+        (item) => !validIngredientNames.has(item.name),
+      );
 
-      // 랜덤 가격을 생성합니다.
       const newPrice = generateRandomPrices(
         sskcookDetailsData.data.ingredients,
       );
@@ -964,47 +963,31 @@ const SskcookDetails = () => {
         return;
       }
 
+      // 가격을 재료 이름으로 매핑합니다.
+      const priceMap = sskcookDetailsData.data.ingredients.reduce(
+        (acc, item, index) => {
+          acc[item.name] = newPrice[index] || 0;
+          return acc;
+        },
+        {},
+      );
+
       setPrices(newPrice);
 
-      // 총 가격과 할인 가격을 설정합니다.
       const totalSum = newPrice.reduce((sum, price) => sum + price, 0);
       setTotalPrice(totalSum);
       setDiscountTotalPrice(totalSum * 0.8);
 
       console.log('유효한 재료:', validIngredients);
 
-      // 보유하지 않는 재료를 필터링합니다.
-      const filteredItems = sskcookDetailsData.data.ingredients.filter(
-        (item) => !validIngredientNames.has(item.name),
+      const notHavePrices = filteredItems.map(
+        (item) => priceMap[item.name] || 0,
       );
-      setNotHaveProducts(filteredItems.map((item) => item.name));
-
-      // 보유하지 않는 재료의 가격 매핑을 생성합니다.
-      const priceMap = filteredItems.reduce((acc, item) => {
-        const index = sskcookDetailsData.data.ingredients.findIndex(
-          (ing) => ing.name === item.name,
-        );
-        // 가격 인덱스가 유효한지 확인합니다.
-        if (index !== -1 && index < newPrice.length) {
-          acc[item.name] = newPrice[index];
-        } else {
-          acc[item.name] = 0;
-        }
-        return acc;
-      }, {});
-
-      console.log('가격 맵:', priceMap); // 디버깅
-
-      const notHavePrices = Object.values(priceMap);
       setNotHavePrices(notHavePrices);
 
-      // 유효한 재료의 가격을 제외한 전체 가격에서 보유하지 않는 재료의 가격만 계산합니다.
-      const validPrices = validIngredients.map((item) => {
-        const index = sskcookDetailsData.data.ingredients.findIndex(
-          (ing) => ing.name === item.name,
-        );
-        return index !== -1 && index < newPrice.length ? newPrice[index] : 0;
-      });
+      const validPrices = validIngredients.map(
+        (item) => priceMap[item.name] || 0,
+      );
 
       const totalValidPrice = validPrices.reduce(
         (sum, price) => sum + price,
@@ -1066,16 +1049,6 @@ const SskcookDetails = () => {
       .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
       .map((ing) => ing.name),
   );
-
-  const ingredientsToDisplay = getCookie('accessToken')
-    ? sskcookDetailsData?.data?.ingredients.map((item) => ({
-        ...item,
-        isOwned: validIngredientNames.has(item.name),
-      }))
-    : sskcookDetailsData?.data?.ingredients.map((item) => ({
-        ...item,
-        isOwned: false,
-      }));
 
   if (isLoading) {
     return (
@@ -1650,22 +1623,38 @@ const SskcookDetails = () => {
             </div>
             <IngredientInner>
               <>
-                {ingredientsToDisplay.map((item, index) => (
+                {(getCookie('accessToken')
+                  ? [
+                      // 유효한 재료 이름이 있는 재료를 먼저 표시
+                      ...sskcookDetailsData?.data?.ingredients.filter((item) =>
+                        validIngredientNames.has(item.name),
+                      ),
+                      // 유효하지 않은 재료를 그 다음에 표시
+                      ...sskcookDetailsData?.data?.ingredients.filter(
+                        (item) => !validIngredientNames.has(item.name),
+                      ),
+                    ]
+                  : sskcookDetailsData?.data?.ingredients
+                ).map((item, index) => (
                   <IngredientWrapper key={index}>
                     <IngredientSection>
                       <CustomText
                         text={item.name}
                         fontFamily="Happiness-Sans-Regular"
-                        color={item.isOwned ? COLORS.ORANGE : COLORS.BLACK}
+                        color={
+                          validIngredientNames.has(item.name)
+                            ? COLORS.ORANGE
+                            : COLORS.BLACK
+                        }
                         fontSize="1vw"
                       />
                     </IngredientSection>
                     <IngredientSection>
                       <CustomText
                         text={item.amount}
-                        fontFamily={'Happiness-Sans-Regular'}
+                        fontFamily="Happiness-Sans-Regular"
                         color={COLORS.BLACK}
-                        fontSize={'1vw'}
+                        fontSize="1vw"
                         style={{ textDecoration: 'underline' }}
                       />
                     </IngredientSection>
@@ -1674,7 +1663,7 @@ const SskcookDetails = () => {
                         text={
                           INGREDIENTS[item.name]
                             ? `${INGREDIENTS[item.name]}원`
-                            : `${(prices[index] || '').toString()}원`
+                            : `${(prices[sskcookDetailsData.data.ingredients.findIndex((ing) => ing.name === item.name)] || '0').toString()}원`
                         }
                         fontFamily={'Happiness-Sans-Regular'}
                         color={COLORS.BLACK}
