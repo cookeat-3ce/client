@@ -10,7 +10,7 @@ import {
 import { sskcookAPI } from '../../apis/sskcook';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
@@ -21,43 +21,26 @@ const SskcookMonthly = () => {
   const date = parsed.date;
   const today = new Date();
   const month = today.getMonth() + 1;
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: [date],
-    queryFn: ({ pageParam = 1 }) =>
-      instance
-        .get(`/sskcook?date=${date}&page=${pageParam}`)
-        .then((res) => res.data),
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage.next ? allPages.length + 1 : undefined;
-    },
+  const [sskcookList, setSskcookList] = useState([]);
+
+  const monthlyTopSskcookQuery = useQuery({
+    queryKey: ['topSskcook', date],
+    queryFn: () => sskcookAPI.monthlyLikesSskcookListAPI(date),
+    staleTime: Infinity,
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const allData = data?.pages.flatMap((page) => page.data) || [];
+  useEffect(() => {
+    if (monthlyTopSskcookQuery.data) {
+      setSskcookList(monthlyTopSskcookQuery.data.data);
+    }
+  }, monthlyTopSskcookQuery.data);
+
   const handleItemClick = (itemId) => {
-    const index = allData.findIndex((item) => item.sskcookId === itemId);
+    const index = sskcookList.findIndex((item) => item.sskcookId === itemId);
     return index;
   };
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const windowHeight =
-        window.innerHeight || document.documentElement.clientHeight;
-      const documentHeight =
-        document.documentElement.scrollHeight || document.body.scrollHeight;
-
-      if (windowHeight + scrollTop >= documentHeight - 1) {
-        if (hasNextPage && !isFetching) {
-          setIsLoading(true);
-          fetchNextPage().finally(() => setIsLoading(false));
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [fetchNextPage, hasNextPage, isFetching]);
 
   return (
     <Container>
@@ -70,25 +53,7 @@ const SskcookMonthly = () => {
         />
       </TextContainer>
       <SkeletonContainer>
-        {data && data.pages[0].total === 0 ? (
-          <div
-            style={{
-              height: '50vh',
-              margin: '0 auto',
-              textAlign: 'center',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <CustomText
-              fontFamily={'Happiness-Sans-Bold'}
-              text={'이번 달 인기 있는 슥쿡이 없어요!'}
-              fontSize={'1.5vw'}
-              color={COLORS.DARKGRAPEFRUIT}
-            />
-          </div>
-        ) : data === undefined ? (
+        {sskcookList.length === 0 ? (
           <>
             <StyledSskcookSkeleton />
             <StyledSskcookSkeleton />
@@ -102,7 +67,7 @@ const SskcookMonthly = () => {
             <StyledSskcookSkeleton />
           </>
         ) : (
-          allData.map((item) => (
+          sskcookList.map((item) => (
             <CardContainer key={item.sskcookId}>
               <CardWrapper>
                 <Card

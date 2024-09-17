@@ -55,6 +55,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import SalesNavyIcon from '../../assets/icons/sale_navy.svg';
 import MikeIcon from '../../assets/icons/mike.svg';
 import { fridgeAPI } from '../../apis/fridge';
+import moment from 'moment';
 
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
@@ -73,11 +74,7 @@ const SskcookDetails = () => {
   const { transcript } = useSpeechRecognition();
   const location = useLocation();
   const state = location.state;
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const formattedMonth = month < 10 ? `0${month}` : month;
-  const formattedDate = `${year}-${formattedMonth}`;
+  const lastMonth = moment().subtract(1, 'month').format('YYYY-MM');
   console.log('State 값:', state);
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
@@ -179,27 +176,6 @@ const SskcookDetails = () => {
       return firstPage.prev ? allPages.length + 1 : undefined;
     },
     enabled: flag === 1,
-  });
-  const {
-    data: dateData,
-    fetchNextPage: dateFetchNextPage,
-    hasNextPage: dateHasNextPage,
-    isFetching: dateIsFetching,
-    hasPreviousPage: dateHasPrevPage,
-    fetchPreviousPage: dateFetchPrevPage,
-  } = useInfiniteQuery({
-    queryKey: ['foremattedDate', formattedDate],
-    queryFn: ({ pageParam = page }) =>
-      instance
-        .get(`/sskcook?date=${formattedDate}&page=${pageParam}`)
-        .then((res) => res.data),
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage.next ? allPages.length + 1 : undefined;
-    },
-    getPreviousPageParam: (firstPage, allPages) => {
-      return firstPage.prev ? allPages.length + 1 : undefined;
-    },
-    enabled: flag === 2,
   });
 
   const {
@@ -321,6 +297,20 @@ const SskcookDetails = () => {
       console.log(recommendsRecipeQuery.data.data);
     }
   }, [recommendsRecipeQuery.data]);
+
+  const monthlyTopSskcookQuery = useQuery({
+    queryKey: ['date', lastMonth],
+    queryFn: () => sskcookAPI.monthlyLikesSskcookListAPI(lastMonth),
+    enabled: flag === 2,
+  });
+
+  useEffect(() => {
+    if (monthlyTopSskcookQuery.data) {
+      setDateAllData(monthlyTopSskcookQuery.data.data);
+      console.log(monthlyTopSskcookQuery.data.data);
+    }
+  }, [monthlyTopSskcookQuery.data]);
+
   const [recentAllData, setRecentAllData] = useState([]);
   const [tagAllData, setTagAllData] = useState([]);
   const [storeAllData, setStoreAllData] = useState([]);
@@ -356,13 +346,6 @@ const SskcookDetails = () => {
       setStoreAllData(allData);
     }
   }, [storeData]);
-
-  useEffect(() => {
-    if (dateData?.pages) {
-      const allData = dateData.pages.flatMap((page) => page.data);
-      setDateAllData(allData);
-    }
-  }, [dateData]);
 
   useEffect(() => {
     if (recentSearchData?.pages) {
@@ -465,15 +448,6 @@ const SskcookDetails = () => {
         index2--;
         if (index2 < -1) index2 = -1;
         if (index2 >= 0) {
-          const currentItem = dateAllData[index2];
-          if (currentItem) {
-            navigate(`/sskcook/${currentItem?.sskcookId}`, {
-              state,
-            });
-          }
-        } else if (dateHasPrevPage && !dateIsFetching) {
-          await dateFetchPrevPage();
-          index2 = dateAllData?.length - 1;
           const currentItem = dateAllData[index2];
           if (currentItem) {
             navigate(`/sskcook/${currentItem?.sskcookId}`, {
@@ -608,9 +582,6 @@ const SskcookDetails = () => {
           break;
         case 2:
           allData = dateAllData;
-          fetchNextPage = dateFetchNextPage;
-          hasNextPage = dateHasNextPage;
-          isFetching = dateIsFetching;
           index = index2;
           break;
         case 3:
@@ -751,11 +722,6 @@ const SskcookDetails = () => {
     recentHasPrevPage,
     recentFetchPrevPage,
     dateAllData,
-    dateFetchNextPage,
-    dateHasNextPage,
-    dateIsFetching,
-    dateHasPrevPage,
-    dateFetchPrevPage,
     storeAllData,
     storeFetchNextPage,
     storeHasNextPage,

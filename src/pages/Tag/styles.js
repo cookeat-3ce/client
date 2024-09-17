@@ -10,7 +10,6 @@ export const TextContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 2vh 0;
-  // border: 10px solid GREEN;
 `;
 
 export const ContentContainer = styled.div`
@@ -19,6 +18,7 @@ export const ContentContainer = styled.div`
 
 export const SkeletonContainer = styled.div`
   display: flex;
+  margin: 2vh 0;
   gap: 3vw;
   flex-wrap: wrap;
   // border: 10px solid BLACK;

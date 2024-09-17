@@ -23,14 +23,11 @@ import { getCookie } from '../../hooks';
 import { memberState } from '../../store';
 import { useRecoilState } from 'recoil';
 import { fridgeAPI } from '../../apis/fridge';
+import moment from 'moment';
 const Index = () => {
   const member = useRecoilState(memberState);
   const username = member[0].username;
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const formattedMonth = month < 10 ? `0${month}` : month;
-  const formattedDate = `${year}-${formattedMonth}`;
+  const lastMonth = moment().subtract(1, 'month').format('YYYY-MM');
   const [recommends, setRecommends] = useState([]);
   const [isFridgeEmpty, setIsFridgeEmpty] = useState(true);
   const recentSskcooksQuery = useQuery({
@@ -44,8 +41,8 @@ const Index = () => {
   });
 
   const monthlyLikesSskcooksQuery = useQuery({
-    queryKey: ['monthlyLikesSskcooks', formattedDate],
-    queryFn: () => sskcookAPI.monthlyLikesSskcookListAPI(formattedDate),
+    queryKey: ['monthlyLikesSskcooks', lastMonth],
+    queryFn: () => sskcookAPI.monthlyLikesSskcookListAPI(lastMonth),
   });
 
   const myIngredientsQuery = useQuery({
@@ -76,7 +73,7 @@ const Index = () => {
 
   const recentSskcooks = recentSskcooksQuery.data?.data?.data;
   const recentLongcooks = recentLongcooksQuery.data?.data?.data;
-  const monthlyLikesSskcooks = monthlyLikesSskcooksQuery.data?.data?.data;
+  const monthlyLikesSskcooks = monthlyLikesSskcooksQuery.data?.data;
   const [imagesLoaded, setImagesLoaded] = useState(false);
   // console.log(recentSskcooks);
   // console.log(recentLongcooks);
@@ -205,7 +202,7 @@ const Index = () => {
           </StyledCarousel>
           {monthlyLikesSskcooks ? (
             <SskcookSwiper
-              firstText={'이번달 슥쿡'}
+              firstText={'저번달 상위 10개 슥쿡'}
               secondText={'더보기'}
               thirdText={'>'}
               arr={monthlyLikesSskcooks}
@@ -213,7 +210,7 @@ const Index = () => {
               page={1}
             />
           ) : (
-            <SskcookSwiper firstText={'이번달 슥쿡'} now={'month'} />
+            <SskcookSwiper firstText={'저번달 상위 10개 슥쿡'} now={'month'} />
           )}
           {!getCookie('accessToken') ? (
             <SskcookSwiper
