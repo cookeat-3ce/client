@@ -13,4 +13,7 @@ export const AdminAPI = {
   postEvent: (data) => {
     return instance.post('/admin/event', data);
   },
+  selectTop10SskcookAPI: (date) => {
+    return instance.get(`/admin/sskcook/top?date=${date}`);
+  },
 };

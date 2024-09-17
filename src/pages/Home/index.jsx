@@ -196,7 +196,10 @@ const Index = () => {
             />
             <CarouselItem
               imgUrl={image2}
-              linkedUrl="https://www.thehandsome.com/ko/DP/planshopDetail/20561"
+            />
+            <CarouselItem
+              imgUrl={image2}
+              linkedUrl="https://www.cookeat.site/notice/113"
             />
             <CarouselItem imgUrl={image3} />
           </StyledCarousel>

@@ -34,8 +34,14 @@ export const ItemContainer = styled.div`
 `;
 
 export const CarouselItem = ({ imgUrl, linkedUrl }) => {
+  const handleClick = () => {
+    if (linkedUrl) {
+      window.open(linkedUrl, '_blank');
+    }
+  };
+
   return (
-    <ItemContainer onClick={() => window.open(linkedUrl, '_blank')}>
+    <ItemContainer onClick={handleClick}>
       <StyledImage src={imgUrl} alt="Carousel Item" />
     </ItemContainer>
   );
