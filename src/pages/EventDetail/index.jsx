@@ -114,7 +114,9 @@ const EventDetail = () => {
               color={COLORS.BLACK}
             />
           </EventInfoContainer>
-          {moment() < moment(eventDetail?.enddate) ? (
+          {moment().diff(moment(eventDetail?.enddate), 'months') <= 1 ? (
+            '진행 중'
+          ) : '종료' ? (
             <CustomText
               text={`진행 중`}
               fontFamily={'Happiness-Sans-Bold'}
@@ -153,12 +155,13 @@ const EventDetail = () => {
           fontSize={'1rem'}
           color={COLORS.BLACK}
         />
-        {moment() < moment(eventDetail?.enddate) && (
+        {moment().diff(moment(eventDetail?.enddate), 'months') <= 1 && (
           <CustomButton
             text={'알림 받기'}
+            fontSize={'1rem'}
             color={COLORS.WHITE}
-            width={'12vw'}
-            height={'6vh'}
+            width={'10vw'}
+            height={'5vh'}
             backgroundColor={COLORS.ORANGE}
             borderColor={COLORS.ORANGE}
             borderRadius={'40px'}

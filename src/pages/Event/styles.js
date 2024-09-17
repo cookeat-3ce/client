@@ -42,6 +42,7 @@ export const EventInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8vh;
+  line-height: 2vh;
   // border: 10px solid BLACK;
 `;
 
