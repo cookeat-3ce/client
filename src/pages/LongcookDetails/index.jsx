@@ -20,6 +20,7 @@ import { longcookAPI } from '../../apis/longcook';
 import { getCookie } from '../../hooks';
 import { INGREDIENTS } from '../../constants';
 import { fridgeAPI } from '../../apis/fridge';
+import moment from 'moment';
 
 const LongcookDetails = () => {
   const { id } = useParams();
@@ -109,12 +110,24 @@ const LongcookDetails = () => {
       console.error('Item not found or price unavailable');
     }
   };
+  const today = new Date();
 
-  const highlightedIngredients = getCookie('accessToken')
-    ? ingredients.filter((item) =>
-        ingredient.some((ing) => ing.name === item.name),
-      )
-    : [];
+  const validIngredientNames = new Set(
+    ingredient
+      .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
+      .map((ing) => ing.name),
+  );
+
+  // 유효한 재료와 유효하지 않은 재료를 필터링합니다.
+  const validIngredients = ingredients?.filter((item) =>
+    validIngredientNames.has(item.name),
+  );
+  const filteredItems = ingredients?.filter(
+    (item) => !validIngredientNames.has(item.name),
+  );
+
+  // ingredients 배열을 정렬하여 validIngredients를 먼저 표시합니다.
+  const sortedIngredients = [...validIngredients, ...filteredItems];
 
   return (
     <Container>
@@ -153,11 +166,8 @@ const LongcookDetails = () => {
       </SubTitleContainer>
 
       <IngredientWrapper>
-        {ingredients.map((item, index) => {
-          const isHighlighted = highlightedIngredients.some(
-            (highlightedItem) => highlightedItem.name === item.name,
-          );
-
+        {sortedIngredients.map((item, index) => {
+          const isHighlighted = validIngredientNames.has(item.name);
           return (
             <IngredientItem key={index}>
               <IngredientSection>
@@ -180,7 +190,13 @@ const LongcookDetails = () => {
                   text={
                     INGREDIENTS[item.name]
                       ? `${INGREDIENTS[item.name]}원`
-                      : `${(prices[index] || '').toString()}원`
+                      : `${(
+                          prices[
+                            ingredients?.findIndex(
+                              (ing) => ing.name === item.name,
+                            )
+                          ] || '0'
+                        ).toString()}원`
                   }
                   fontFamily={'Happiness-Sans-Regular'}
                   color={COLORS.BLACK}

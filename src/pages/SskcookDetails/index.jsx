@@ -906,42 +906,64 @@ const SskcookDetails = () => {
   const [discountTotalPrice, setDiscountTotalPrice] = useState('');
   const [selectivePrice, setSelectivePrice] = useState('');
   const [discountSelectivePrice, setDiscountSelectivePrice] = useState('');
-
   useEffect(() => {
     if (sskcookDetailsData?.data?.ingredients) {
+      const validIngredientNames = new Set(
+        ingredient
+          .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
+          .map((ing) => ing.name),
+      );
+
+      const validIngredients = sskcookDetailsData.data.ingredients.filter(
+        (item) => validIngredientNames.has(item.name),
+      );
+      const filteredItems = sskcookDetailsData.data.ingredients.filter(
+        (item) => !validIngredientNames.has(item.name),
+      );
+
       const newPrice = generateRandomPrices(
         sskcookDetailsData.data.ingredients,
       );
-      const leng = newPrice.length;
+      if (!newPrice || newPrice.length === 0) {
+        console.error('newPrice 배열이 제대로 생성되지 않았습니다.');
+        return;
+      }
+
+      // 가격을 재료 이름으로 매핑합니다.
+      const priceMap = sskcookDetailsData.data.ingredients.reduce(
+        (acc, item, index) => {
+          acc[item.name] = newPrice[index] || 0;
+          return acc;
+        },
+        {},
+      );
+
       setPrices(newPrice);
 
-      const totalSum1 = newPrice.reduce((sum, price) => sum + price, 0);
-      setTotalPrice(totalSum1);
-      setDiscountTotalPrice(totalSum1 * 0.8);
+      const totalSum = newPrice.reduce((sum, price) => sum + price, 0);
+      setTotalPrice(totalSum);
+      setDiscountTotalPrice(totalSum * 0.8);
 
-      const filteredItems = sskcookDetailsData.data.ingredients.filter(
-        (item) => !ingredient.some((ing) => item.name.includes(ing.name)),
+      console.log('유효한 재료:', validIngredients);
+
+      const notHavePrices = filteredItems.map(
+        (item) => priceMap[item.name] || 0,
       );
-      setNotHaveProducts(filteredItems.map((item) => item.name));
+      setNotHavePrices(notHavePrices);
 
-      const priceMap = filteredItems.reduce((acc, item, index) => {
-        acc[item.name] =
-          newPrice[
-            sskcookDetailsData.data.ingredients.findIndex(
-              (ing) => ing.name === item.name,
-            )
-          ] || 0;
-        return acc;
-      }, {});
+      const validPrices = validIngredients.map(
+        (item) => priceMap[item.name] || 0,
+      );
 
-      const leng2 = Object.keys(priceMap).length;
-      setNotHavePrices(Object.values(priceMap));
-      const startIdx = leng - leng2;
-      const partialSum = newPrice
-        .slice(startIdx)
-        .reduce((sum, price) => sum + price, 0);
-      setSelectivePrice(partialSum);
-      setDiscountSelectivePrice(partialSum * 0.73);
+      const totalValidPrice = validPrices.reduce(
+        (sum, price) => sum + price,
+        0,
+      );
+      const totalNotHavePrice = totalSum - totalValidPrice;
+
+      const roundedPartialSum = Math.round(totalNotHavePrice);
+      setSelectivePrice(roundedPartialSum);
+      setDiscountSelectivePrice(Math.round(roundedPartialSum * 0.73));
     }
   }, [sskcookDetailsData, ingredient, location]);
 
@@ -987,6 +1009,12 @@ const SskcookDetails = () => {
       console.log('error');
     }
   };
+
+  const validIngredientNames = new Set(
+    ingredient
+      .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
+      .map((ing) => ing.name),
+  );
 
   if (isLoading) {
     return (
@@ -1563,72 +1591,67 @@ const SskcookDetails = () => {
               <>
                 {(getCookie('accessToken')
                   ? [
+                      // 유효한 재료 이름이 있는 재료를 먼저 표시
                       ...sskcookDetailsData?.data?.ingredients.filter((item) =>
-                        ingredient.some((ing) => item.name.includes(ing.name)),
+                        validIngredientNames.has(item.name),
                       ),
+                      // 유효하지 않은 재료를 그 다음에 표시
                       ...sskcookDetailsData?.data?.ingredients.filter(
-                        (item) =>
-                          !ingredient.some((ing) =>
-                            item.name.includes(ing.name),
-                          ),
+                        (item) => !validIngredientNames.has(item.name),
                       ),
                     ]
                   : sskcookDetailsData?.data?.ingredients
-                ) // 로그인하지 않았을 때 모든 재료를 보여줌
-                  .map((item, index) => (
-                    <IngredientWrapper key={index}>
-                      <IngredientSection>
-                        <CustomText
-                          text={item.name}
-                          fontFamily={'Happiness-Sans-Regular'}
-                          color={
-                            getCookie('accessToken') &&
-                            ingredient.some((ing) =>
-                              item.name.includes(ing.name),
-                            )
-                              ? COLORS.ORANGE
-                              : COLORS.BLACK
-                          }
-                          fontSize={'1vw'}
-                        />
-                      </IngredientSection>
-                      <IngredientSection>
-                        <CustomText
-                          text={item.amount}
-                          fontFamily={'Happiness-Sans-Regular'}
-                          color={COLORS.BLACK}
-                          fontSize={'1vw'}
-                          style={{ textDecoration: 'underline' }}
-                        />
-                      </IngredientSection>
-                      <IngredientSection>
-                        <CustomText
-                          text={
-                            INGREDIENTS[item.name]
-                              ? `${INGREDIENTS[item.name]}원`
-                              : `${(prices[index] || '').toString()}원`
-                          }
-                          fontFamily={'Happiness-Sans-Regular'}
-                          color={COLORS.BLACK}
-                          fontSize={'1vw'}
-                        />
-                      </IngredientSection>
-                      <IngredientSection>
-                        <CustomButton
-                          text={'구매'}
-                          fontSize={'.7vw'}
-                          borderRadius={'100px'}
-                          color={COLORS.BLACK}
-                          backgroundColor={COLORS.WHITE}
-                          borderColor={COLORS.BLACK}
-                          width={'3vw'}
-                          height={'3vh'}
-                          fontFamily={'Happiness-Sans-Bold'}
-                          onClick={() => handleItemClick(item.name)}
-                        />
-                      </IngredientSection>
-                    </IngredientWrapper>
-                  ))}
+                ).map((item, index) => (
+                  <IngredientWrapper key={index}>
+                    <IngredientSection>
+                      <CustomText
+                        text={item.name}
+                        fontFamily="Happiness-Sans-Regular"
+                        color={
+                          validIngredientNames.has(item.name)
+                            ? COLORS.ORANGE
+                            : COLORS.BLACK
+                        }
+                        fontSize="1vw"
+                      />
+                    </IngredientSection>
+                    <IngredientSection>
+                      <CustomText
+                        text={item.amount}
+                        fontFamily="Happiness-Sans-Regular"
+                        color={COLORS.BLACK}
+                        fontSize="1vw"
+                        style={{ textDecoration: 'underline' }}
+                      />
+                    </IngredientSection>
+                    <IngredientSection>
+                      <CustomText
+                        text={
+                          INGREDIENTS[item.name]
+                            ? `${INGREDIENTS[item.name]}원`
+                            : `${(prices[sskcookDetailsData.data.ingredients.findIndex((ing) => ing.name === item.name)] || '0').toString()}원`
+                        }
+                        fontFamily={'Happiness-Sans-Regular'}
+                        color={COLORS.BLACK}
+                        fontSize={'1vw'}
+                      />
+                    </IngredientSection>
+                    <IngredientSection>
+                      <CustomButton
+                        text={'구매'}
+                        fontSize={'.7vw'}
+                        borderRadius={'100px'}
+                        color={COLORS.BLACK}
+                        backgroundColor={COLORS.WHITE}
+                        borderColor={COLORS.BLACK}
+                        width={'3vw'}
+                        height={'3vh'}
+                        fontFamily={'Happiness-Sans-Bold'}
+                        onClick={() => handleItemClick(item.name)}
+                      />
+                    </IngredientSection>
+                  </IngredientWrapper>
+                ))}
               </>
             </IngredientInner>
 
