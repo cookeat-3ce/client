@@ -19,6 +19,7 @@ import ProfileCard from '../ProfileCard';
 import CustomButton from '../Button';
 import { sskcookAPI } from '../../apis/sskcook';
 import { getCookie, useCustomNavigate } from '../../hooks';
+import moment from 'moment';
 const CustomSwiper = ({
   firstText,
   secondText,
@@ -30,11 +31,7 @@ const CustomSwiper = ({
 }) => {
   const swiperRef = useRef(null);
   const { handleChangeUrl } = useCustomNavigate();
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const formattedMonth = month < 10 ? `0${month}` : month;
-  const formattedDate = `${year}-${formattedMonth}`;
+  const lastMonth = moment().subtract(1, 'month').format('YYYY-MM');
   return (
     <Container>
       <TextContainer>
@@ -61,7 +58,7 @@ const CustomSwiper = ({
           }}
           onClick={() => {
             if (now === 'month') {
-              window.location.href = `/sskcook?date=${formattedDate}`;
+              window.location.href = `/sskcook?date=${lastMonth}`;
             } else if (now === 'recent') {
               window.location.href = `/sskcook?sort=latest`;
             } else {
