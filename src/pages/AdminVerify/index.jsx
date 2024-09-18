@@ -5,7 +5,6 @@ import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import CustomTextButton from '../../components/Button/Text';
 import { AdminAPI } from '../../apis/admin';
-import { message } from 'antd';
 import { debounce } from 'lodash';
 
 const AdminVerify = () => {
@@ -51,7 +50,7 @@ const AdminVerify = () => {
       }
     },
     onSuccess: (response) => {
-      message.success('승인되었습니다.', 5);
+      console.log(response);
     },
   });
 
@@ -65,7 +64,7 @@ const AdminVerify = () => {
       }
     },
     onSuccess: (response) => {
-      message.success('취소했습니다..', 5);
+      console.log(response);
     },
   });
 

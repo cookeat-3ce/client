@@ -111,7 +111,13 @@ const Index = () => {
     <Container>
       {!imagesLoaded ? (
         <div>
-          <StyledCarouselSkeleton />
+          <div
+            style={{
+              marginLeft: '7vw',
+            }}
+          >
+            <StyledCarouselSkeleton />
+          </div>
           <div style={{ marginTop: '5vh' }}>
             <StyledTitleSkeleton />
           </div>
@@ -188,15 +194,14 @@ const Index = () => {
         <>
           <StyledCarousel arrows infinite autoplay>
             <CarouselItem
-              linkedUrl={`https://www.cookeat.site/order?orderData=${'양고기 마라샹궈'}&priceData=${'10000'}&discount=${0}&special=${true}`} // 가격 수정 필요
-              imgUrl={image1}
-            />
-            <CarouselItem imgUrl={image2} />
-            <CarouselItem
               imgUrl={image2}
               linkedUrl="https://www.cookeat.site/notice/113"
             />
             <CarouselItem imgUrl={image3} />
+            <CarouselItem
+              linkedUrl={`https://www.cookeat.site/order?orderData=${'양고기 마라샹궈'}&priceData=${'10000'}&discount=${0}&special=${true}`} // 가격 수정 필요
+              imgUrl={image1}
+            />
           </StyledCarousel>
           {monthlyLikesSskcooks ? (
             <SskcookSwiper

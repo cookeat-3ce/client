@@ -30,7 +30,6 @@ import { memberAPI } from '../../apis/member';
 import { useQuery, useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import instance from '../../apis';
-import { message } from 'antd';
 import { useRecoilValue } from 'recoil';
 import { memberState } from '../../store';
 import { getCookie } from '../../hooks';
@@ -130,10 +129,7 @@ const SubscriptionInfo = () => {
         throw new Error('Error');
       }
     },
-    onSuccess: (response) => {
-      if (response === 1) message.success('구독 성공!', 5);
-      else message.error('구독 취소!', 5);
-    },
+    onSuccess: (response) => {},
   });
 
   const handleScroll = () => {
@@ -255,7 +251,7 @@ const SubscriptionInfo = () => {
                       followingUsername: username,
                       followerUsername: member.username,
                     });
-                  } else message.warning('로그인이 필요한 서비스예요!', 5);
+                  }
                 }}
                 color={COLORS.WHITE}
                 backgroundColor={COLORS.BLACK}
@@ -275,7 +271,7 @@ const SubscriptionInfo = () => {
                       followingUsername: username,
                       followerUsername: member.username,
                     });
-                  } else message.warning('로그인이 필요한 서비스예요!', 5);
+                  }
                 }}
                 color={COLORS.BLACK}
                 backgroundColor={COLORS.WHITE}

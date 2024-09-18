@@ -32,7 +32,6 @@ import { subscriptionState } from '../../store';
 import { useRecoilValue } from 'recoil';
 import CustomButton from '../../components/Button/';
 import { useMutation } from '@tanstack/react-query';
-import { message } from 'antd';
 import { memberAPI } from '../../apis/member';
 import { memberState } from '../../store';
 import { useQuery } from '@tanstack/react-query';
@@ -162,13 +161,8 @@ const Subscription = () => {
         throw new Error('Error');
       }
     },
-    onSuccess: (response) => {
-      if (response === 1) message.success('구독 성공!', 5);
-      else message.error('구독 취소!', 5);
-    },
-    onError: () => {
-      message.error('구독 실패!', 5);
-    },
+    onSuccess: (response) => {},
+    onError: () => {},
   });
 
   useEffect(() => {
