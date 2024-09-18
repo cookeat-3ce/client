@@ -144,7 +144,7 @@ const SskcookDetails = () => {
 
   const fetchMyIngredients = async () => {
     try {
-      const response = await fridgeAPI.getIngredientsAPI();
+      const response = await fridgeAPI.getIngredientsAPI('valid');
       setIngredients(response.data || []);
     } catch (error) {
       console.error('Failed to fetch ingredients:', error);
@@ -906,13 +906,10 @@ const SskcookDetails = () => {
   const [discountTotalPrice, setDiscountTotalPrice] = useState('');
   const [selectivePrice, setSelectivePrice] = useState('');
   const [discountSelectivePrice, setDiscountSelectivePrice] = useState('');
+
   useEffect(() => {
     if (sskcookDetailsData?.data?.ingredients) {
-      const validIngredientNames = new Set(
-        ingredient
-          .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
-          .map((ing) => ing.name),
-      );
+      const validIngredientNames = new Set(ingredient.map((ing) => ing.name));
 
       const validIngredients = sskcookDetailsData.data.ingredients.filter(
         (item) => validIngredientNames.has(item.name),
@@ -1010,11 +1007,7 @@ const SskcookDetails = () => {
     }
   };
 
-  const validIngredientNames = new Set(
-    ingredient
-      .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
-      .map((ing) => ing.name),
-  );
+  const validIngredientNames = new Set(ingredient.map((ing) => ing.name));
 
   if (isLoading) {
     return (
