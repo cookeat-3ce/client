@@ -53,10 +53,11 @@ export const Container = styled.div`
 `;
 
 export const StyledCarouselSkeleton = styled(Skeleton.Button)`
-  width: 75vw !important;
-  margin: 0 auto !important;
-  height: 50vh !important;
+  width: 56vw !important;
+  height: 48vh !important;
   border-radius: 40px !important;
+
+  margin: 0 auto !important;
 `;
 
 export const StyledTitleSkeleton = styled(Skeleton.Button)`

@@ -2,7 +2,6 @@ import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import React, { useEffect, useCallback } from 'react';
 import instance from '../../apis';
 import { AdminAPI } from '../../apis/admin';
-import { message } from 'antd';
 import { debounce } from 'lodash';
 import { COLORS } from '../../constants';
 import CustomTextButton from '../../components/Button/Text';
@@ -52,7 +51,7 @@ const AdminReport = () => {
       }
     },
     onSuccess: (response) => {
-      message.success('삭제되었습니다', 5);
+      console.log(response);
     },
   });
 

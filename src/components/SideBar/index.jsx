@@ -50,6 +50,7 @@ const CustomSideBar = () => {
   const isEventLocation = window.location.href.includes('/notice');
   const isNoticeLocation = window.location.href.includes('/notice/create');
   const isInfoLocation = window.location.href.includes('/info');
+  const isMyFridge = window.location.href.includes('/myfridge');
 
   // 예시
   // isLogined = false;
@@ -114,7 +115,8 @@ const CustomSideBar = () => {
           const isEventActive =
             item.label === '이벤트' && isEventLocation && !isNoticeLocation;
           const isInfoActive =
-            item.label === '내 정보' && (isInfoLocation || isNoticeLocation);
+            item.label === '내 정보' &&
+            (isInfoLocation || isNoticeLocation || isMyFridge);
           return (
             <ButtonContainer
               key={item.path}

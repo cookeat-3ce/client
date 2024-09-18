@@ -43,7 +43,7 @@ import Play from '../../assets/icons/play.svg';
 import Link from '../../assets/icons/link.svg';
 import KakaoIcon from '../../assets/icons/kakao.svg';
 import { getCookie } from '../../hooks';
-import { message, Menu, Dropdown, Tooltip } from 'antd';
+import { Menu, Dropdown, Tooltip } from 'antd';
 import { memberAPI } from '../../apis/member';
 import CustomImageButton from '../../components/Button/Image';
 import { useCustomNavigate } from '../../hooks';
@@ -78,6 +78,7 @@ const SskcookDetails = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const word = transcript.split(' ');
   const navigate = useNavigate();
+  const today = new Date();
 
   useEffect(() => {
     setIsPlaying(true);
@@ -764,9 +765,7 @@ const SskcookDetails = () => {
     },
     onSuccess: (response) => {
       if (response.data === 'likes added') {
-        message.success('좋아요!', 5);
       } else {
-        message.error('좋아요 취소!', 5);
       }
     },
   });
@@ -782,9 +781,7 @@ const SskcookDetails = () => {
     },
     onSuccess: (response) => {
       if (response.data === 'report added') {
-        message.success('신고 등록!', 5);
       } else {
-        message.error('신고 취소!', 5);
       }
     },
   });
@@ -800,9 +797,7 @@ const SskcookDetails = () => {
     },
     onSuccess: (response) => {
       if (response.data === 'store added') {
-        message.success('보관!', 5);
       } else {
-        message.error('보관 취소!', 5);
       }
     },
   });
@@ -821,12 +816,8 @@ const SskcookDetails = () => {
     },
     onSuccess: (response) => {
       // console.log(response);
-      if (response === 1) message.success('구독 성공!', 5);
-      else message.error('구독 취소!', 5);
     },
-    onError: () => {
-      message.error('구독 실패!', 5);
-    },
+    onError: () => {},
   });
 
   const checking = () => {
@@ -1044,10 +1035,7 @@ const SskcookDetails = () => {
   };
 
   const handleCopy = (copyText) => {
-    navigator.clipboard
-      .writeText(copyText)
-      .then(() => message.success('주소 복사 성공!', 5))
-      .catch((err) => message.error('주소 복사 실패!', 5));
+    navigator.clipboard.writeText(copyText);
   };
 
   const shareKakao = () => {
@@ -1174,7 +1162,6 @@ const SskcookDetails = () => {
                 setIsSirenClicked(!isSirenClicked);
                 reportMutation.mutate(sskcookId);
               } else {
-                message.warning('로그인이 필요한 서비스예요!', 5);
               }
             }}
           >
@@ -1199,7 +1186,6 @@ const SskcookDetails = () => {
                 setIsLikeClicked(!isLikeClicked);
                 likeMutation.mutate(sskcookId);
               } else {
-                message.warning('로그인이 필요한 서비스예요!', 5);
               }
             }}
           >
@@ -1219,7 +1205,6 @@ const SskcookDetails = () => {
                 setIsLikeClicked(!isLikeClicked);
                 likeMutation.mutate(sskcookId);
               } else {
-                message.warning('로그인이 필요한 서비스예요!', 5);
               }
             }}
           >
@@ -1263,7 +1248,6 @@ const SskcookDetails = () => {
                 setIsBookmarkClicked(!isBookmarkClicked);
                 storeMutation.mutate(sskcookId);
               } else {
-                message.warning('로그인이 필요한 서비스예요!', 5);
               }
             }}
           >
@@ -1283,7 +1267,6 @@ const SskcookDetails = () => {
                 setIsBookmarkClicked(!isBookmarkClicked);
                 storeMutation.mutate(sskcookId);
               } else {
-                message.warning('로그인이 필요한 서비스예요!', 5);
               }
             }}
           >
@@ -1366,7 +1349,6 @@ const SskcookDetails = () => {
                       followerUsername: member.username,
                     });
                   } else {
-                    message.warning('로그인이 필요한 서비스예요!', 5);
                   }
                 }}
               />
