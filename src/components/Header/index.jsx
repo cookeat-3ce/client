@@ -75,13 +75,13 @@ const CustomHeader = () => {
     if (accessToken) {
       // SSE 연결 객체
       const eventSource = new EventSourcePolyfill(
-        `${process.env.REACT_APP_SERVER_URL}/alert/sse`,
+        `${process.env.REACT_APP_SERVER_URL}/api/alert/sse`,
         {
           headers: {
             Authorization: `${accessToken}`,
             Accept: 'text/event-stream',
           },
-          heartbeatTimeout: 60000,
+          heartbeatTimeout: 864000,
         },
       );
 
