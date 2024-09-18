@@ -305,9 +305,13 @@ function App() {
         <Route
           path="/notice/create"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <CreateNotice />
-            </CommonLayout>
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <CreateNotice />
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
           }
         />
         <Route
@@ -321,17 +325,25 @@ function App() {
         <Route
           path="/live/class/:sessionId"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <ClassSession></ClassSession>
-            </CommonLayout>
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <ClassSession></ClassSession>
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
           }
         />
         <Route
           path="/live/:sessionId"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <LiveSession></LiveSession>
-            </CommonLayout>
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <LiveSession></LiveSession>
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
           }
         />
         <Route
@@ -357,17 +369,25 @@ function App() {
         <Route
           path="/myfridge"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <Fridge />
-            </CommonLayout>
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <Fridge />
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
           }
         />
         <Route
           path="/recommends"
           element={
-            <CommonLayout isLogined={!!getCookie('accessToken')}>
-              <RecipeRecommend />
-            </CommonLayout>
+            getCookie('accessToken') && role === 'ROLE_USER' ? (
+              <CommonLayout isLogined={!!getCookie('accessToken')}>
+                <RecipeRecommend />
+              </CommonLayout>
+            ) : (
+              <Navigate to={'/login'} replace />
+            )
           }
         />
         <Route path="/order/done" element={<OrderDone />} />
