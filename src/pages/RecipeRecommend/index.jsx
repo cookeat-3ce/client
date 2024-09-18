@@ -29,7 +29,7 @@ const RecipeRecommend = () => {
 
   const myIngredientsQuery = useQuery({
     queryKey: ['myIngredients', username],
-    queryFn: () => fridgeAPI.getIngredientsAPI(),
+    queryFn: () => fridgeAPI.getIngredientsAPI(''),
   });
 
   const recommendsRecipeQuery = useQuery({

@@ -145,7 +145,7 @@ const SskcookDetails = () => {
 
   const fetchMyIngredients = async () => {
     try {
-      const response = await fridgeAPI.getIngredientsAPI();
+      const response = await fridgeAPI.getIngredientsAPI('valid');
       setIngredients(response.data || []);
     } catch (error) {
       console.error('Failed to fetch ingredients:', error);
@@ -897,13 +897,10 @@ const SskcookDetails = () => {
   const [discountTotalPrice, setDiscountTotalPrice] = useState('');
   const [selectivePrice, setSelectivePrice] = useState('');
   const [discountSelectivePrice, setDiscountSelectivePrice] = useState('');
+
   useEffect(() => {
     if (sskcookDetailsData?.data?.ingredients) {
-      const validIngredientNames = new Set(
-        ingredient
-          .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
-          .map((ing) => ing.name),
-      );
+      const validIngredientNames = new Set(ingredient.map((ing) => ing.name));
 
       const validIngredients = sskcookDetailsData.data.ingredients.filter(
         (item) => validIngredientNames.has(item.name),
@@ -940,7 +937,10 @@ const SskcookDetails = () => {
       const notHavePrices = filteredItems.map(
         (item) => priceMap[item.name] || 0,
       );
+
+      const notHaveProductsName = filteredItems.map((item) => item.name);
       setNotHavePrices(notHavePrices);
+      setNotHaveProducts(notHaveProductsName);
 
       const validPrices = validIngredients.map(
         (item) => priceMap[item.name] || 0,
@@ -950,11 +950,12 @@ const SskcookDetails = () => {
         (sum, price) => sum + price,
         0,
       );
+
       const totalNotHavePrice = totalSum - totalValidPrice;
 
       const roundedPartialSum = Math.round(totalNotHavePrice);
       setSelectivePrice(roundedPartialSum);
-      setDiscountSelectivePrice(Math.round(roundedPartialSum * 0.73));
+      setDiscountSelectivePrice(Math.round(roundedPartialSum * 0.83));
     }
   }, [sskcookDetailsData, ingredient, location]);
 
@@ -1001,11 +1002,7 @@ const SskcookDetails = () => {
     }
   };
 
-  const validIngredientNames = new Set(
-    ingredient
-      .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
-      .map((ing) => ing.name),
-  );
+  const validIngredientNames = new Set(ingredient.map((ing) => ing.name));
 
   if (isLoading) {
     return (

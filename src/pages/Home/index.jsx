@@ -47,7 +47,7 @@ const Index = () => {
 
   const myIngredientsQuery = useQuery({
     queryKey: ['myIngredients', username],
-    queryFn: () => fridgeAPI.getIngredientsAPI(),
+    queryFn: () => fridgeAPI.getIngredientsAPI(''),
     staleTime: 0,
     cacheTime: 0,
   });
