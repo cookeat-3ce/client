@@ -210,7 +210,7 @@ const Admin = () => {
                     : eventName === 'Sskcook_upload'
                       ? '슥쿡 업로드'
                       : eventName === 'Longcook_upload'
-                        ? '롱쿡 업로드'
+                        ? '스-윽쿡 업로드'
                         : '회원 가입 수'
                 }
                 fontFamily={'Happiness-Sans-Bold'}
