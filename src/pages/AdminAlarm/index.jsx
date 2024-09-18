@@ -26,12 +26,21 @@ const AdminAlarm = () => {
   const [pageNum, setPageNum] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [start, setStart] = useState(1);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const [selectedEventDetail, setSelectedEventDetail] = useState(null);
+  const [showContentModal, setShowContentModal] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const pageCount = 5;
 
   const eventListQuery = useQuery({
     queryKey: ['eventDetail', pageNum],
     queryFn: () => eventAPI.eventListAPI(pageNum),
+    staleTime: Infinity,
+  });
+
+  const eventDetailQuery = useQuery({
+    queryKey: ['eventDetail', selectedEventId],
+    queryFn: () => eventAPI.eventDetailAPI(selectedEventId),
     staleTime: Infinity,
   });
 
@@ -51,6 +60,14 @@ const AdminAlarm = () => {
 
   const closeCompleteModal = () => {
     setShowCompleteModal(false);
+  };
+
+  const openContentModal = () => {
+    setShowContentModal(true);
+  };
+
+  const closeContentModal = () => {
+    setShowContentModal(false);
   };
 
   const handlePageChange = (newPageNum) => {
@@ -86,6 +103,12 @@ const AdminAlarm = () => {
       setTotalPages(Math.ceil(eventListQuery.data.data.total / 6));
     }
   }, [eventListQuery.data]);
+
+  useEffect(() => {
+    if (eventDetailQuery.data) {
+      setSelectedEventDetail(eventDetailQuery.data.data);
+    }
+  }, [eventDetailQuery.data]);
 
   useEffect(() => {
     if (pageNum >= start + pageCount) {
@@ -137,6 +160,21 @@ const AdminAlarm = () => {
                 />
               </EventInfoWrapper>
               <CustomButton
+                text={'상위 10개 레시피 보기'}
+                color={COLORS.WHITE}
+                width={'10vw'}
+                height={'4vh'}
+                fontSize={'.8rem'}
+                borderRadius={'20px'}
+                fontFamily={'Happiness-Sans-Bold'}
+                backgroundColor={COLORS.BLACK}
+                borderColor={COLORS.BLACK}
+                onClick={() => {
+                  setSelectedEventId(event.eventId);
+                  openContentModal();
+                }}
+              />
+              <CustomButton
                 text={'사용자에 알림 발송'}
                 color={COLORS.WHITE}
                 width={'10vw'}
@@ -176,6 +214,12 @@ const AdminAlarm = () => {
         show={showCompleteModal}
         onClose={closeCompleteModal}
         info={'알림 발송이 완료되었습니다.'}
+        admin={true}
+      />
+      <CheckModal
+        show={showContentModal}
+        onClose={closeContentModal}
+        info={selectedEventDetail?.content}
         admin={true}
       />
     </Container>

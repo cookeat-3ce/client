@@ -40,6 +40,7 @@ export const TextContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  line-height: 3vh;
   margin: 4vh 0 2vh 0;
   gap: 2vh;
 `;
