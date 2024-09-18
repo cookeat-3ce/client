@@ -35,7 +35,7 @@ const Fridge = () => {
 
   const fetchMyIngredients = async () => {
     try {
-      const response = await fridgeAPI.getIngredientsAPI();
+      const response = await fridgeAPI.getIngredientsAPI('');
       setIngredients(response.data || []);
     } catch (error) {
       console.error('Failed to fetch ingredients:', error);

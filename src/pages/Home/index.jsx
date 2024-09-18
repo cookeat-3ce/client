@@ -47,7 +47,7 @@ const Index = () => {
 
   const myIngredientsQuery = useQuery({
     queryKey: ['myIngredients', username],
-    queryFn: () => fridgeAPI.getIngredientsAPI(),
+    queryFn: () => fridgeAPI.getIngredientsAPI(''),
     staleTime: 0,
     cacheTime: 0,
   });
@@ -191,9 +191,7 @@ const Index = () => {
               linkedUrl={`https://www.cookeat.site/order?orderData=${'양고기 마라샹궈'}&priceData=${'10000'}&discount=${0}&special=${true}`} // 가격 수정 필요
               imgUrl={image1}
             />
-            <CarouselItem
-              imgUrl={image2}
-            />
+            <CarouselItem imgUrl={image2} />
             <CarouselItem
               imgUrl={image2}
               linkedUrl="https://www.cookeat.site/notice/113"

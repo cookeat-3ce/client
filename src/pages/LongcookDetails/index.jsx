@@ -26,8 +26,8 @@ const LongcookDetails = () => {
   const { id } = useParams();
 
   const [file, setFile] = useState(null);
-  const [ingredients, setIngredients] = useState([]);
-  const [ingredient, setIngredientss] = useState([]);
+  const [ingredients, setIngredients] = useState([]); // 롱쿡에 들어가는 식재료
+  const [ingredient, setIngredientss] = useState([]); // 내 식재료
   const [title, setTitle] = useState('');
   const [recipe, setRecipe] = useState('');
   const [prices, setPrices] = useState([]);
@@ -40,7 +40,7 @@ const LongcookDetails = () => {
 
   const fetchMyIngredients = async () => {
     try {
-      const response = await fridgeAPI.getIngredientsAPI();
+      const response = await fridgeAPI.getIngredientsAPI('valid');
       setIngredientss(response.data || []);
     } catch (error) {
       console.error('Failed to fetch ingredients:', error);
@@ -93,7 +93,6 @@ const LongcookDetails = () => {
 
     fetchLongcookDetails();
   }, [id]);
-  console.log(prices);
 
   const handleItemClick = (item) => {
     const itemIndex = ingredients?.findIndex((ing) => ing.name === item);
@@ -110,13 +109,8 @@ const LongcookDetails = () => {
       console.error('Item not found or price unavailable');
     }
   };
-  const today = new Date();
 
-  const validIngredientNames = new Set(
-    ingredient
-      .filter((ing) => moment(ing.expdate).isSameOrAfter(today, 'day'))
-      .map((ing) => ing.name),
-  );
+  const validIngredientNames = new Set(ingredient.map((ing) => ing.name));
 
   // 유효한 재료와 유효하지 않은 재료를 필터링합니다.
   const validIngredients = ingredients?.filter((item) =>

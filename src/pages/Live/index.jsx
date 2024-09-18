@@ -16,18 +16,20 @@ import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import instance from '../../apis';
-import { useCustomNavigate } from '../../hooks';
+import { getCookie, useCustomNavigate } from '../../hooks';
 import axios from 'axios';
 import Modal from '../../components/Modal';
 import CustomButton from '../../components/Button';
 import icon_person from '../../assets/icons/icon_person.svg';
 import { Tooltip } from 'antd';
 import { CustomSearchInput } from '../../components/Input';
+import CheckModal from '../../components/CheckModal';
 
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
 const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
 
 const Live = () => {
+  const accessToken = getCookie('accessToken');
   const [searchValue, setSearchValue] = useState('');
   const { handleChangeUrl } = useCustomNavigate();
   const [liveList, setLiveList] = useState([]);
