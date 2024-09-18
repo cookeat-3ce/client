@@ -20,6 +20,7 @@ import {
   PaginationContainer,
 } from '../Event/styles';
 import CheckModal from '../../components/CheckModal';
+import { SendAlertModal } from '../../components/InputModal';
 
 const AdminAlarm = () => {
   const [eventList, setEventList] = useState([]);
@@ -29,7 +30,7 @@ const AdminAlarm = () => {
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedEventDetail, setSelectedEventDetail] = useState(null);
   const [showContentModal, setShowContentModal] = useState(false);
-  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [showInputModal, setShowInputModal] = useState(false);
   const pageCount = 5;
 
   const eventListQuery = useQuery({
@@ -44,30 +45,20 @@ const AdminAlarm = () => {
     staleTime: Infinity,
   });
 
-  const mutation = useMutation({
-    mutationFn: (alertData) => alertAPI.sendAlertAPI(alertData),
-    onSuccess: (response) => {
-      openCompleteModal();
-    },
-    onError: (error) => {
-      console.error(`Failed to send: `, error);
-    },
-  });
-
-  const openCompleteModal = () => {
-    setShowCompleteModal(true);
-  };
-
-  const closeCompleteModal = () => {
-    setShowCompleteModal(false);
-  };
-
   const openContentModal = () => {
     setShowContentModal(true);
   };
 
   const closeContentModal = () => {
     setShowContentModal(false);
+  };
+
+  const openInputModal = () => {
+    setShowInputModal(true);
+  };
+
+  const closeInputModal = () => {
+    setShowInputModal(false);
   };
 
   const handlePageChange = (newPageNum) => {
@@ -87,14 +78,6 @@ const AdminAlarm = () => {
       setStart(start - pageCount);
       setPageNum(start - pageCount); // 이전 페이지로 이동
     }
-  };
-
-  const clickEventAlert = (eventId) => {
-    const alertData = {
-      eventId: eventId,
-      message: '2024년 8월 [양고기 마라샹궈] 밀키트가 출시되었습니다.',
-    };
-    mutation.mutate(alertData);
   };
 
   useEffect(() => {
@@ -186,7 +169,7 @@ const AdminAlarm = () => {
                 borderColor={COLORS.ORANGE}
                 onClick={(e) => {
                   e.preventDefault();
-                  clickEventAlert(event.eventId);
+                  openInputModal();
                 }}
               />
             </EventContainer>
@@ -211,16 +194,16 @@ const AdminAlarm = () => {
         )}
       </PaginationContainer>
       <CheckModal
-        show={showCompleteModal}
-        onClose={closeCompleteModal}
-        info={'알림 발송이 완료되었습니다.'}
-        admin={true}
-      />
-      <CheckModal
         show={showContentModal}
         onClose={closeContentModal}
         info={selectedEventDetail?.content}
         admin={true}
+      />
+      {/* show, onClose, onSubmit, eventId */}
+      <SendAlertModal
+        show={showInputModal}
+        onClose={closeInputModal}
+        eventId={selectedEventId}
       />
     </Container>
   );

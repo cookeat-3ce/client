@@ -29,6 +29,8 @@ import { useCustomNavigate } from '../../hooks';
 import { useMutation } from '@tanstack/react-query';
 import moment from 'moment/moment';
 import { memberAPI } from '../../apis/member';
+import { alertAPI } from '../../apis/alert';
+import CheckModal from '../CheckModal';
 
 export const InputModal = ({ show, onClose, onSubmit }) => {
   const [member] = useRecoilState(memberState);
@@ -323,5 +325,113 @@ export const ModifyOnelineModal = ({ show, onClose, onSubmit }) => {
         </ButtonGroup>
       </ModalContent>
     </ModalBackdrop>
+  );
+};
+export const SendAlertModal = ({ show, onClose, onSubmit, eventId }) => {
+  const [message, setMessage] = useState('');
+  const { handleChangeUrl } = useCustomNavigate();
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+
+  const openCompleteModal = () => {
+    setShowCompleteModal(true);
+  };
+
+  const closeCompleteModal = () => {
+    setShowCompleteModal(false);
+  };
+
+  const mutation = useMutation({
+    mutationFn: (alertData) => alertAPI.sendAlertAPI(alertData),
+    onSuccess: (response) => {},
+    onError: (error) => {
+      console.error(`Failed to send: `, error);
+    },
+  });
+
+  const clickEventAlert = () => {
+    const alertData = {
+      eventId: eventId,
+      message: message,
+    };
+
+    // 알림 발송을 5초 후에 실행
+    setTimeout(() => {
+      mutation.mutate(alertData);
+    }, 5000); // 5000ms = 5초
+  };
+
+  if (!show) return null;
+
+  const handleChangeMessage = (e) => {
+    setMessage(e.target.value);
+  };
+
+  return (
+    <>
+      {/* 모달은 즉시 표시됨 */}
+      <ModalBackdrop onClick={onClose}>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
+          <ModalTitleContainer>
+            <CustomText
+              text={'알람 메시지'}
+              fontFamily={'Happiness-Sans-Bold'}
+              fontSize={'1.2rem'}
+            />
+          </ModalTitleContainer>
+          <InputTextWrapper>
+            <CustomInputTextarea
+              fontSize={'1rem'}
+              width={'28vw'}
+              height={'4vh'}
+              type={'text'}
+              onChange={handleChangeMessage}
+            ></CustomInputTextarea>
+          </InputTextWrapper>
+          <ButtonGroup>
+            <CustomButton
+              text={'취소'}
+              color={COLORS.ORANGE}
+              width={'4vw'}
+              height={'3vh'}
+              fontSize={'.8rem'}
+              borderRadius={'20px'}
+              fontFamily={'Happiness-Sans-Bold'}
+              backgroundColor={COLORS.WHITE}
+              borderColor={COLORS.ORANGE}
+              onClick={(e) => {
+                e.preventDefault();
+                onClose();
+              }}
+            />
+            <CustomButton
+              text={'등록'}
+              color={COLORS.WHITE}
+              width={'4vw'}
+              height={'3vh'}
+              fontSize={'.8rem'}
+              borderRadius={'20px'}
+              fontFamily={'Happiness-Sans-Bold'}
+              backgroundColor={COLORS.ORANGE}
+              borderColor={COLORS.ORANGE}
+              onClick={(e) => {
+                e.preventDefault();
+                openCompleteModal();
+                clickEventAlert();
+              }}
+            />
+          </ButtonGroup>
+        </ModalContent>
+      </ModalBackdrop>
+
+      <CheckModal
+        show={showCompleteModal}
+        onClose={() => {
+          closeCompleteModal();
+          onClose();
+        }}
+        info={'알람 발송이 완료되었습니다.'}
+        admin={true}
+      />
+    </>
   );
 };
