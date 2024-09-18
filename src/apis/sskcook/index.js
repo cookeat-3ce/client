@@ -10,7 +10,7 @@ export const sskcookAPI = {
     });
   },
   monthlyLikesSskcookListAPI: (date) => {
-    return instance.get('/sskcook', {
+    return instance.get('/sskcook/top', {
       params: {
         date: date,
       },

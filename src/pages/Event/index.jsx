@@ -91,7 +91,7 @@ const Event = () => {
                 />
                 <EventInfoWrapper>
                   <CustomText
-                    text={`${moment() < moment(event.enddate) ? '진행 중' : '종료'}`}
+                    text={`${moment().diff(moment(event.enddate), 'months') <= 1 ? '진행 중' : '종료'}`}
                     fontFamily={'Happiness-Sans-Bold'}
                     fontSize={'1.2rem'}
                     color={COLORS.BLACK}
