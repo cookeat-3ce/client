@@ -946,7 +946,10 @@ const SskcookDetails = () => {
       const notHavePrices = filteredItems.map(
         (item) => priceMap[item.name] || 0,
       );
+
+      const notHaveProductsName = filteredItems.map((item) => item.name);
       setNotHavePrices(notHavePrices);
+      setNotHaveProducts(notHaveProductsName);
 
       const validPrices = validIngredients.map(
         (item) => priceMap[item.name] || 0,
@@ -956,6 +959,7 @@ const SskcookDetails = () => {
         (sum, price) => sum + price,
         0,
       );
+
       const totalNotHavePrice = totalSum - totalValidPrice;
 
       const roundedPartialSum = Math.round(totalNotHavePrice);
