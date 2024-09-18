@@ -169,6 +169,7 @@ const AdminAlarm = () => {
                 borderColor={COLORS.ORANGE}
                 onClick={(e) => {
                   e.preventDefault();
+                  setSelectedEventId(event.eventId);
                   openInputModal();
                 }}
               />
