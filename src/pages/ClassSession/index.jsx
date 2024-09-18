@@ -7,12 +7,19 @@ import { liveAPI } from '../../apis/live';
 import { useQuery } from '@tanstack/react-query';
 import CustomText from '../../components/Text';
 import CustomButton from '../../components/Button';
-import { ClassInfoContainer, Container, PageTitleContainer } from './styles';
+import {
+  ClassInfoContainer,
+  Container,
+  PageTitleContainer,
+  ProfileWrapper,
+  TitleWrapper,
+} from './styles';
 import { COLORS } from '../../constants';
 import { useRecoilState } from 'recoil';
 import { memberState } from '../../store';
 import Modal from '../../components/Modal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import ProfileImage from '../../components/ProfileImage';
 
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
 const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
@@ -208,12 +215,26 @@ const ClassSession = () => {
   return (
     <Container>
       <PageTitleContainer>
-        <CustomText
-          text="온라인 클래스"
-          fontFamily="Happiness-Sans-Bold"
-          fontSize="1.4rem"
-          color={COLORS.BLACK}
-        />
+        <TitleWrapper>
+          <CustomText
+            text="온라인 클래스"
+            fontFamily="Happiness-Sans-Bold"
+            fontSize="1.4rem"
+            color={COLORS.BLACK}
+          />
+          <CustomText
+            text={'/'}
+            fontFamily="Happiness-Sans-Bold"
+            fontSize="1.2rem"
+            color={COLORS.BLACK}
+          />
+          <CustomText
+            text={`${liveInfo?.title}`}
+            fontFamily="Happiness-Sans-Bold"
+            fontSize="1.2rem"
+            color={COLORS.BLACK}
+          />
+        </TitleWrapper>
         <CustomButton
           text={'나가기'}
           color={COLORS.WHITE}
@@ -232,18 +253,19 @@ const ClassSession = () => {
       </PageTitleContainer>
       {liveInfo && (
         <ClassInfoContainer>
-          <CustomText
-            text={`제목: ${liveInfo.title}`}
-            fontFamily="Happiness-Sans-Bold"
-            fontSize="1rem"
-            color={COLORS.BLACK}
-          />
-          <CustomText
-            text={`주최자: ${liveInfo.nickname}`}
-            fontFamily="Happiness-Sans-Bold"
-            fontSize="0.8rem"
-            color={COLORS.BLACK}
-          />
+          <ProfileWrapper>
+            <ProfileImage
+              src={liveInfo.profileImage}
+              width={'6vh'}
+              borderRadius={'50px'}
+            />
+            <CustomText
+              text={`${liveInfo.nickname}`}
+              fontFamily="Happiness-Sans-Bold"
+              fontSize="1rem"
+              color={COLORS.BLACK}
+            />
+          </ProfileWrapper>
         </ClassInfoContainer>
       )}
       {session && (

@@ -12,12 +12,18 @@ import {
   ClassInfoContainer,
   Container,
   PageTitleContainer,
+  ProfileWrapper,
+  TitleWrapper,
 } from './styles';
 import { COLORS } from '../../constants';
 import { useRecoilState } from 'recoil';
 import { memberState } from '../../store';
 import Modal from '../../components/Modal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import ProfileImage from '../../components/ProfileImage';
+import { ParticipantImage } from '../Live/styles';
+import icon_person from '../../assets/icons/icon_person.svg';
+import { Tooltip } from 'antd';
 
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
 const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
@@ -235,33 +241,53 @@ const LiveSession = () => {
   return (
     <Container>
       <PageTitleContainer>
-        <CustomText
-          text="요라"
-          fontFamily="Happiness-Sans-Bold"
-          fontSize="1.4rem"
-          color={COLORS.BLACK}
-        />
-        <CustomText
-          text={`동접자 ${participantsCount}`}
-          fontFamily="Happiness-Sans-Regular"
-          fontSize="0.8rem"
-          color={COLORS.BLACK}
-        />
+        <TitleWrapper>
+          <CustomText
+            text="요라"
+            fontFamily="Happiness-Sans-Bold"
+            fontSize="1.5rem"
+            color={COLORS.BLACK}
+          />
+          <CustomText
+            text={'/'}
+            fontFamily="Happiness-Sans-Bold"
+            fontSize="1.2rem"
+            color={COLORS.BLACK}
+          />
+          <CustomText
+            text={`${liveInfo?.title}`}
+            fontFamily="Happiness-Sans-Bold"
+            fontSize="1.2rem"
+            color={COLORS.BLACK}
+          />
+        </TitleWrapper>
       </PageTitleContainer>
       {liveInfo && (
         <ClassInfoContainer>
-          <CustomText
-            text={`${liveInfo.title}`}
-            fontFamily="Happiness-Sans-Bold"
-            fontSize="1rem"
-            color={COLORS.BLACK}
-          />
-          <CustomText
-            text={`주최자: ${liveInfo.nickname}`}
-            fontFamily="Happiness-Sans-Bold"
-            fontSize="0.8rem"
-            color={COLORS.BLACK}
-          />
+          <ProfileWrapper>
+            <ProfileImage
+              src={liveInfo.profileImage}
+              width={'6vh'}
+              borderRadius={'50px'}
+            />
+            <CustomText
+              text={`${liveInfo.nickname}`}
+              fontFamily="Happiness-Sans-Bold"
+              fontSize="1rem"
+              color={COLORS.BLACK}
+            />
+          </ProfileWrapper>
+          <TitleWrapper>
+            <Tooltip title={'현재 동시 접속자 수'} color={COLORS.ORANGE}>
+              <ParticipantImage src={icon_person} />
+            </Tooltip>
+            <CustomText
+              text={`${participantsCount}`}
+              fontFamily="Happiness-Sans-Bold"
+              fontSize="1rem"
+              color={COLORS.BLACK}
+            />
+          </TitleWrapper>
         </ClassInfoContainer>
       )}
       {managerStream && (

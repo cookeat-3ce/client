@@ -48,14 +48,16 @@ export const LiveThumbnailImage = styled.img`
 export const LiveTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0 0.8vw;
-  margin: 0.8vh 0;
+  // padding: 0 0.8vw;
+  // margin: 0.8vh 0;
   cursor: pointer;
   // border: 10px solid RED;
 `;
 
 export const LiveTitleWrapper = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 0.3vw;
   // border: 10px solid black;
 `;

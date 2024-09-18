@@ -23,7 +23,7 @@ import CustomButton from '../../components/Button';
 import icon_person from '../../assets/icons/icon_person.svg';
 import { Tooltip } from 'antd';
 import { CustomSearchInput } from '../../components/Input';
-import CheckModal from '../../components/CheckModal';
+import ProfileCard from '../../components/ProfileCard';
 
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
 const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
@@ -210,19 +210,7 @@ const Live = () => {
                   }}
                 />
                 <LiveTitleContainer>
-                  <CustomText
-                    text={live.title}
-                    fontFamily={'Happiness-Sans-Bold'}
-                    fontSize={'1rem'}
-                    color={COLORS.BLACK}
-                    onClick={() => {
-                      handleClickLiveItem(
-                        live.sessionId,
-                        live.type,
-                        live.people,
-                      );
-                    }}
-                  />
+                  <ProfileCard profileImage={live.profileImage} index={live} />
                   {live.type === 0 && (
                     <Tooltip
                       color={COLORS.ORANGE}

@@ -17,6 +17,21 @@ export const PageTitleContainer = styled.div`
   // border: 10px solid BLACK;
 `;
 
+export const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1vw;
+  // border: 10px solid BLACK;
+`;
+
+export const ProfileWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  // border: 10px solid BLACK;
+`;
+
 export const ClassInfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
