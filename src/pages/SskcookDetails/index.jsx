@@ -960,7 +960,7 @@ const SskcookDetails = () => {
 
       const roundedPartialSum = Math.round(totalNotHavePrice);
       setSelectivePrice(roundedPartialSum);
-      setDiscountSelectivePrice(Math.round(roundedPartialSum * 0.73));
+      setDiscountSelectivePrice(Math.round(roundedPartialSum * 0.83));
     }
   }, [sskcookDetailsData, ingredient, location]);
 
