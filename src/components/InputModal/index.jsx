@@ -354,10 +354,10 @@ export const SendAlertModal = ({ show, onClose, onSubmit, eventId }) => {
       message: message,
     };
 
-    // 알림 발송을 5초 후에 실행
+    // 알림 발송을 10초 후에 실행
     setTimeout(() => {
       mutation.mutate(alertData);
-    }, 5000); // 5000ms = 5초
+    }, 10000); // 10000ms = 10초
   };
 
   if (!show) return null;
