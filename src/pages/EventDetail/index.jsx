@@ -104,12 +104,6 @@ const EventDetail = () => {
               color={COLORS.BLACK}
             />
             <CustomText
-              text={`${moment(eventDetail?.startdate).format('M')}월 상위 10개 레시피 목록입니다.`}
-              fontFamily={'Happiness-Sans-Regular'}
-              fontSize={'1rem'}
-              color={COLORS.GRAY}
-            />
-            <CustomText
               text={`${moment(eventDetail?.startdate).format('YYYY-MM-DD')} ~ ${moment(eventDetail?.enddate).format('YYYY-MM-DD')}`}
               fontFamily={'Happiness-Sans-Bold'}
               fontSize={'1rem'}
