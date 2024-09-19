@@ -91,22 +91,13 @@ const Event = () => {
                 />
                 <EventInfoWrapper>
                   <CustomText
-                    text={`${moment().diff(moment(event.enddate), 'months') <= 1 ? '진행 중' : '종료'}`}
-                    fontFamily={'Happiness-Sans-Bold'}
-                    fontSize={'1.2rem'}
-                    color={COLORS.BLACK}
-                  />
-                  <CustomText
-                    text={`${moment(event.startdate).format('M')}월 상위 10개 레시피 목록입니다.`}
-                    fontFamily={'Happiness-Sans-Regular'}
-                    fontSize={'1rem'}
-                    color={COLORS.GRAY}
-                  />
-                  <CustomText
                     text={event.title}
                     fontFamily={'Happiness-Sans-Bold'}
                     fontSize={'1.2rem'}
                     color={COLORS.BLACK}
+                    style={{
+                      lineHeight: '3vh',
+                    }}
                   />
                   <CustomText
                     text={`${moment(event.startdate).format('YYYY-MM-DD')} ~ ${moment(event.enddate).format('YYYY-MM-DD')}`}

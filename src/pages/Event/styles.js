@@ -21,12 +21,13 @@ export const ContentContainer = styled.div`
 export const EventListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Two columns */
-  column-gap: 8vw;
+  column-gap: 4vw;
   row-gap: 4vh;
 `;
 
 export const EventContainer = styled.div`
   display: flex;
+  width: 36vw;
   height: 16vh;
   gap: 1vw;
   align-items: center;
@@ -41,8 +42,7 @@ export const EventThumbnailImage = styled.img`
 export const EventInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8vh;
-  line-height: 2vh;
+  gap: 1vh;
   // border: 10px solid BLACK;
 `;
 

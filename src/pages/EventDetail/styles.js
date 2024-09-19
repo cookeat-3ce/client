@@ -44,12 +44,22 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 8vh;
+  gap: 2vh;
+  margin: 0 0 4vh 0;
   // border: 10px solid RED;
 `;
 
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
+  border: 10px solid BLACK;
+`;
+
 export const EventImage = styled.img`
-  width: auto;
-  height: 32vh;
+  width: 32vw;
+  // height: 32vh;
   object-fit: contain;
 `;
