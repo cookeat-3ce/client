@@ -2,29 +2,27 @@ import React from 'react';
 import OpenViduVideo from '../OpenViduVideo';
 import {
   Container,
+  MainVideoContainer,
   ManagerVideoContainer,
   ManagerVideoWrapper,
   VideoGrid,
   VideoWrapper,
 } from './styles';
 
-const Session = ({
-  sessionId,
-  leaveSession,
-  participants,
-  managerUsername,
-}) => {
+const Session = ({ participants, managerUsername }) => {
   return (
     <Container>
       {participants &&
         participants.map((participant, index) => {
           if (participant.stream.connection.data === managerUsername) {
             return (
-              <ManagerVideoContainer>
-                <ManagerVideoWrapper key={index}>
-                  <OpenViduVideo streamManager={participant} />
-                </ManagerVideoWrapper>
-              </ManagerVideoContainer>
+              <MainVideoContainer>
+                <ManagerVideoContainer>
+                  <ManagerVideoWrapper key={index}>
+                    <OpenViduVideo streamManager={participant} />
+                  </ManagerVideoWrapper>
+                </ManagerVideoContainer>
+              </MainVideoContainer>
             );
           }
           return null;

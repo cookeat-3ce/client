@@ -31,6 +31,7 @@ export const LiveListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 4vw;
+  row-gap: 4vh;
   // border: 10px solid BLACK;
 `;
 

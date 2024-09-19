@@ -3,6 +3,7 @@ import {
   AlertButton,
   Container,
   ContentContainer,
+  ContentWrapper,
   EventImage,
   EventInfoContainer,
   EventTitleContainer,
@@ -18,6 +19,7 @@ import CustomButton from '../../components/Button';
 import { COLORS } from '../../constants';
 import moment from 'moment';
 import { useCustomNavigate } from '../../hooks';
+import image_event from '../../assets/images/8top10recipe.svg';
 import { alertAPI } from '../../apis/alert';
 import { useRecoilState } from 'recoil';
 import { memberState } from '../../store';
@@ -102,12 +104,6 @@ const EventDetail = () => {
               color={COLORS.BLACK}
             />
             <CustomText
-              text={`${moment(eventDetail?.startdate).format('M')}월 상위 10개 레시피 목록입니다.`}
-              fontFamily={'Happiness-Sans-Regular'}
-              fontSize={'1rem'}
-              color={COLORS.GRAY}
-            />
-            <CustomText
               text={`${moment(eventDetail?.startdate).format('YYYY-MM-DD')} ~ ${moment(eventDetail?.enddate).format('YYYY-MM-DD')}`}
               fontFamily={'Happiness-Sans-Bold'}
               fontSize={'1rem'}
@@ -148,13 +144,7 @@ const EventDetail = () => {
         />
       </ListButtonWrapper>
       <ContentContainer>
-        <EventImage src={eventDetail?.thumbnail}></EventImage>
-        <CustomText
-          text={eventDetail?.content}
-          fontFamily={'Happiness-Sans-Bold'}
-          fontSize={'1rem'}
-          color={COLORS.BLACK}
-        />
+        <EventImage src={image_event} />
         {moment().diff(moment(eventDetail?.enddate), 'months') <= 1 && (
           <CustomButton
             text={'알림 받기'}
