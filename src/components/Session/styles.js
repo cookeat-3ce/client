@@ -10,9 +10,16 @@ export const Container = styled.div`
   // border: 10px solid ${COLORS.BLACK};
 `;
 
+export const MainVideoContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const ManagerVideoContainer = styled.div`
-  width: 72vw;
-  height: 80vh;
+  width: 54vw;
+  height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;

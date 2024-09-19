@@ -288,6 +288,21 @@ const LiveSession = () => {
               color={COLORS.BLACK}
             />
           </TitleWrapper>
+          <CustomButton
+            text="나가기"
+            color={COLORS.WHITE}
+            width="4vw"
+            height="3vh"
+            fontSize=".8rem"
+            borderRadius="20px"
+            fontFamily="Happiness-Sans-Bold"
+            backgroundColor={COLORS.ORANGE}
+            borderColor={COLORS.ORANGE}
+            onClick={(e) => {
+              e.preventDefault();
+              leaveSession();
+            }}
+          />
         </ClassInfoContainer>
       )}
       {managerStream && (
@@ -298,23 +313,6 @@ const LiveSession = () => {
           managerUsername={managerUsername}
         />
       )}
-      <ButtonContainer>
-        <CustomButton
-          text="나가기"
-          color={COLORS.WHITE}
-          width="4vw"
-          height="3vh"
-          fontSize=".8rem"
-          borderRadius="20px"
-          fontFamily="Happiness-Sans-Bold"
-          backgroundColor={COLORS.ORANGE}
-          borderColor={COLORS.ORANGE}
-          onClick={(e) => {
-            e.preventDefault();
-            leaveSession();
-          }}
-        />
-      </ButtonContainer>
       <Modal
         show={showExitModal}
         title={'라이브 종료'}

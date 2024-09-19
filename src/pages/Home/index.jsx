@@ -195,7 +195,7 @@ const Index = () => {
           <StyledCarousel arrows infinite autoplay>
             <CarouselItem
               imgUrl={image2}
-              linkedUrl="https://www.cookeat.site/notice/113"
+              linkedUrl="https://www.cookeat.site/notice/121"
             />
             <CarouselItem imgUrl={image3} />
             <CarouselItem
