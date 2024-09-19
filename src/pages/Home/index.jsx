@@ -199,7 +199,7 @@ const Index = () => {
             />
             <CarouselItem imgUrl={image3} />
             <CarouselItem
-              linkedUrl={`https://www.cookeat.site/order?orderData=${'양고기 마라샹궈'}&priceData=${'10000'}&discount=${0}&special=${true}`} // 가격 수정 필요
+              linkedUrl={`https://www.cookeat.site/order?orderData=${'우삼겹 샤브샤브'}&priceData=${'10000'}&discount=${0}&special=${true}`} // 가격 수정 필요
               imgUrl={image1}
             />
           </StyledCarousel>

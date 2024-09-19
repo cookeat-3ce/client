@@ -103,3 +103,9 @@ export const StyledCountSkeleton = styled(Skeleton.Button)`
   width: 10vw !important;
   height: 1vw !important;
 `;
+
+export const CardWrapper = styled.div`
+  width: 25vw;
+  positon: relative;
+  // border: 10px solid red;
+`;
