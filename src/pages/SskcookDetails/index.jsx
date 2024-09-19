@@ -17,7 +17,6 @@ import {
   SubscriptionContainer,
   StyledSkeleton,
   SwitchSkeleton,
-  LineContainer2,
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';

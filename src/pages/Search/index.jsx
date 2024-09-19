@@ -14,6 +14,7 @@ import {
   StyledCountSkeleton,
   StyledProfileSkeleton,
   InputContainer,
+  CardWrapper,
 } from './styles';
 import { sskcookAPI } from '../../apis/sskcook';
 import { debounce } from 'lodash';
@@ -23,11 +24,15 @@ import { CustomSearchInput } from '../../components/Input';
 import instance from '../../apis';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import CustomText from '../../components/Text';
-import { CardContainer, CardWrapper } from '../Tag/styles';
+import { CardContainer } from '../Tag/styles';
 import Card from '../../components/Card';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import { useCustomNavigate } from '../../hooks';
+import ProfileImage from '../../components/ProfileImage';
+import { useNavigate } from 'react-router-dom';
+import LikeIcon from '../../assets/icons/clicked_thumbs_up.svg';
 const Search = () => {
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState('');
   const [activeTab, setActiveTab] = useState('1');
   const [isSort, setIsSort] = useState('latest');
@@ -310,33 +315,59 @@ const Search = () => {
                       <div
                         key={item.id}
                         style={{
-                          cursor: 'pointer',
-                          display: 'inline-flex',
-                          alignItems: 'center',
+                          display: 'flex',
                           gap: '1vw',
                         }}
                       >
                         <CardContainer>
-                          <CardWrapper>
+                          <CardWrapper style={{ position: 'relative' }}>
                             <Card
                               url={item.sskcookUrl}
                               id={item.sskcookId}
-                              type={'sskcook'}
                               color={COLORS.BLACK}
+                              type={'sskcook'}
                               deleteAPI={sskcookAPI.sskcookDeleteAPI}
                               queryKey="sskcooks"
-                              status={`search_recent: ${searchValue}`}
+                              status={`search_likes: ${searchValue}`}
                               page={handleItemClick(
-                                sskcookSearchRecentData,
+                                sskcookSearchLikeData,
                                 item.sskcookId,
                               )}
-                              width={'12vw'}
-                              height={'42vh'}
+                              width={'25vw'}
+                              height={'35vh'}
                             />
+                            <div
+                              style={{
+                                position: 'absolute',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '1vw',
+                                top: '0',
+                                left: '0',
+                                padding: '0.5vw',
+                              }}
+                            >
+                              <ProfileImage
+                                src={LikeIcon}
+                                alt="Like Icon"
+                                width={'2vw'}
+                                height={'2vw'}
+                              />
+                              <CustomText
+                                text={item.countLikes}
+                                fontFamily={'Happiness-Sans-Regular'}
+                                color={COLORS.WHITE}
+                                fontSize={'1vw'}
+                              />
+                            </div>
                           </CardWrapper>
                         </CardContainer>
                         <div
-                          style={{ display: 'flex', flexDirection: 'column' }}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1vw',
+                          }}
                         >
                           <CustomText
                             text={item.title}
@@ -344,9 +375,32 @@ const Search = () => {
                             fontFamily={'Happiness-Sans-Bold'}
                             fontSize={'1.2rem'}
                           />
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '1vw',
+                            }}
+                          >
+                            <ProfileImage
+                              src={item.profileImage}
+                              width={'3vw'}
+                              height={'3vw'}
+                              borderRadius={'100%'}
+                              onClick={() =>
+                                navigate(`/subscription/#{item.username}`)
+                              }
+                            />
+                            <CustomText
+                              text={item.nickname}
+                              color={COLORS.TAG}
+                              fontFamily={'Happiness-Sans-Regular'}
+                              fontSize={'1vw'}
+                            />
+                          </div>
                           <CustomText
-                            text={item.nickname}
-                            color={COLORS.TAG}
+                            text={item.regdate}
+                            color={COLORS.BLACK}
                             fontFamily={'Happiness-Sans-Regular'}
                             fontSize={'1vw'}
                           />
@@ -366,14 +420,12 @@ const Search = () => {
                     <div
                       key={item.id}
                       style={{
-                        cursor: 'pointer',
                         display: 'inline-flex',
-                        alignItems: 'center',
                         gap: '1vw',
                       }}
                     >
                       <CardContainer>
-                        <CardWrapper>
+                        <CardWrapper style={{ position: 'relative' }}>
                           <Card
                             url={item.sskcookUrl}
                             id={item.sskcookId}
@@ -386,24 +438,71 @@ const Search = () => {
                               sskcookSearchLikeData,
                               item.sskcookId,
                             )}
-                            width={'12vw'}
-                            height={'42vh'}
+                            width={'25vw'}
+                            height={'35vh'}
                           />
+                          <div
+                            style={{
+                              position: 'absolute',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '1vw',
+                              top: '0',
+                              left: '0',
+                              padding: '0.5vw',
+                            }}
+                          >
+                            <ProfileImage
+                              src={LikeIcon}
+                              alt="Like Icon"
+                              width={'2vw'}
+                              height={'2vw'}
+                            />
+                            <CustomText
+                              text={item.countLikes}
+                              fontFamily={'Happiness-Sans-Regular'}
+                              color={COLORS.WHITE}
+                              fontSize={'1vw'}
+                            />
+                          </div>
                         </CardWrapper>
                       </CardContainer>
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '1vw',
+                        }}
+                      >
                         <CustomText
                           text={item.title}
                           color={COLORS.BLACK}
                           fontFamily={'Happiness-Sans-Bold'}
                           fontSize={'1.2rem'}
                         />
-                        <CustomText
-                          text={item.nickname}
-                          color={COLORS.TAG}
-                          fontFamily={'Happiness-Sans-Regular'}
-                          fontSize={'1vw'}
-                        />
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1vw',
+                          }}
+                        >
+                          <ProfileImage
+                            src={item.profileImage}
+                            width={'3vw'}
+                            height={'3vw'}
+                            borderRadius={'100%'}
+                            onClick={() =>
+                              navigate(`/subscription/#{item.username}`)
+                            }
+                          />
+                          <CustomText
+                            text={item.nickname}
+                            color={COLORS.TAG}
+                            fontFamily={'Happiness-Sans-Regular'}
+                            fontSize={'1vw'}
+                          />
+                        </div>
                       </div>
                     </div>
                   ))
