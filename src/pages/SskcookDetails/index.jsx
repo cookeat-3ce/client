@@ -1358,6 +1358,19 @@ const SskcookDetails = () => {
             fontFamily={'Happiness-Sans-Bold'}
             fontSize={'1.5vw'}
           />
+          <div
+            style={{
+              marginTop: '3vh',
+            }}
+          >
+            <CustomText
+              text={sskcookDetailsData?.data?.details[0]?.regdate}
+              color={COLORS.TAG}
+              fontFamily={'Happiness-Sans-Regular'}
+              fontSize={'.7vw'}
+            />
+          </div>
+
           <TagContainer>
             {sskcookDetailsData?.data?.tags?.length > 0
               ? sskcookDetailsData?.data?.tags.map((item, index) => (
