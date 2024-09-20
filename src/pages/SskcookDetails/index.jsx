@@ -826,7 +826,7 @@ const SskcookDetails = () => {
       setIsPlaying(false);
     } else if (lastWord === '실행') {
       setIsPlaying(true);
-    } else if (lastWord === '뒤로') {
+    } else if (lastWord === '앞으로') {
       const currentTime = playerRef.current.getCurrentTime();
       playerRef.current.seekTo(currentTime - 5);
     }
@@ -1092,7 +1092,7 @@ const SskcookDetails = () => {
               <br />
               실행: 재생
               <br />
-              5초 뒤로: 5초 뒤로 감기
+              앞으로: 5초 전으로 이동
             </>
           }
           color={COLORS.ORANGE}
