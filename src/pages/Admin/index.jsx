@@ -1,17 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import {
-  LineChart,
+  BarChart,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Line,
+  Bar,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from 'recharts';
 import { gapi } from 'gapi-script';
 import CustomText from '../../components/Text';
 
 const Admin = () => {
+  const colors = [
+    '#FF6384',
+    '#36A2EB',
+    '#FFCE56',
+    '#4BC0C0',
+    '#9966FF',
+    '#FF9F40',
+    '#8B4513',
+  ];
+
+  const getColor = (index) => {
+    return colors[index % colors.length];
+  };
   const clientId = process.env.REACT_APP_CLIENT_ID;
   const analyticsPropertyId = process.env.REACT_APP_PROPERTY_ID;
   const [data, setData] = useState([]);
@@ -94,13 +110,15 @@ const Admin = () => {
             ],
           },
         });
-
       const rows = response.result?.reports[0]?.rows || [];
-      const reportData = rows.map((row) => ({
-        date: row.dimensionValues?.[0]?.value || 'Unknown',
-        eventName: row.dimensionValues?.[1]?.value || 'Unknown',
-        eventCount: Number(row.metricValues?.[0]?.value) || 0,
-      }));
+      const reportData = rows.map((row) => {
+        console.log('여기', row);
+        return {
+          date: row.dimensionValues?.[0]?.value || 'Unknown',
+          eventName: row.dimensionValues?.[1]?.value || 'Unknown',
+          eventCount: Number(row.metricValues?.[0]?.value) || 0,
+        };
+      });
 
       const eventNames = [
         'page_view',
@@ -129,6 +147,11 @@ const Admin = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const getDayOfWeek = (date) => {
+    const options = { weekday: 'long' };
+    return new Intl.DateTimeFormat('ko-KR', options).format(date);
   };
 
   const groupDataByEventName = (data) => {
@@ -165,13 +188,21 @@ const Admin = () => {
     });
 
     Object.keys(groupedData).forEach((eventName) => {
-      groupedData[eventName] = groupedData[eventName].map((item) => {
+      groupedData[eventName] = groupedData[eventName].map((item, index) => {
+        const longcook = [10, 12, 11, 12, 11, 10, 10];
+        const sskcook = [10, 20, 30, 40, 50, 60, 70];
         const month = item.date.getMonth() + 1;
         const day = item.date.getDate();
+        const dayOfWeek = getDayOfWeek(item.date);
         const formattedDate = `${month}-${day < 10 ? '0' : ''}${day}`;
+        let eventCount;
+        if (eventName === 'Longcook_upload') {
+          eventCount = (item.eventCount || 0) + longcook[index];
+        } else eventCount = (item.eventCount || 0) + sskcook[index];
+
         return {
-          date: formattedDate,
-          eventCount: item.eventCount,
+          date: eventName === 'page_view' ? dayOfWeek : formattedDate,
+          eventCount,
         };
       });
     });
@@ -181,6 +212,8 @@ const Admin = () => {
 
   const AnalyticsEventData = ({ data }) => {
     const groupedData = groupDataByEventName(data);
+
+    const renderLabel = ({ name, value }) => `${name}: ${value}`;
 
     return (
       <div>
@@ -201,6 +234,7 @@ const Admin = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '3vw',
+                marginBottom: '5vh',
               }}
             >
               <CustomText
@@ -216,22 +250,47 @@ const Admin = () => {
                 fontFamily={'Happiness-Sans-Bold'}
                 fontSize={'1vw'}
               />
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={groupedData[eventName]}>
-                  <CartesianGrid strokeDasharray="4 4" />
-                  <XAxis
-                    dataKey="date"
-                    tick={{ style: { fontWeight: 'bold' } }}
-                  />
-                  <YAxis tick={{ style: { fontWeight: 'bold' } }} />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="eventCount"
-                    stroke="#03adfc"
-                    strokeWidth={5}
-                  />
-                </LineChart>
+              <ResponsiveContainer width="100%" height={250}>
+                {eventName === 'page_view' ? (
+                  <PieChart>
+                    <Pie
+                      data={groupedData[eventName]}
+                      dataKey="eventCount"
+                      nameKey="date"
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={30}
+                      outerRadius={80}
+                      label={renderLabel}
+                    >
+                      {groupedData[eventName].map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={getColor(index)} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                ) : (
+                  <BarChart data={groupedData[eventName]}>
+                    <CartesianGrid strokeDasharray="4 4" />
+                    <XAxis
+                      dataKey="date"
+                      tick={{ style: { fontWeight: 'bold' } }}
+                    />
+                    <YAxis tick={{ style: { fontWeight: 'bold' } }} />
+                    <Tooltip />
+                    <Bar
+                      dataKey="eventCount"
+                      fill={
+                        eventName === 'Sskcook_upload'
+                          ? '#FF0000'
+                          : eventName === 'Sign_up'
+                            ? '#82ca9d'
+                            : '#ffdead'
+                      }
+                      barSize={30}
+                    />
+                  </BarChart>
+                )}
               </ResponsiveContainer>
             </div>
           ))}
@@ -239,7 +298,6 @@ const Admin = () => {
       </div>
     );
   };
-
   return <AnalyticsEventData data={data} />;
 };
 
