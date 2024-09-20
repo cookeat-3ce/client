@@ -11,19 +11,12 @@ import {
   Pie,
   Cell,
 } from 'recharts';
+import { COLORS } from '../../constants';
 import { gapi } from 'gapi-script';
 import CustomText from '../../components/Text';
 
 const Admin = () => {
-  const colors = [
-    '#FF6384',
-    '#36A2EB',
-    '#FFCE56',
-    '#4BC0C0',
-    '#9966FF',
-    '#FF9F40',
-    '#8B4513',
-  ];
+  const colors = ['#008BED', '#00CE51', '#FFEA75'];
 
   const getColor = (index) => {
     return colors[index % colors.length];
@@ -223,18 +216,25 @@ const Admin = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            width: '70vw',
+            width: '74vw',
+            borderRadius: '5px',
+            padding: '3vh 3vw',
+            rowGap: '2vh',
+            backgroundColor: `#F0F0F0`,
           }}
         >
           {Object.keys(groupedData).map((eventName, index) => (
             <div
               key={eventName}
               style={{
-                width: '35vw',
+                width: '32vw',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '3vw',
-                marginBottom: '5vh',
+                gap: '2vh',
+                backgroundColor: 'white', // 배경을 흰색으로 설정
+                borderRadius: '5px', // border radius 설정
+                padding: '2vh 2vw', // 패딩 추가
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // 약간의 그림자 효과
               }}
             >
               <CustomText
@@ -248,9 +248,9 @@ const Admin = () => {
                         : '회원 가입 수'
                 }
                 fontFamily={'Happiness-Sans-Bold'}
-                fontSize={'1vw'}
+                fontSize={'1.4rem'}
               />
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={280}>
                 {eventName === 'page_view' ? (
                   <PieChart>
                     <Pie
@@ -259,13 +259,16 @@ const Admin = () => {
                       nameKey="date"
                       cx="50%"
                       cy="50%"
-                      innerRadius={30}
-                      outerRadius={80}
+                      innerRadius={50}
+                      outerRadius={110}
                       label={renderLabel}
                     >
-                      {groupedData[eventName].map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={getColor(index)} />
-                      ))}
+                      {groupedData[eventName]
+                        .sort((a, b) => b.eventCount - a.eventCount)
+                        .map((entry, index) => {
+                          const color = index < 3 ? getColor(index) : 'gray';
+                          return <Cell key={`cell-${index}`} fill={color} />;
+                        })}
                     </Pie>
                     <Tooltip />
                   </PieChart>
@@ -282,10 +285,10 @@ const Admin = () => {
                       dataKey="eventCount"
                       fill={
                         eventName === 'Sskcook_upload'
-                          ? '#FF0000'
+                          ? '#008BED'
                           : eventName === 'Sign_up'
-                            ? '#82ca9d'
-                            : '#ffdead'
+                            ? '#00CE51'
+                            : '#FFEA75'
                       }
                       barSize={30}
                     />
@@ -298,6 +301,7 @@ const Admin = () => {
       </div>
     );
   };
+
   return <AnalyticsEventData data={data} />;
 };
 
