@@ -8,10 +8,11 @@ import { useQuery } from '@tanstack/react-query';
 import CustomText from '../../components/Text';
 import CustomButton from '../../components/Button';
 import {
-  ButtonContainer,
   ClassInfoContainer,
   Container,
   PageTitleContainer,
+  ParticipantCount,
+  ParticipantImage,
   ProfileWrapper,
   TitleWrapper,
 } from './styles';
@@ -21,7 +22,6 @@ import { memberState } from '../../store';
 import Modal from '../../components/Modal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ProfileImage from '../../components/ProfileImage';
-import { ParticipantImage } from '../Live/styles';
 import icon_person from '../../assets/icons/icon_person.svg';
 import { Tooltip } from 'antd';
 
@@ -244,22 +244,33 @@ const LiveSession = () => {
         <TitleWrapper>
           <CustomText
             text="요라"
-            fontFamily="Happiness-Sans-Bold"
-            fontSize="1.5rem"
-            color={COLORS.BLACK}
+            fontFamily="Happiness-Sans-Regular"
+            fontSize="1rem"
+            color={COLORS.GRAY}
           />
           <CustomText
             text={'/'}
-            fontFamily="Happiness-Sans-Bold"
-            fontSize="1.2rem"
-            color={COLORS.BLACK}
+            fontFamily="Happiness-Sans-Regular"
+            fontSize="1rem"
+            color={COLORS.GRAY}
           />
           <CustomText
             text={`${liveInfo?.title}`}
             fontFamily="Happiness-Sans-Bold"
-            fontSize="1.2rem"
+            fontSize="1.5rem"
             color={COLORS.BLACK}
           />
+          <ParticipantCount>
+            <Tooltip title={'현재 동시 접속자 수'} color={COLORS.ORANGE}>
+              <ParticipantImage src={icon_person} />
+            </Tooltip>
+            <CustomText
+              text={`${participantsCount}`}
+              fontFamily="Happiness-Sans-Bold"
+              fontSize="1rem"
+              color={COLORS.BLACK}
+            />
+          </ParticipantCount>
         </TitleWrapper>
       </PageTitleContainer>
       {liveInfo && (
@@ -277,23 +288,12 @@ const LiveSession = () => {
               color={COLORS.BLACK}
             />
           </ProfileWrapper>
-          <TitleWrapper>
-            <Tooltip title={'현재 동시 접속자 수'} color={COLORS.ORANGE}>
-              <ParticipantImage src={icon_person} />
-            </Tooltip>
-            <CustomText
-              text={`${participantsCount}`}
-              fontFamily="Happiness-Sans-Bold"
-              fontSize="1rem"
-              color={COLORS.BLACK}
-            />
-          </TitleWrapper>
           <CustomButton
             text="나가기"
             color={COLORS.WHITE}
             width="4vw"
-            height="3vh"
-            fontSize=".8rem"
+            height="4vh"
+            fontSize="1rem"
             borderRadius="20px"
             fontFamily="Happiness-Sans-Bold"
             backgroundColor={COLORS.ORANGE}

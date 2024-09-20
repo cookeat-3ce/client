@@ -133,7 +133,7 @@ const Login = () => {
             text={'로그인'}
             color={COLORS.WHITE}
             backgroundColor={COLORS.ORANGE}
-            fontSize={'1vw'}
+            fontSize={'1rem'}
             width={'18vw'}
             height={'7vh'}
             borderRadius={'100px'}

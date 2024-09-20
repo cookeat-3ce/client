@@ -257,6 +257,7 @@ const SubscriptionInfo = () => {
                 backgroundColor={COLORS.BLACK}
                 width={'5vw'}
                 height={'5vh'}
+                fontSize={'1rem'}
                 borderColor={COLORS.BLACK}
                 fontFamily={'Happiness-Sans-Bold'}
                 borderRadius={'100px'}
@@ -277,6 +278,7 @@ const SubscriptionInfo = () => {
                 backgroundColor={COLORS.WHITE}
                 width={'5vw'}
                 height={'5vh'}
+                fontSize={'1rem'}
                 borderColor={COLORS.BLACK}
                 fontFamily={'Happiness-Sans-Bold'}
                 borderRadius={'100px'}

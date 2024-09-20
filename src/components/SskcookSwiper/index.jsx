@@ -93,7 +93,7 @@ const CustomSwiper = ({
               />
               <CustomButton
                 text="로그인 하러 가기"
-                fontSize="1vw"
+                fontSize="1rem"
                 width="12vw"
                 height="5vh"
                 color={COLORS.WHITE}
@@ -144,11 +144,11 @@ const CustomSwiper = ({
               />
               <CustomButton
                 text="재료 등록하러 가기"
-                fontSize="1vw"
+                fontSize="1rem"
                 width="12vw"
                 height="5vh"
                 color={COLORS.WHITE}
-                borderRadius="20px"
+                borderRadius="30px"
                 fontFamily="Happiness-Sans-Regular"
                 backgroundColor={COLORS.DARKGRAPEFRUIT}
                 borderColor={COLORS.DARKGRAPEFRUIT}

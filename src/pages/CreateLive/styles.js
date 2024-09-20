@@ -16,10 +16,12 @@ export const PageTitleContainer = styled.div`
 export const ContentContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  height: 52vh;
   // border: 10px solid RED;
 `;
 
 export const LeftContainer = styled.div`
+  width: 50%;
   // border: 10px solid RED;
 `;
 
@@ -131,8 +133,8 @@ export const CustomInputNumber = styled(InputNumber)`
 `;
 
 export const RightContainer = styled.div`
-  margin-top: 4vh;
-  margin-right: 10vh;
+  width: 50%;
+  margin: 4vh 0;
   // border: 10px solid GREEN;
 `;
 
@@ -140,7 +142,7 @@ export const ThumbnailWrapper = styled.div`
   margin: 2vh 0;
   width: 20vw;
   height: 20vw;
-  border: 10px solid GREEN;
+  // border: 10px solid GREEN;
 `;
 
 export const UploadContainer = styled.div`
@@ -148,9 +150,9 @@ export const UploadContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  margin: 0 auto;
-  margin-top: 5vh;
-  gap: 3vh;
+  margin: 2vh 0;
+  gap: 2vh;
+  // border: 10px solid BLACK;
 `;
 
 export const ButtonContainer = styled.div`

@@ -204,10 +204,10 @@ export const InputModal = ({ show, onClose, onSubmit }) => {
           <CustomButton
             text={'취소'}
             color={COLORS.ORANGE}
-            width={'4vw'}
-            height={'3vh'}
-            fontSize={'.8rem'}
-            borderRadius={'20px'}
+            width={'5vw'}
+            height={'5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.WHITE}
             borderColor={COLORS.ORANGE}
@@ -219,10 +219,10 @@ export const InputModal = ({ show, onClose, onSubmit }) => {
           <CustomButton
             text={'등록'}
             color={COLORS.WHITE}
-            width={'4vw'}
-            height={'3vh'}
-            fontSize={'.8rem'}
-            borderRadius={'20px'}
+            width={'5vw'}
+            height={'5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.ORANGE}
             borderColor={COLORS.ORANGE}
@@ -295,10 +295,10 @@ export const ModifyOnelineModal = ({ show, onClose, onSubmit }) => {
           <CustomButton
             text={'취소'}
             color={COLORS.ORANGE}
-            width={'4vw'}
-            height={'3vh'}
-            fontSize={'.8rem'}
-            borderRadius={'20px'}
+            width={'5vw'}
+            height={'5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.WHITE}
             borderColor={COLORS.ORANGE}
@@ -310,10 +310,10 @@ export const ModifyOnelineModal = ({ show, onClose, onSubmit }) => {
           <CustomButton
             text={'등록'}
             color={COLORS.WHITE}
-            width={'4vw'}
-            height={'3vh'}
-            fontSize={'.8rem'}
-            borderRadius={'20px'}
+            width={'5vw'}
+            height={'5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.ORANGE}
             borderColor={COLORS.ORANGE}
@@ -327,9 +327,8 @@ export const ModifyOnelineModal = ({ show, onClose, onSubmit }) => {
     </ModalBackdrop>
   );
 };
-export const SendAlertModal = ({ show, onClose, onSubmit, eventId }) => {
+export const SendAlertModal = ({ show, onClose, eventId }) => {
   const [message, setMessage] = useState('');
-  const { handleChangeUrl } = useCustomNavigate();
   const [showCompleteModal, setShowCompleteModal] = useState(false);
 
   const openCompleteModal = () => {
@@ -368,14 +367,13 @@ export const SendAlertModal = ({ show, onClose, onSubmit, eventId }) => {
 
   return (
     <>
-      {/* 모달은 즉시 표시됨 */}
       <ModalBackdrop onClick={onClose}>
         <ModalContent onClick={(e) => e.stopPropagation()}>
           <ModalTitleContainer>
             <CustomText
               text={'알람 메시지'}
               fontFamily={'Happiness-Sans-Bold'}
-              fontSize={'1.2rem'}
+              fontSize={'1.4rem'}
             />
           </ModalTitleContainer>
           <InputTextWrapper>
@@ -391,10 +389,10 @@ export const SendAlertModal = ({ show, onClose, onSubmit, eventId }) => {
             <CustomButton
               text={'취소'}
               color={COLORS.ORANGE}
-              width={'4vw'}
-              height={'3vh'}
-              fontSize={'.8rem'}
-              borderRadius={'20px'}
+              width={'5vw'}
+              height={'5vh'}
+              fontSize={'1rem'}
+              borderRadius={'30px'}
               fontFamily={'Happiness-Sans-Bold'}
               backgroundColor={COLORS.WHITE}
               borderColor={COLORS.ORANGE}
@@ -406,10 +404,10 @@ export const SendAlertModal = ({ show, onClose, onSubmit, eventId }) => {
             <CustomButton
               text={'등록'}
               color={COLORS.WHITE}
-              width={'4vw'}
-              height={'3vh'}
-              fontSize={'.8rem'}
-              borderRadius={'20px'}
+              width={'5vw'}
+              height={'5vh'}
+              fontSize={'1rem'}
+              borderRadius={'30px'}
               fontFamily={'Happiness-Sans-Bold'}
               backgroundColor={COLORS.ORANGE}
               borderColor={COLORS.ORANGE}

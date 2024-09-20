@@ -34,10 +34,10 @@ const VerifyModal = ({ show, verifiedStatus, onClose, onSubmit }) => {
           <CustomButton
             text={'돌아가기'}
             color={COLORS.WHITE}
-            width={'6vw'}
-            height={'4vh'}
-            fontSize=".8rem"
-            borderRadius={'20px'}
+            width={'7vw'}
+            height={'5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.LIGHTGRAY}
             borderColor={COLORS.LIGHTGRAY}
@@ -54,9 +54,9 @@ const VerifyModal = ({ show, verifiedStatus, onClose, onSubmit }) => {
               text={'인증 요청하기'}
               color={COLORS.WHITE}
               width={'8vw'}
-              height={'4vh'}
-              fontSize=".8rem"
-              borderRadius={'20px'}
+              height={'5vh'}
+              fontSize={'1rem'}
+              borderRadius={'30px'}
               fontFamily={'Happiness-Sans-Bold'}
               backgroundColor={COLORS.ORANGE}
               borderColor={COLORS.ORANGE}

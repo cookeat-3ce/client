@@ -5,6 +5,8 @@ import {
   ModalContent,
   TextContainer,
   NeedVerifiedInfoImage,
+  TitleSeparator,
+  TitleContainer,
 } from './styles';
 import { COLORS } from '../../constants';
 import CustomButton from '../Button';
@@ -12,7 +14,7 @@ import CustomText from '../Text';
 import icon_need_verified from '../../assets/icons/need_verified.svg';
 import { useNavigate } from 'react-router-dom';
 
-const CheckModal = ({ show, onClose, info, admin = false, check }) => {
+const CheckModal = ({ show, onClose, title, info, admin = false, check }) => {
   const navigate = useNavigate();
   const handleCheckButtonClick = () => {
     onClose();
@@ -27,26 +29,39 @@ const CheckModal = ({ show, onClose, info, admin = false, check }) => {
     <ModalBackdrop onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ContentContainer>
-          <NeedVerifiedInfoImage
-            src={icon_need_verified}
-          ></NeedVerifiedInfoImage>
+          <TitleContainer>
+            {!admin && (
+              <NeedVerifiedInfoImage
+                src={icon_need_verified}
+              ></NeedVerifiedInfoImage>
+            )}
+            <CustomText
+              text={title}
+              fontSize={'1.2rem'}
+              fontFamily={'Happiness-Sans-Bold'}
+              color={COLORS.BLACK}
+            />
+          </TitleContainer>
           <TextContainer>
+            <TitleSeparator />
             <CustomText
               text={info}
               fontFamily="Happiness-Sans-Bold"
-              fontSize="1.2rem"
+              fontSize="1.1rem"
               color={COLORS.BLACK}
+              style={{ lineHeight: '3vh' }}
             />
+            <TitleSeparator />
           </TextContainer>
         </ContentContainer>
         <ButtonGroup>
           <CustomButton
             text={'확인'}
             color={COLORS.WHITE}
-            width={'6vw'}
-            height={'4vh'}
-            fontSize={'.8rem'}
-            borderRadius={'20px'}
+            width={'5vw'}
+            height={'4.5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.ORANGE}
             borderColor={COLORS.ORANGE}

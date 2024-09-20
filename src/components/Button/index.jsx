@@ -31,6 +31,7 @@ const CustomButton = ({
     borderRadius: borderRadius,
     marginTop: marginTop,
     fontWeight: fontWeight,
+    cursor: disabled ? 'default' : 'pointer',
   };
 
   return (

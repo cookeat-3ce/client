@@ -25,6 +25,12 @@ export const TitleWrapper = styled.div`
   // border: 10px solid BLACK;
 `;
 
+export const ParticipantCount = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+`;
+
 export const ProfileWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -34,13 +40,16 @@ export const ProfileWrapper = styled.div`
 
 export const ClassInfoContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: end;
-  margin: 0 4vw 2vh 0;
+  // justify-content: space-between;
+  align-items: center;
+  margin: 1vh 0;
   gap: 1vw;
+  // border: 10px solid BLACK;
 `;
 
 export const ButtonContainer = styled.div`
   margin: 2vh 0 4vh 0;
   // border: 10px solid BLACK;
 `;
+
+export const ParticipantImage = styled.img``;

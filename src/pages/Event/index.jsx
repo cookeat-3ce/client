@@ -100,7 +100,8 @@ const Event = () => {
                     }}
                   />
                   <CustomText
-                    text={`${moment(event.startdate).format('YYYY-MM-DD')} ~ ${moment(event.enddate).format('YYYY-MM-DD')}`}
+                    text={`${moment(event.startdate).format('YYYY-MM-DD')} ~ ${moment(event.enddate).format('YYYY-MM-DD')}`} // 한정 판매
+                    // text={`${moment(event.startdate).format('YYYY-MM-DD')} ~ ${event.title.includes('레시피') ? moment(event.enddate).format('YYYY-MM-DD') : '소진 시 종료'}`} // 상시 판매
                     fontFamily={'Happiness-Sans-Regular'}
                     fontSize={'1rem'}
                     color={COLORS.BLACK}

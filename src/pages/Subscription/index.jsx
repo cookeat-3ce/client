@@ -326,8 +326,9 @@ const Subscription = () => {
                       }}
                       color={COLORS.WHITE}
                       backgroundColor={COLORS.BLACK}
-                      width={'6vw'}
-                      height={'4vh'}
+                      width={'5vw'}
+                      height={'5vh'}
+                      fontSize={'1rem'}
                       borderColor={COLORS.BLACK}
                       fontFamily={'Happiness-Sans-Bold'}
                       borderRadius={'100px'}
@@ -344,8 +345,9 @@ const Subscription = () => {
                       }}
                       color={COLORS.BLACK}
                       backgroundColor={COLORS.WHITE}
-                      width={'6vw'}
-                      height={'4vh'}
+                      width={'5vw'}
+                      height={'5vh'}
+                      fontSize={'1rem'}
                       borderColor={COLORS.BLACK}
                       fontFamily={'Happiness-Sans-Bold'}
                       borderRadius={'100px'}

@@ -10,10 +10,9 @@ import {
 import CustomText from '../../components/Text';
 import CustomButton from '../../components/Button';
 import { COLORS } from '../../constants';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { eventAPI } from '../../apis/event';
-import { alertAPI } from '../../apis/alert';
-import moment from 'moment';
+import moment, { months } from 'moment';
 import {
   MoveButton,
   PaginationButton,
@@ -21,8 +20,10 @@ import {
 } from '../Event/styles';
 import CheckModal from '../../components/CheckModal';
 import { SendAlertModal } from '../../components/InputModal';
+import { useCustomNavigate } from '../../hooks';
 
 const AdminAlarm = () => {
+  const { handleChangeUrl } = useCustomNavigate();
   const [eventList, setEventList] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -82,8 +83,11 @@ const AdminAlarm = () => {
 
   useEffect(() => {
     if (eventListQuery.data) {
-      setEventList(eventListQuery.data.data.data);
-      setTotalPages(Math.ceil(eventListQuery.data.data.total / 6));
+      const filteredeventList = eventListQuery.data.data.data.filter((event) =>
+        event.title.includes('레시피'),
+      );
+      setEventList(filteredeventList);
+      setTotalPages(Math.ceil(filteredeventList.length / 6));
     }
   }, [eventListQuery.data]);
 
@@ -115,43 +119,62 @@ const AdminAlarm = () => {
         {0 < eventList.length &&
           eventList.map((event) => (
             <EventContainer key={event.eventId}>
-              <EventThumbnailImage src={event.thumbnail} />
+              <EventThumbnailImage
+                src={event.thumbnail}
+                disabled={moment().month() > moment(event.enddate).month()}
+                onClick={() => handleChangeUrl(`/notice/${event.eventId}`)}
+              />
               <EventInfoWrapper>
                 <CustomText
-                  text={`${moment() < moment(event.enddate) ? '진행 중' : '종료'}`}
+                  text={`${moment().month() <= moment(event.enddate).month() ? '진행 중' : '종료'}`}
                   fontFamily={'Happiness-Sans-Bold'}
-                  fontSize={'1.2rem'}
-                  color={COLORS.BLACK}
-                />
-                <CustomText
-                  text={`${moment(event.startdate).format('M')}월 상위 10개 레시피 목록입니다.`}
-                  fontFamily={'Happiness-Sans-Regular'}
-                  fontSize={'1rem'}
-                  color={COLORS.GRAY}
+                  fontSize={'1.4rem'}
+                  color={
+                    moment().month() <= moment(event.enddate).month()
+                      ? COLORS.ORANGE
+                      : COLORS.LIGHTGRAY
+                  }
                 />
                 <CustomText
                   text={event.title}
                   fontFamily={'Happiness-Sans-Bold'}
-                  fontSize={'1.2rem'}
-                  color={COLORS.BLACK}
+                  fontSize={'1.4rem'}
+                  color={
+                    moment().month() <= moment(event.enddate).month()
+                      ? COLORS.BLACK
+                      : COLORS.LIGHTGRAY
+                  }
                 />
                 <CustomText
                   text={`${moment(event.startdate).format('YYYY-MM-DD')} ~ ${moment(event.enddate).format('YYYY-MM-DD')}`}
                   fontFamily={'Happiness-Sans-Regular'}
-                  fontSize={'1rem'}
-                  color={COLORS.BLACK}
+                  fontSize={'1.2rem'}
+                  color={
+                    moment().month() <= moment(event.enddate).month()
+                      ? COLORS.BLACK
+                      : COLORS.LIGHTGRAY
+                  }
                 />
               </EventInfoWrapper>
               <CustomButton
-                text={'상위 10개 레시피 보기'}
+                text={'상위 10개 레시피 목록 보기'}
                 color={COLORS.WHITE}
-                width={'10vw'}
-                height={'4vh'}
-                fontSize={'.8rem'}
-                borderRadius={'20px'}
+                width={'14vw'}
+                height={'5vh'}
+                fontSize={'1rem'}
+                borderRadius={'30px'}
                 fontFamily={'Happiness-Sans-Bold'}
-                backgroundColor={COLORS.BLACK}
-                borderColor={COLORS.BLACK}
+                backgroundColor={
+                  moment().month() <= moment(event.enddate).month()
+                    ? COLORS.BLACK
+                    : COLORS.LIGHTGRAY
+                }
+                borderColor={
+                  moment().month() <= moment(event.enddate).month()
+                    ? COLORS.BLACK
+                    : COLORS.LIGHTGRAY
+                }
+                disabled={moment().month() > moment(event.enddate).month()}
                 onClick={() => {
                   setSelectedEventId(event.eventId);
                   openContentModal();
@@ -160,13 +183,22 @@ const AdminAlarm = () => {
               <CustomButton
                 text={'사용자에 알림 발송'}
                 color={COLORS.WHITE}
-                width={'10vw'}
-                height={'4vh'}
-                fontSize={'.8rem'}
-                borderRadius={'20px'}
+                width={'12vw'}
+                height={'5vh'}
+                fontSize={'1rem'}
+                borderRadius={'30px'}
                 fontFamily={'Happiness-Sans-Bold'}
-                backgroundColor={COLORS.ORANGE}
-                borderColor={COLORS.ORANGE}
+                backgroundColor={
+                  moment().month() <= moment(event.enddate).month()
+                    ? COLORS.ORANGE
+                    : COLORS.LIGHTGRAY
+                }
+                borderColor={
+                  moment().month() <= moment(event.enddate).month()
+                    ? COLORS.ORANGE
+                    : COLORS.LIGHTGRAY
+                }
+                disabled={moment().month() > moment(event.enddate).month()}
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedEventId(event.eventId);
@@ -198,9 +230,9 @@ const AdminAlarm = () => {
         show={showContentModal}
         onClose={closeContentModal}
         info={selectedEventDetail?.content}
+        title={selectedEventDetail?.title}
         admin={true}
       />
-      {/* show, onClose, onSubmit, eventId */}
       <SendAlertModal
         show={showInputModal}
         onClose={closeInputModal}

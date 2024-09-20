@@ -138,7 +138,7 @@ const EventDetail = () => {
           height={'4vh'}
           backgroundColor={COLORS.LIGHTGRAY}
           borderColor={COLORS.LIGHTGRAY}
-          borderRadius={'20px'}
+          borderRadius={'30px'}
           fontFamily={'Happiness-Sans-Bold'}
           onClick={handleClickListButton}
         />
@@ -150,7 +150,7 @@ const EventDetail = () => {
             text={'알림 받기'}
             fontSize={'1rem'}
             color={COLORS.WHITE}
-            width={'10vw'}
+            width={'8vw'}
             height={'5vh'}
             backgroundColor={COLORS.ORANGE}
             borderColor={COLORS.ORANGE}

@@ -180,14 +180,14 @@ const Live = () => {
         <CustomButton
           text={'라이브 열기'}
           color={COLORS.WHITE}
-          width={'6vw'}
-          height={'4vh'}
+          width={'6.5vw'}
+          height={'4.5vh'}
           backgroundColor={COLORS.ORANGE}
           borderColor={COLORS.ORANGE}
-          fontSize={'.9rem'}
+          fontSize={'1rem'}
           onClick={handleClickCreateButton}
           fontFamily={'Happiness-Sans-Bold'}
-          borderRadius={'20px'}
+          borderRadius={'30px'}
         />
       </SearchContainer>
       <ContentContainer>
@@ -221,7 +221,7 @@ const Live = () => {
                         <CustomText
                           text={live.people}
                           fontFamily={'Happiness-Sans-Bold'}
-                          fontSize={'1rem'}
+                          fontSize={'1.2rem'}
                           color={COLORS.BLACK}
                         />
                       </LiveTitleWrapper>

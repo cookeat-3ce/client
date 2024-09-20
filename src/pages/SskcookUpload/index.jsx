@@ -262,11 +262,11 @@ const SskcookUpload = () => {
           <UploadButtonWrapper>
             <CustomButton
               text={'업로드'}
-              fontSize={'.6vw'}
-              width={'4vw'}
-              height={'3vh'}
+              fontSize={'1rem'}
+              width={'6vw'}
+              height={'4.5vh'}
               color={COLORS.WHITE}
-              borderRadius={'20px'}
+              borderRadius={'30px'}
               fontFamily={'Happiness-Sans-Bold'}
               backgroundColor={COLORS.BLACK}
               borderColor={COLORS.BLACK}
@@ -294,11 +294,11 @@ const SskcookUpload = () => {
         <SubmitButtonWrapper>
           <CustomButton
             text={'등록'}
-            fontSize={'.8vw'}
-            width={'4vw'}
-            height={'4vh'}
+            fontSize={'1rem'}
+            width={'5vw'}
+            height={'4.5vh'}
             color={COLORS.WHITE}
-            borderRadius={'20px'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.DARKGRAPEFRUIT}
             borderColor={COLORS.DARKGRAPEFRUIT}

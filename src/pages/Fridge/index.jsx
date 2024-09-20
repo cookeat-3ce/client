@@ -108,9 +108,9 @@ const Fridge = () => {
             height={'4vh'}
             backgroundColor={`${COLORS.ORANGE}`}
             fontFamily={'Happiness-Sans-Bold'}
-            fontSize={'.8rem'}
+            fontSize={'1rem'}
             borderColor={`${COLORS.ORANGE}`}
-            borderRadius={'10px'}
+            borderRadius={'30px'}
             onClick={openSubmitIngredientModal}
           ></CustomButton>
         )}
@@ -128,11 +128,11 @@ const Fridge = () => {
             <CustomButton
               text={'재료 등록하기'}
               color={`${COLORS.WHITE}`}
-              width={'12vw'}
+              width={'8vw'}
               height={'4vh'}
               backgroundColor={`${COLORS.ORANGE}`}
               fontFamily={'Happiness-Sans-Bold'}
-              fontSize={'.8rem'}
+              fontSize={'1rem'}
               borderColor={`${COLORS.ORANGE}`}
               borderRadius={'20px'}
               onClick={openSubmitIngredientModal}

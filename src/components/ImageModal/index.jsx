@@ -90,10 +90,10 @@ const ImageModal = ({ show, onClose, info, onDelete }) => {
           <CustomButton
             text={'닫기'}
             color={COLORS.ORANGE}
-            width="6vw"
-            height="4vh"
-            fontSize=".8rem"
-            borderRadius={'20px'}
+            width={'5vw'}
+            height={'5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.WHITE}
             borderColor={COLORS.ORANGE}
@@ -105,10 +105,10 @@ const ImageModal = ({ show, onClose, info, onDelete }) => {
           <CustomButton
             text={'사용 완료'}
             color={COLORS.WHITE}
-            width={'6vw'}
-            height={'4vh'}
-            fontSize={'.8rem'}
-            borderRadius={'20px'}
+            width={'7vw'}
+            height={'5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.ORANGE}
             borderColor={COLORS.ORANGE}

@@ -15,12 +15,12 @@ import instance from '../../apis';
 import { StyledSskcookSkeleton } from '../Home/styles';
 import Card from '../../components/Card';
 import ProfileCard from '../../components/ProfileCard';
+import moment from 'moment';
 const SskcookMonthly = () => {
   const location = window.location.search;
   const parsed = queryString.parse(location);
   const date = parsed.date;
-  const today = new Date();
-  const month = today.getMonth() + 1;
+  const month = moment().subtract(1, 'month').format('M');
   const [sskcookList, setSskcookList] = useState([]);
 
   const monthlyTopSskcookQuery = useQuery({

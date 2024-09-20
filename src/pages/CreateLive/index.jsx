@@ -346,13 +346,13 @@ const CreateLive = () => {
                     }
                   />
                 </label>
-                {thumbnail ? (
+                {thumbnail && (
                   <img
                     src={thumbnail}
                     alt="Thumbnail"
-                    style={{ width: '20vw', height: '20vw' }}
+                    style={{ width: '32vw', height: 'auto' }}
                   />
-                ) : null}
+                )}
               </UploadContainer>
             </RightContainer>
           </ContentContainer>
@@ -362,7 +362,7 @@ const CreateLive = () => {
               color={COLORS.WHITE}
               width={'4vw'}
               height={'4vh'}
-              fontSize={'.9rem'}
+              fontSize={'1rem'}
               borderRadius={'100px'}
               fontFamily={'Happiness-Sans-Bold'}
               backgroundColor="#ADADAD"
@@ -374,7 +374,7 @@ const CreateLive = () => {
               color={COLORS.WHITE}
               width={'4vw'}
               height={'4vh'}
-              fontSize={'.9rem'}
+              fontSize={'1rem'}
               borderRadius={'100px'}
               fontFamily={'Happiness-Sans-Bold'}
               backgroundColor={COLORS.ORANGE}

@@ -45,10 +45,10 @@ const Modal = ({
           <CustomButton
             text={'닫기'}
             color={COLORS.WHITE}
-            width="4vw"
-            height="3vh"
-            fontSize=".8rem"
-            borderRadius={'20px'}
+            width={'5vw'}
+            height={'5vh'}
+            fontSize={'1rem'}
+            borderRadius={'30px'}
             fontFamily={'Happiness-Sans-Bold'}
             backgroundColor={COLORS.ORANGE}
             borderColor={COLORS.ORANGE}
