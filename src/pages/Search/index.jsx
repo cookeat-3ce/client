@@ -355,7 +355,7 @@ const Search = () => {
                               />
                               <CustomText
                                 text={item.countLikes}
-                                fontFamily={'Happiness-Sans-Regular'}
+                                fontFamily={'Happiness-Sans-Bold'}
                                 color={COLORS.WHITE}
                                 fontSize={'1vw'}
                               />
@@ -398,12 +398,6 @@ const Search = () => {
                               fontSize={'1vw'}
                             />
                           </div>
-                          <CustomText
-                            text={item.regdate}
-                            color={COLORS.BLACK}
-                            fontFamily={'Happiness-Sans-Regular'}
-                            fontSize={'1vw'}
-                          />
                         </div>
                       </div>
                     ))

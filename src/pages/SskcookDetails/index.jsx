@@ -826,7 +826,7 @@ const SskcookDetails = () => {
       setIsPlaying(false);
     } else if (lastWord === '실행') {
       setIsPlaying(true);
-    } else if (lastWord === '뒤로') {
+    } else if (lastWord === '오초뒤로') {
       const currentTime = playerRef.current.getCurrentTime();
       playerRef.current.seekTo(currentTime - 5);
     }
@@ -1092,7 +1092,7 @@ const SskcookDetails = () => {
               <br />
               실행: 재생
               <br />
-              뒤로: 5초 뒤로 감기
+              5초 뒤로: 5초 뒤로 감기
             </>
           }
           color={COLORS.ORANGE}
@@ -1363,12 +1363,20 @@ const SskcookDetails = () => {
               marginTop: '3vh',
             }}
           >
-            <CustomText
-              text={sskcookDetailsData?.data?.details[0]?.regdate}
-              color={COLORS.TAG}
-              fontFamily={'Happiness-Sans-Regular'}
-              fontSize={'.7vw'}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '.5vw' }}>
+              <CustomText
+                text={'등록일'}
+                color={COLORS.BLACK}
+                fontFamily={'Happiness-Sans-Bold'}
+                fontSize={'.9vw'}
+              />
+              <CustomText
+                text={sskcookDetailsData?.data?.details[0]?.regdate}
+                color={COLORS.GRAY}
+                fontFamily={'Happiness-Sans-Regular'}
+                fontSize={'.9vw'}
+              />
+            </div>
           </div>
 
           <TagContainer>

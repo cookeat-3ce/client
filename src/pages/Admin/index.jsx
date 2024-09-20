@@ -71,7 +71,7 @@ const Admin = () => {
               {
                 dateRanges: [
                   {
-                    startDate: '14daysAgo',
+                    startDate: '7daysAgo',
                     endDate: 'today',
                   },
                 ],
@@ -190,14 +190,14 @@ const Admin = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            width: '52vw',
+            width: '70vw',
           }}
         >
           {Object.keys(groupedData).map((eventName, index) => (
             <div
               key={eventName}
               style={{
-                width: '25vw',
+                width: '35vw',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '3vw',
@@ -219,10 +219,18 @@ const Admin = () => {
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart data={groupedData[eventName]}>
                   <CartesianGrid strokeDasharray="4 4" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ style: { fontWeight: 'bold' } }}
+                  />
+                  <YAxis tick={{ style: { fontWeight: 'bold' } }} />
                   <Tooltip />
-                  <Line type="monotone" dataKey="eventCount" stroke="#82ca9d" />
+                  <Line
+                    type="monotone"
+                    dataKey="eventCount"
+                    stroke="#03adfc"
+                    strokeWidth={5}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
