@@ -826,7 +826,7 @@ const SskcookDetails = () => {
       setIsPlaying(false);
     } else if (lastWord === '실행') {
       setIsPlaying(true);
-    } else if (lastWord === '오초뒤로') {
+    } else if (lastWord === '뒤로') {
       const currentTime = playerRef.current.getCurrentTime();
       playerRef.current.seekTo(currentTime - 5);
     }
