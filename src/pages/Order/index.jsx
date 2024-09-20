@@ -164,8 +164,7 @@ const Order = () => {
   const totalPrice = priceData.reduce((acc, curr) => acc + curr, 0);
 
   const discount = parseInt(queryParams.get('discount'), 0) || 0;
-
-  const discountPrice = (totalPrice * discount) / 100;
+  const discountPrice = Math.round((totalPrice * discount) / 100 / 100) * 100;
 
   const [shippingPrice, setShippingPrice] = useState(0);
   useEffect(() => {
