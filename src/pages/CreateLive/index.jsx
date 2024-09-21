@@ -362,7 +362,7 @@ const CreateLive = () => {
                   <img
                     src={thumbnail}
                     alt="Thumbnail"
-                    style={{ width: '16vw', height: 'auto' }}
+                    style={{ width: '32vw', height: 'auto' }}
                   />
                 )}
               </UploadContainer>
