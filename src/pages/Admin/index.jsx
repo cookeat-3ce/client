@@ -210,6 +210,12 @@ const Admin = () => {
 
     return (
       <div>
+        <CustomText
+          text={'메인'}
+          fontSize={'1.2rem'}
+          color={COLORS.BLACK}
+          fontFamily={'Happiness-Sans-Bold'}
+        />
         <div
           style={{
             display: 'flex',
@@ -219,6 +225,7 @@ const Admin = () => {
             width: '74vw',
             borderRadius: '5px',
             padding: '3vh 3vw',
+            margin: '2vh 0 0 0',
             rowGap: '2vh',
             backgroundColor: `#F0F0F0`,
           }}
@@ -250,7 +257,7 @@ const Admin = () => {
                 fontFamily={'Happiness-Sans-Bold'}
                 fontSize={'1.4rem'}
               />
-              <ResponsiveContainer width="100%" height={280}>
+              <ResponsiveContainer width="100%" height={270}>
                 {eventName === 'page_view' ? (
                   <PieChart>
                     <Pie
