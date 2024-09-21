@@ -1,8 +1,12 @@
 import instance from '..';
 
 export const liveAPI = {
-  addLiveAPI: (addLiveData) => {
-    return instance.post('/live', addLiveData);
+  addLiveAPI: (formData) => {
+    return instance.post('/live', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
   getLiveInfoAPI: (liveId) => {
     return instance.get(`/live/${liveId}`);

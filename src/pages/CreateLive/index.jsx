@@ -45,7 +45,7 @@ const CreateLive = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const [backError, setBackError] = useState(false);
   const [showError, setShowError] = useState(false);
-
+  const [file, setFile] = useState(null);
   const [sessionId, setSessionId] = useState(null);
 
   const [showVerifiedModal, setShowVerifiedModal] = useState(false);
@@ -85,23 +85,28 @@ const CreateLive = () => {
   });
 
   const handleClickSubmitButton = async () => {
+    const formData = new FormData();
     const sessionId = await createSession();
     setSessionId(sessionId);
 
     console.log('sessionId: ', sessionId);
 
-    const addLiveData = {
+    const addLiveData = JSON.stringify({
       username: username,
       title: className,
       people: maxParticipant,
-      thumbnail: thumbnail,
       sessionId: sessionId,
       type: classType === 'class' ? 0 : 1,
-    };
+    });
 
     console.log('addLiveData: ', addLiveData);
-
-    mutationLiveAdd.mutate(addLiveData);
+    console.log('file : ', file.fileObject);
+    formData.append('file', file.fileObject);
+    formData.append(
+      'live',
+      new Blob([addLiveData], { type: 'application/json; charset=UTF-8' }),
+    );
+    mutationLiveAdd.mutate(formData);
   };
 
   const handleBack = () => {
@@ -110,6 +115,13 @@ const CreateLive = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    const videoType = file.type.includes('video');
+
+    setFile({
+      fileObject: file,
+      url: URL.createObjectURL(file),
+      video: videoType,
+    });
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -350,7 +362,7 @@ const CreateLive = () => {
                   <img
                     src={thumbnail}
                     alt="Thumbnail"
-                    style={{ width: '32vw', height: 'auto' }}
+                    style={{ width: '16vw', height: 'auto' }}
                   />
                 )}
               </UploadContainer>
