@@ -81,7 +81,7 @@ const Admin = () => {
                 dateRanges: [
                   {
                     startDate: '7daysAgo',
-                    endDate: 'today',
+                    endDate: 'yesterday',
                   },
                 ],
                 metrics: [{ name: 'eventCount' }],
@@ -92,9 +92,9 @@ const Admin = () => {
                     inListFilter: {
                       values: [
                         'page_view',
-                        'Longcook_upload',
-                        'Sskcook_upload',
                         'Sign_up',
+                        'Sskcook_upload',
+                        'Longcook_upload',
                       ],
                     },
                   },
@@ -115,9 +115,9 @@ const Admin = () => {
 
       const eventNames = [
         'page_view',
-        'Longcook_upload',
-        'Sskcook_upload',
         'Sign_up',
+        'Sskcook_upload',
+        'Longcook_upload',
       ];
       const dates = [...new Set(reportData.map((data) => data.date))];
 
