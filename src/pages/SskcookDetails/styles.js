@@ -82,8 +82,16 @@ export const IngredientWrapper = styled.div`
   box-sizing: border-box;
 `;
 
+export const PriceSection = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 1vw;
+  width: 40%;
+`;
+
 export const IngredientSection = styled.div`
-  flex: 1;
+  width: 20%;
   justify-content: center;
   align-items: center;
 `;

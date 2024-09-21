@@ -17,6 +17,8 @@ import {
   SubscriptionContainer,
   StyledSkeleton,
   SwitchSkeleton,
+  PriceWrapper,
+  PriceSection,
 } from './styles';
 import CustomText from '../../components/Text';
 import { COLORS } from '../../constants';
@@ -1605,13 +1607,13 @@ const SskcookDetails = () => {
                     <IngredientSection>
                       <CustomText
                         text={item.name}
-                        fontFamily="Happiness-Sans-Regular"
+                        fontFamily="Happiness-Sans-Bold"
                         color={
                           validIngredientNames.has(item.name)
                             ? COLORS.ORANGE
                             : COLORS.BLACK
                         }
-                        fontSize="1vw"
+                        fontSize="1.1rem"
                       />
                     </IngredientSection>
                     <IngredientSection>
@@ -1619,11 +1621,11 @@ const SskcookDetails = () => {
                         text={item.amount}
                         fontFamily="Happiness-Sans-Regular"
                         color={COLORS.BLACK}
-                        fontSize="1vw"
+                        fontSize="1.1rem"
                         style={{ textDecoration: 'underline' }}
                       />
                     </IngredientSection>
-                    <IngredientSection>
+                    <PriceSection>
                       <CustomText
                         text={
                           INGREDIENTS[item.name]
@@ -1631,11 +1633,9 @@ const SskcookDetails = () => {
                             : `${(prices[sskcookDetailsData.data.ingredients.findIndex((ing) => ing.name === item.name)] || '0').toString()}원`
                         }
                         fontFamily={'Happiness-Sans-Regular'}
-                        color={COLORS.BLACK}
-                        fontSize={'1vw'}
+                        color={COLORS.GRAY}
+                        fontSize={'1rem'}
                       />
-                    </IngredientSection>
-                    <IngredientSection>
                       <CustomButton
                         text={'구매'}
                         fontSize={'.7vw'}
@@ -1648,7 +1648,7 @@ const SskcookDetails = () => {
                         fontFamily={'Happiness-Sans-Bold'}
                         onClick={() => handleItemClick(item.name)}
                       />
-                    </IngredientSection>
+                    </PriceSection>
                   </IngredientWrapper>
                 ))}
               </>

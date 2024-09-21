@@ -50,7 +50,7 @@ import CreamCheeze from '../../assets/images/ingredients/cream_cheeze.jpg';
 import Egg from '../../assets/images/ingredients/egg.jpg';
 import Lemon from '../../assets/images/ingredients/lemon.jpg';
 import MincedGalic from '../../assets/images/ingredients/minced_galic.jpg';
-import Salt from '../../assets/images/ingredients/salt.jpg';
+import Salt from '../../assets/images/ingredients/salt.jpeg';
 import Shrimp from '../../assets/images/ingredients/shrimp.jpg';
 import SoupSoySouce from '../../assets/images/ingredients/soup_soy_souce.jpg';
 import StratchCorn from '../../assets/images/ingredients/stratch_corn.jpg';
@@ -2399,7 +2399,7 @@ const Order = () => {
                 <div
                   style={{
                     width: '22vw',
-                    height: '45vh',
+                    height: '38vh',
                     display: 'flex',
                     flexDirection: 'column',
                     background: '#ffffff',
@@ -2546,10 +2546,11 @@ const Order = () => {
                       text={'결제하기'}
                       color="#ffffff"
                       width="100%"
+                      height={'10vh'}
                       backgroundColor="#ff6913"
                       borderColor="#ff6913"
                       fontFamily="Noto Sans KR"
-                      fontSize={'1vw'}
+                      fontSize={'1.2rem'}
                       fontWeight="600"
                       onClick={() => showLoader()}
                     />
@@ -2571,7 +2572,7 @@ const Order = () => {
                 <div
                   style={{
                     width: '22vw',
-                    height: '45vh',
+                    height: '38vh',
                     display: 'flex',
                     flexDirection: 'column',
                     background: '#ffffff',
@@ -2719,6 +2720,7 @@ const Order = () => {
                       text={'결제하기'}
                       color="#ffffff"
                       width="100%"
+                      height={'10vh'}
                       backgroundColor="#ff6913"
                       borderColor="#ff6913"
                       fontFamily="Noto Sans KR"
