@@ -8,7 +8,20 @@ import { useMutation } from '@tanstack/react-query';
 import { AdminAPI } from '../../apis/admin';
 import { debounce } from 'lodash';
 import { useCustomNavigate } from '../../hooks';
-
+/**
+ * 이벤트 등록
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.16
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.16    양재혁       최초 생성
+ * </pre>
+ */
 const AdminEvent = () => {
   const { RangePicker } = DatePicker;
   const { handleChangeUrl } = useCustomNavigate();

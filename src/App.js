@@ -9,7 +9,6 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-
 import CommonLayout from './pages/Layout';
 import Error from './pages/Error';
 import Home from './pages/Home';
@@ -52,7 +51,20 @@ import AdminVerify from './pages/AdminVerify';
 import AdminReport from './pages/AdminReport';
 import ReactGA from 'react-ga4';
 import AdminEvent from './pages/AdminEvent';
-
+/**
+ * 라우터 설정
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.28    양재혁       최초 생성
+ * </pre>
+ */
 const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID;
 console.log(GA_TRACKING_ID);
 const queryClient = new QueryClient();

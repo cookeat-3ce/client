@@ -11,6 +11,20 @@ import { Pagination, Navigation } from 'swiper';
 import { longcookAPI } from '../../apis/longcook';
 import Card from '../Card';
 import ProfileCard from '../ProfileCard';
+/**
+ * 롱쿡 스와이퍼
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.28    양재혁       최초 생성
+ * </pre>
+ */
 const CustomSwiper = ({ firstText, secondText, thirdText, arr }) => {
   const swiperRef = useRef(null);
   return (

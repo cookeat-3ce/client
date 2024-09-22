@@ -34,6 +34,20 @@ import { useRecoilValue } from 'recoil';
 import { memberState } from '../../store';
 import { getCookie } from '../../hooks';
 import { useCustomNavigate } from '../../hooks';
+/**
+ * 상대 프로필
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.03
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.03    양재혁       최초 생성
+ * </pre>
+ */
 const SubscriptionInfo = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const [userDetailInfoString, setUserDetailInfoString] = useState('');

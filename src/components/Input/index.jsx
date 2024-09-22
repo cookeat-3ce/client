@@ -1,8 +1,26 @@
 import { React, useState } from 'react';
-import { CustomInputContainer, CustomSearchInputContainer, CustomTextareaContainer, CharacterCountContainer} from './styles';
+import {
+  CustomInputContainer,
+  CustomSearchInputContainer,
+  CustomTextareaContainer,
+  CharacterCountContainer,
+} from './styles';
 import SearchInput from '../../assets/icons/input_search.svg';
 import { COLORS } from '../../constants';
-
+/**
+ * 공통 인풋
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.28    양재혁       최초 생성
+ * </pre>
+ */
 export const CustomInput = ({
   text,
   fontSize,
@@ -72,7 +90,7 @@ export const CustomInputTextarea = ({
   maxLength,
   onChange,
   value,
-  paddingLeft
+  paddingLeft,
 }) => {
   const [charCount, setCharCount] = useState(0);
 
@@ -103,13 +121,13 @@ export const CustomInputTextarea = ({
       />
       {maxLength && (
         <CharacterCountContainer
-        style={{
-          paddingLeft
-        }}
+          style={{
+            paddingLeft,
+          }}
         >
           {charCount}/{maxLength}
         </CharacterCountContainer>
       )}
     </div>
   );
-}
+};

@@ -7,7 +7,20 @@ import { COLORS } from '../../constants';
 import CustomTextButton from '../../components/Button/Text';
 import CustomText from '../../components/Text';
 import { useCustomNavigate } from '../../hooks';
-
+/**
+ * 신고
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.11
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.11    양재혁       최초 생성
+ * </pre>
+ */
 const AdminReport = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({

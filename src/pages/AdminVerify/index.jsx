@@ -6,7 +6,20 @@ import { COLORS } from '../../constants';
 import CustomTextButton from '../../components/Button/Text';
 import { AdminAPI } from '../../apis/admin';
 import { debounce } from 'lodash';
-
+/**
+ * 크리에이터 인증 요청
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.11
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.11    양재혁       최초 생성
+ * </pre>
+ */
 const AdminVerify = () => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['verify'],

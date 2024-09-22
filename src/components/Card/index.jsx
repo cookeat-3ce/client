@@ -5,6 +5,20 @@ import CustomImageButton from '../Button/Image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import TrashIcon from '../../assets/icons/trash_white.svg';
 import { useNavigate } from 'react-router-dom';
+/**
+ * 공통 카드
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.28    양재혁       최초 생성
+ * </pre>
+ */
 const VideoPlayer = ({
   type,
   url,
