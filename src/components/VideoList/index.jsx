@@ -12,6 +12,22 @@ import { sskcookAPI } from '../../apis/sskcook';
 import { longcookAPI } from '../../apis/longcook';
 import VideoPlayer from '../Card';
 
+/**
+ * 비디오 목록 컴포넌트
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.08.31
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.31    김지수       최초 생성
+ * 2024.09.04    박유진       LongcookCard -> Card로 합침
+ * 2024.09.05    박유진       목록 조회시 프로필 이미지, 제목이 보이도록 변경
+ * </pre>
+ */
 const CustomVideoList = ({
   type,
   videos,

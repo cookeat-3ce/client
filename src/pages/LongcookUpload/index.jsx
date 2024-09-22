@@ -32,6 +32,21 @@ import { longcookAPI } from '../../apis/longcook';
 import CheckModal from '../../components/CheckModal';
 import ReactGA from 'react-ga4';
 
+/**
+ * 스윽쿡 업로드
+ *
+ * @author 박유진
+ * @version 1.0
+ * @since 2024.09.01
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.01    박유진       최초 생성, 스윽쿡 업로드
+ * 2024.09.11    박유진       스윽쿡 업로드 데이터 수정
+ * </pre>
+ */
 const LongcookUpload = () => {
   const [member] = useRecoilState(memberState);
   const username = member.username;

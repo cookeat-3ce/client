@@ -36,6 +36,21 @@ import CheckModal from '../../components/CheckModal';
 import { useNavigate } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 
+/**
+ * 슥쿡 업로드
+ *
+ * @author 박유진
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.28    박유진       최초 생성, 슥쿡 업로드
+ * 2024.09.11    박유진       슥쿡 업로드 데이터 수정
+ * </pre>
+ */
 const SskcookUpload = () => {
   const navigate = useNavigate();
   const [member] = useRecoilState(memberState);

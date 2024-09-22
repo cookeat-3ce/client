@@ -3,6 +3,21 @@ import { CustomInputContainer, CustomSearchInputContainer, CustomTextareaContain
 import SearchInput from '../../assets/icons/input_search.svg';
 import { COLORS } from '../../constants';
 
+/**
+ * 공통 인풋
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.28    양재혁       최초 생성
+ * 2024.08.30    박유진       공통 textarea 추가
+ * </pre>
+ */
 export const CustomInput = ({
   text,
   fontSize,

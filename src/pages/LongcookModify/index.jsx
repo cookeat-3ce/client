@@ -30,6 +30,21 @@ import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { longcookAPI } from '../../apis/longcook';
 import CheckModal from '../../components/CheckModal';
 
+/**
+ * 스윽쿡 수정
+ *
+ * @author 박유진
+ * @version 1.0
+ * @since 2024.09.02
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.02    박유진       최초 생성, 스윽쿡 수정 및 삭제
+ * 2024.09.14    박유진       수정/삭제 확인 모달 추가
+ * </pre>
+ */
 const LongcookModify = () => {
   const { id } = useParams();
 

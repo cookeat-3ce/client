@@ -22,6 +22,20 @@ import { INGREDIENTS } from '../../constants';
 import { fridgeAPI } from '../../apis/fridge';
 import moment from 'moment';
 
+/**
+ * 스윽쿡 상세조회
+ *
+ * @author 박유진
+ * @version 1.0
+ * @since 2024.09.07
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.07    박유진       최초 생성, 스윽쿡 상세조회
+ * </pre>
+ */
 const LongcookDetails = () => {
   const { id } = useParams();
 
