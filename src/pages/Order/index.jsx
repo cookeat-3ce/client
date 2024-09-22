@@ -176,10 +176,13 @@ const Order = () => {
 
   const special = queryParams.get('special');
   const totalPrice = priceData.reduce((acc, curr) => acc + curr, 0);
+  const discountPercentage = parseInt(queryParams.get('discount')) || 0;
+  const discountAmount = Math.round(totalPrice * (discountPercentage / 100));
 
-  const discount = parseInt(queryParams.get('discount'), 0) || 0;
-  const discountPrice = Math.round((totalPrice * discount) / 100 / 100) * 100;
+  const discountPrice1 = totalPrice - discountAmount;
 
+  const discountPrice2 = Math.round(discountPrice1 / 10) * 10;
+  const discountPrice = totalPrice - discountPrice2;
   const [shippingPrice, setShippingPrice] = useState(0);
   useEffect(() => {
     if (totalPrice - discountPrice >= 50000) setShippingPrice(0);
