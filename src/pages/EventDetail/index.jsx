@@ -25,6 +25,20 @@ import { useRecoilState } from 'recoil';
 import { memberState } from '../../store';
 import Modal from '../../components/Modal';
 
+/**
+ * 이벤트 상세 페이지
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.09
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.09    김지수       최초 생성
+ * </pre>
+ */
 const EventDetail = () => {
   const [member] = useRecoilState(memberState);
   const username = member.username;

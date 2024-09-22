@@ -35,9 +35,24 @@ import CustomTextButton from '../../components/Button/Text';
 import CustomVideoList from '../../components/VideoList';
 import CustomNoticeList from '../../components/NoticeList';
 import CustomButton from '../../components/Button';
-import Modal from '../../components/Modal';
 import { ModifyOnelineModal } from '../../components/InputModal';
 
+/**
+ * 사용자 정보 페이지
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.08.31
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.31    김지수       최초 생성
+ * 2024.09.01    김지수       슥쿡 삭제
+ * 2024.09.06    김지수       냉장고 페이지
+ * </pre>
+ */
 const Index = () => {
   const [member] = useRecoilState(memberState);
   const username = member.username;

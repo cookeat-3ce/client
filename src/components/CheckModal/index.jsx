@@ -14,6 +14,20 @@ import CustomText from '../Text';
 import icon_need_verified from '../../assets/icons/need_verified.svg';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * title, content 출력 모달
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.11    김지수       최초 생성
+ * </pre>
+ */
 const CheckModal = ({ show, onClose, title, info, admin = false, check }) => {
   const navigate = useNavigate();
   const handleCheckButtonClick = () => {

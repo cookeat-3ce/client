@@ -12,6 +12,20 @@ import { sskcookAPI } from '../../apis/sskcook';
 import { longcookAPI } from '../../apis/longcook';
 import VideoPlayer from '../Card';
 
+/**
+ * 비디오 목록 컴포넌트
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.08.31
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.31    김지수       최초 생성
+ * </pre>
+ */
 const CustomVideoList = ({
   type,
   videos,

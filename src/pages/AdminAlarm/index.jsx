@@ -22,6 +22,22 @@ import CheckModal from '../../components/CheckModal';
 import { SendAlertModal } from '../../components/InputModal';
 import { useCustomNavigate } from '../../hooks';
 
+/**
+ * 어드민
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.08
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.09    양재혁       최초 생성, 이벤트 목록 조회
+ * 2024.09.16    김지수       이벤트에 대해 알림 발송 요청
+ * 2024.09.18    김지수       이벤트 상세 조회
+ * </pre>
+ */
 const AdminAlarm = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const [eventList, setEventList] = useState([]);
