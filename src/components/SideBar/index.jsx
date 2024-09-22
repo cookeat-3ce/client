@@ -25,6 +25,7 @@ import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../../apis/member';
 import { memberState } from '../../store';
 import { debounce } from 'lodash';
+
 /**
  * 메인 사이드바
  *
@@ -37,6 +38,7 @@ import { debounce } from 'lodash';
  * 수정일          수정자         내용
  * ------------- ----------- ---------------------------------
  * 2024.08.28    양재혁       최초 생성
+ * 2024.08.28    박유진       사이드 바 수정
  * </pre>
  */
 const CustomSideBar = () => {

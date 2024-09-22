@@ -34,6 +34,21 @@ import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import { sskcookAPI } from '../../apis/sskcook';
 import CheckModal from '../../components/CheckModal';
 
+/**
+ * 슥쿡 수정
+ *
+ * @author 박유진
+ * @version 1.0
+ * @since 2024.08.29
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.01    박유진       최초 생성, 슥쿡 수정 및 삭제
+ * 2024.09.14    박유진       수정/삭제 확인 모달 추가
+ * </pre>
+ */
 const SskcookModify = () => {
   const { id } = useParams();
   const [file, setFile] = useState(null);
