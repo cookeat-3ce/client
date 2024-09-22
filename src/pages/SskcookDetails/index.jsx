@@ -57,7 +57,22 @@ import SalesNavyIcon from '../../assets/icons/sale_navy.svg';
 import MikeIcon from '../../assets/icons/mike.svg';
 import { fridgeAPI } from '../../apis/fridge';
 import moment from 'moment';
-
+/**
+ * 슥쿡 상세 조회
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.29
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.29    양재혁       최초 생성
+ * 2024.08.29    양재혁       react-speech-recognition 연결
+ * 2024.09.09    양재혁       무한스크롤 구현
+ * </pre>
+ */
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
   const containerRef = useRef(null);

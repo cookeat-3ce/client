@@ -59,7 +59,21 @@ import Tuna from '../../assets/images/ingredients/tuna.jpg';
 import Water from '../../assets/images/ingredients/water.jpg';
 import MealKit from '../../assets/images/mealkit.svg';
 import Cream from '../../assets/images/ingredients/cream.jpg';
-
+/**
+ * 결제
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.06
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.06    양재혁       최초 생성
+ * 2024.09.11    양재혁       결제 수단 추가
+ * </pre>
+ */
 const Order = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const resetMemberState = useResetRecoilState(memberState);

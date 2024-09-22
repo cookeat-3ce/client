@@ -17,10 +17,24 @@ import CustomImageButton from '../Button/Image';
 import { COLORS } from '../../constants';
 import { getCookie, useCustomNavigate } from '../../hooks';
 import { useLocation } from 'react-router-dom';
-import { useRecoilValue, atom } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { memberState } from '../../store';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import CustomText from '../Text';
+/**
+ * 메인 헤더
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.28    양재혁       최초 생성
+ * </pre>
+ */
 const CustomHeader = () => {
   const [showAlertDropdown, setShowAlertDropdown] = useState(false);
   const [notifications, setNotifications] = useState([]);
