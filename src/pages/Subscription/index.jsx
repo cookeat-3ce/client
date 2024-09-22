@@ -35,7 +35,20 @@ import { useMutation } from '@tanstack/react-query';
 import { memberAPI } from '../../apis/member';
 import { memberState } from '../../store';
 import { useQuery } from '@tanstack/react-query';
-
+/**
+ * 구독
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.03
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.03    양재혁       최초 생성
+ * </pre>
+ */
 const Subscription = () => {
   const [userDetailInfoString, setUserDetailInfoString] = useState('');
   const [userDetailOneLiner, setUserDetailOneLiner] = useState('');

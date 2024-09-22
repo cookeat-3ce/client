@@ -96,6 +96,11 @@ export const IngredientSection = styled.div`
   align-items: center;
 `;
 
+export const MemberSection = styled.div`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
 export const LineContainer = styled.div`
   width: 27vw;
   height: 2px;

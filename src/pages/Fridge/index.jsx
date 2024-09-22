@@ -26,6 +26,20 @@ import ImageModal from '../../components/ImageModal';
 import { Tooltip } from 'antd';
 import moment from 'moment';
 
+/**
+ * 사용자 냉장고 페이지
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.06
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.06    김지수       최초 생성
+ * </pre>
+ */
 const Fridge = () => {
   const [ingredients, setIngredients] = useState([]);
   const [selectedIngredient, setSelectedIngredient] = useState(null);

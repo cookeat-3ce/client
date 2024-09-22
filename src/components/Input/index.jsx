@@ -1,5 +1,10 @@
 import { React, useState } from 'react';
-import { CustomInputContainer, CustomSearchInputContainer, CustomTextareaContainer, CharacterCountContainer} from './styles';
+import {
+  CustomInputContainer,
+  CustomSearchInputContainer,
+  CustomTextareaContainer,
+  CharacterCountContainer,
+} from './styles';
 import SearchInput from '../../assets/icons/input_search.svg';
 import { COLORS } from '../../constants';
 
@@ -87,7 +92,7 @@ export const CustomInputTextarea = ({
   maxLength,
   onChange,
   value,
-  paddingLeft
+  paddingLeft,
 }) => {
   const [charCount, setCharCount] = useState(0);
 
@@ -118,13 +123,13 @@ export const CustomInputTextarea = ({
       />
       {maxLength && (
         <CharacterCountContainer
-        style={{
-          paddingLeft
-        }}
+          style={{
+            paddingLeft,
+          }}
         >
           {charCount}/{maxLength}
         </CharacterCountContainer>
       )}
     </div>
   );
-}
+};

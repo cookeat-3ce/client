@@ -28,6 +28,20 @@ import { Tooltip } from 'antd';
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
 const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
 
+/**
+ * 실시간 요리 라이브 (1인 스트리밍)
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.05
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.05    김지수       최초 생성
+ * </pre>
+ */
 const LiveSession = () => {
   const [member] = useRecoilState(memberState);
   const username = member.username;

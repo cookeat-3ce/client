@@ -59,7 +59,21 @@ import Tuna from '../../assets/images/ingredients/tuna.jpg';
 import Water from '../../assets/images/ingredients/water.jpg';
 import MealKit from '../../assets/images/mealkit.svg';
 import Cream from '../../assets/images/ingredients/cream.jpg';
-
+/**
+ * 결제
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.06
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.06    양재혁       최초 생성
+ * 2024.09.11    양재혁       결제 수단 추가
+ * </pre>
+ */
 const Order = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const resetMemberState = useResetRecoilState(memberState);
@@ -162,10 +176,13 @@ const Order = () => {
 
   const special = queryParams.get('special');
   const totalPrice = priceData.reduce((acc, curr) => acc + curr, 0);
+  const discountPercentage = parseInt(queryParams.get('discount')) || 0;
+  const discountAmount = Math.round(totalPrice * (discountPercentage / 100));
 
-  const discount = parseInt(queryParams.get('discount'), 0) || 0;
-  const discountPrice = Math.round((totalPrice * discount) / 100 / 100) * 100;
+  const discountPrice1 = totalPrice - discountAmount;
 
+  const discountPrice2 = Math.round(discountPrice1 / 10) * 10;
+  const discountPrice = totalPrice - discountPrice2;
   const [shippingPrice, setShippingPrice] = useState(0);
   useEffect(() => {
     if (totalPrice - discountPrice >= 50000) setShippingPrice(0);

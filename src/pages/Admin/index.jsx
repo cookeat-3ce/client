@@ -14,7 +14,21 @@ import {
 import { COLORS } from '../../constants';
 import { gapi } from 'gapi-script';
 import CustomText from '../../components/Text';
-
+/**
+ * 어드민 메인
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.15
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.15    양재혁       최초 생성
+ * 2024.09.15    양재혁       Google Analytics 연동
+ * </pre>
+ */
 const Admin = () => {
   const colors = ['#008BED', '#00CE51', '#FFEA75'];
 

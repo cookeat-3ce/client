@@ -20,6 +20,20 @@ import { memberState } from '../../store';
 import { useRecoilState } from 'recoil';
 import CustomVideoList from '../../components/VideoList';
 
+/**
+ * 냉장고 속 재료, 좋아요 기반 레시피 추천 페이지
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.09
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.09    김지수       최초 생성
+ * </pre>
+ */
 const RecipeRecommend = () => {
   const [member] = useRecoilState(memberState);
   const username = member.username;

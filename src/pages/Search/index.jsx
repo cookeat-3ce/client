@@ -31,6 +31,20 @@ import { useCustomNavigate } from '../../hooks';
 import ProfileImage from '../../components/ProfileImage';
 import { useNavigate } from 'react-router-dom';
 import LikeIcon from '../../assets/icons/clicked_thumbs_up.svg';
+/**
+ * 검색
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.01
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.01    양재혁       최초 생성
+ * </pre>
+ */
 const Search = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState('');

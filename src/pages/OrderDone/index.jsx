@@ -18,6 +18,20 @@ import { debounce } from 'lodash';
 import Logo from '../../assets/icons/hyundai_logo.png';
 import CheckCircle from '../../assets/icons/check_circle.svg';
 import CustomButton from '../../components/Button';
+/**
+ * 결제 완료
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.06
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.06    양재혁       최초 생성
+ * </pre>
+ */
 const OrderDone = () => {
   const [num, setNum] = useState(null);
   const { handleChangeUrl } = useCustomNavigate();
