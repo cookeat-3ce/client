@@ -11,6 +11,20 @@ import CustomButton from '../Button';
 import { COLORS } from '../../constants';
 import icon_need_verified from '../../assets/icons/need_verified.svg';
 
+/**
+ * 인증 관련 모달
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.08
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.08    김지수       최초 생성
+ * </pre>
+ */
 const VerifyModal = ({ show, verifiedStatus, onClose, onSubmit }) => {
   if (!show) return null;
 

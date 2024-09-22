@@ -21,6 +21,20 @@ import { useCustomNavigate } from '../../hooks';
 import { fridgeAPI } from '../../apis/fridge';
 import { useMutation } from '@tanstack/react-query';
 
+/**
+ * 이미지 포함된 모달
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.06
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.06    김지수       최초 생성
+ * </pre>
+ */
 const ImageModal = ({ show, onClose, info, onDelete }) => {
   const { handleChangeUrl } = useCustomNavigate();
 

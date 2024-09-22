@@ -18,6 +18,20 @@ import { eventAPI } from '../../apis/event';
 import moment from 'moment';
 import { useCustomNavigate } from '../../hooks';
 
+/**
+ * 실시간 요리 클래스 (그룹)
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.09
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.09    김지수       최초 생성
+ * </pre>
+ */
 const Event = () => {
   const { handleChangeUrl } = useCustomNavigate();
   const [eventList, setEventList] = useState([]);

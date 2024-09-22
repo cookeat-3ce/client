@@ -28,6 +28,21 @@ import ProfileCard from '../../components/ProfileCard';
 const OPENVIDU_SERVER_URL = process.env.REACT_APP_OPENVIDU_SERVER_URL;
 const OPENVIDU_SERVER_SECRET = process.env.REACT_APP_OPENVIDU_SERVER_SECRET;
 
+/**
+ * 실시간 요리 클래스 및 라이브 목록
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.05
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.19    양재혁       최초 생성
+ * 2024.09.11    김지수       진행 중인 라이브 목록 페이지
+ * </pre>
+ */
 const Live = () => {
   const accessToken = getCookie('accessToken');
   const [searchValue, setSearchValue] = useState('');

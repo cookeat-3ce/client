@@ -32,6 +32,20 @@ import { memberAPI } from '../../apis/member';
 import { alertAPI } from '../../apis/alert';
 import CheckModal from '../CheckModal';
 
+/**
+ * 데이터를 입력받는 모달
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.06
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.06    김지수       최초 생성
+ * </pre>
+ */
 export const InputModal = ({ show, onClose, onSubmit }) => {
   const [member] = useRecoilState(memberState);
   const username = member.username;
@@ -237,6 +251,20 @@ export const InputModal = ({ show, onClose, onSubmit }) => {
   );
 };
 
+/**
+ * 한줄 소개 수정 모달
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.15
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.15    김지수       최초 생성
+ * </pre>
+ */
 export const ModifyOnelineModal = ({ show, onClose, onSubmit }) => {
   const [member] = useRecoilState(memberState);
   const username = member.username;
@@ -327,6 +355,21 @@ export const ModifyOnelineModal = ({ show, onClose, onSubmit }) => {
     </ModalBackdrop>
   );
 };
+
+/**
+ * 사용자에 알람 발송 모달
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.18
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.18    김지수       최초 생성
+ * </pre>
+ */
 export const SendAlertModal = ({ show, onClose, eventId }) => {
   const [message, setMessage] = useState('');
   const [showCompleteModal, setShowCompleteModal] = useState(false);

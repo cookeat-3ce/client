@@ -16,6 +16,20 @@ import { COLORS } from '../../constants';
 import { CustomInput, CustomInputTextarea } from '../../components/Input';
 import CustomButton from '../../components/Button';
 
+/**
+ * 사용자 공지 등록
+ *
+ * @author 김지수
+ * @version 1.0
+ * @since 2024.09.05
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.05    김지수       최초 생성
+ * </pre>
+ */
 const CreateNotice = () => {
   const [member] = useRecoilState(memberState);
   const { handleChangeUrl } = useCustomNavigate();
