@@ -20,6 +20,21 @@ import CustomButton from '../Button';
 import { sskcookAPI } from '../../apis/sskcook';
 import { getCookie, useCustomNavigate } from '../../hooks';
 import moment from 'moment';
+/**
+ * 슥쿡 스와이퍼
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.28
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.28    양재혁       최초 생성
+ * </pre>
+ */
+
 const CustomSwiper = ({
   firstText,
   secondText,

@@ -17,7 +17,7 @@ import {
   SubscriptionContainer,
   StyledSkeleton,
   SwitchSkeleton,
-  PriceWrapper,
+  MemberSection,
   PriceSection,
 } from './styles';
 import CustomText from '../../components/Text';
@@ -57,7 +57,22 @@ import SalesNavyIcon from '../../assets/icons/sale_navy.svg';
 import MikeIcon from '../../assets/icons/mike.svg';
 import { fridgeAPI } from '../../apis/fridge';
 import moment from 'moment';
-
+/**
+ * 슥쿡 상세 조회
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.08.29
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.08.29    양재혁       최초 생성
+ * 2024.08.29    양재혁       react-speech-recognition 연결
+ * 2024.09.09    양재혁       무한스크롤 구현
+ * </pre>
+ */
 const SskcookDetails = () => {
   const sskcookId = window.location.pathname.split('/').pop();
   const containerRef = useRef(null);
@@ -931,7 +946,11 @@ const SskcookDetails = () => {
 
       const totalSum = newPrice.reduce((sum, price) => sum + price, 0);
       setTotalPrice(totalSum);
-      setDiscountTotalPrice(totalSum * 0.8);
+
+      const roundedDiscountPrice1 =
+        Math.round(Math.round(totalSum * 0.9) / 10) * 10;
+
+      setDiscountTotalPrice(roundedDiscountPrice1);
 
       console.log('유효한 재료:', validIngredients);
 
@@ -953,10 +972,13 @@ const SskcookDetails = () => {
       );
 
       const totalNotHavePrice = totalSum - totalValidPrice;
-
       const roundedPartialSum = Math.round(totalNotHavePrice);
       setSelectivePrice(roundedPartialSum);
-      setDiscountSelectivePrice(Math.round(roundedPartialSum * 0.83));
+
+      const discountPrice = Math.round(roundedPartialSum * 0.95);
+      const roundedDiscountPrice = Math.round(discountPrice / 10) * 10;
+
+      setDiscountSelectivePrice(roundedDiscountPrice);
     }
   }, [sskcookDetailsData, ingredient, location]);
 
@@ -970,7 +992,7 @@ const SskcookDetails = () => {
       const encodedOrderList = encodeURIComponent(
         JSON.stringify(newIngredientNames),
       );
-      const url = `https://www.cookeat.site/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${20}`;
+      const url = `https://www.cookeat.site/order?orderData=${encodedOrderList}&priceData=${prices}&discount=${10}`;
 
       window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -980,7 +1002,7 @@ const SskcookDetails = () => {
     const encodedOrderList = encodeURIComponent(
       JSON.stringify(notHaveProducts),
     );
-    const url = `https://www.cookeat.site/order?orderData=${encodedOrderList}&priceData=${notHavePrices}&discount=${17}`;
+    const url = `https://www.cookeat.site/order?orderData=${encodedOrderList}&priceData=${notHavePrices}&discount=${5}`;
 
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -1301,7 +1323,7 @@ const SskcookDetails = () => {
           </div>
         )}
         <SubscriptionContainer>
-          <IngredientSection>
+          <MemberSection>
             <CustomImageButton
               src={sskcookDetailsData?.data?.details[0]?.profileImage}
               width={'3vw'}
@@ -1312,16 +1334,16 @@ const SskcookDetails = () => {
                 )
               }
             />
-          </IngredientSection>
-          <IngredientSection>
+          </MemberSection>
+          <MemberSection>
             <CustomText
               text={sskcookDetailsData?.data?.details[0]?.nickname}
               fontFamily={'Happiness-Sans-Regular'}
               fontSize={'.8vw'}
               color={COLORS.WHITE}
             />
-          </IngredientSection>
-          <IngredientSection>
+          </MemberSection>
+          <MemberSection>
             {member.nickname !==
             sskcookDetailsData?.data?.details[0]?.nickname ? (
               <CustomButton
@@ -1351,7 +1373,7 @@ const SskcookDetails = () => {
                 }}
               />
             ) : null}
-          </IngredientSection>
+          </MemberSection>
         </SubscriptionContainer>
         <WriteContainer>
           <CustomText
@@ -1467,7 +1489,7 @@ const SskcookDetails = () => {
                       }}
                     >
                       <CustomText
-                        text={'20'}
+                        text={'10'}
                         fontFamily={'Happiness-Sans-Bold'}
                         color={COLORS.SALES}
                         fontSize={'.9vw'}
@@ -1555,7 +1577,7 @@ const SskcookDetails = () => {
                         }}
                       >
                         <CustomText
-                          text={'17'}
+                          text={'5'}
                           fontFamily={'Happiness-Sans-Bold'}
                           color={COLORS.SALES}
                           fontSize={'.9vw'}

@@ -7,7 +7,20 @@ import './styles.css';
 import { Pagination, Navigation } from 'swiper';
 import { subscriptionState } from '../../store';
 import { useRecoilState } from 'recoil';
-
+/**
+ * 구독 스와이퍼
+ *
+ * @author 양재혁
+ * @version 1.0
+ * @since 2024.09.03
+ *
+ *
+ * <pre>
+ * 수정일          수정자         내용
+ * ------------- ----------- ---------------------------------
+ * 2024.09.03    양재혁       최초 생성
+ * </pre>
+ */
 const CustomSwiper = ({ arr, onReachEnd }) => {
   const swiperRef = useRef(null);
   const [subscribe, setSubscribe] = useRecoilState(subscriptionState);
