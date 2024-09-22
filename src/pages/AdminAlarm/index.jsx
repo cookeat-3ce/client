@@ -32,11 +32,12 @@ const AdminAlarm = () => {
   const [selectedEventDetail, setSelectedEventDetail] = useState(null);
   const [showContentModal, setShowContentModal] = useState(false);
   const [showInputModal, setShowInputModal] = useState(false);
+  const [filtering, setFiltering] = useState('recipe');
   const pageCount = 5;
 
   const eventListQuery = useQuery({
-    queryKey: ['eventDetail', pageNum],
-    queryFn: () => eventAPI.eventListAPI(pageNum),
+    queryKey: ['eventDetail', pageNum, filtering],
+    queryFn: () => eventAPI.eventListAPI(pageNum, filtering),
     staleTime: Infinity,
   });
 
